@@ -5,7 +5,7 @@ import axios from 'axios'
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query'
 
 const about = () => {
-  const { data, error: CSR } = useQuery({ queryKey: ['default2'], queryFn: ()=>getUser('3') })
+  const { data, error: CSR } = useQuery({ queryKey: ['3'], queryFn: ()=>getUser('3') })
   console.log(CSR)
   return  (
     <div className='flex min-h-screen flex-col items-center justify-center p-24'>
@@ -22,7 +22,7 @@ export async function getServerSideProps() {
   try {
     const queryClient = new QueryClient()
 
-    await queryClient.prefetchQuery(['default2'], ()=>getUser('3'))
+    await queryClient.prefetchQuery(['3'], ()=>getUser('3'))
   
     return {
       props: {

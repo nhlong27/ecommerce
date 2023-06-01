@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const getUser = async (id:string) => {
   try {
-    const res = await axios.get(`http://localhost:3000/api/user/${id}`)
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/user/${id}`)
     const user = UserSchema.parse(await res.data)
     return user
   } catch (err) {
@@ -25,7 +25,7 @@ export const getUser = async (id:string) => {
 
  function Home() {
   console.log(json)
-  const { data, error: CSR } = useQuery({ queryKey: ['default'], queryFn: ()=>getUser('2') })
+  const { data, error: CSR } = useQuery({ queryKey: ['2'], queryFn: ()=>getUser('2') })
   console.log(data)
   return (
     <main
@@ -43,7 +43,7 @@ export async function getStaticProps() {
   try {
     const queryClient = new QueryClient()
 
-    await queryClient.prefetchQuery(['default'], ()=>getUser('2'))
+    await queryClient.prefetchQuery(['2'], ()=>getUser('2'))
     console.log('SSR:' + queryClient.getQueryData(['default']))
     return {
       props: {
