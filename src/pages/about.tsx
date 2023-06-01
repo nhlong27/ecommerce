@@ -18,7 +18,7 @@ const about = () => {
 
 export default about
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   try {
     const queryClient = new QueryClient()
 
