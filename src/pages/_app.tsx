@@ -11,14 +11,16 @@ import {
 
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { SessionProvider } from "next-auth/react"
 
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps: {session, ...pageProps} }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient())
   const [isLoading, setIsLoading] = React.useState(false)
   Router.events.on('routeChangeStart', () => setIsLoading(true))
   Router.events.on('routeChangeComplete', () => setIsLoading(false))
-  return <QueryClientProvider client={queryClient}>
+  return <SessionProvider session={session}>
+  <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
          <MediaContextProvider>
     {isLoading ? <Loading /> :
@@ -28,4 +30,5 @@ export default function App({ Component, pageProps }: AppProps) {
         </Hydrate>
         <ReactQueryDevtools />
         </QueryClientProvider>
+  </SessionProvider>
 }
