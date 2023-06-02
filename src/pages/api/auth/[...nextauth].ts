@@ -5,6 +5,9 @@ import { signInWithCredentials } from "./.signInWithCredentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import { signInWithOAuth } from "./signInWithOAuth";
+import GitHubProvider from "next-auth/providers/github";
+import FacebookProvider from "next-auth/providers/facebook";
+
 
 export const authOptions: NextAuthOptions = {
   // adapter: PrismaAdapter(prisma),
@@ -31,7 +34,23 @@ export const authOptions: NextAuthOptions = {
           // image: profile.avatar_url,
         // } 
       },
-
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
+      profile(profile) {
+        const user = signInWithOAuth({...profile, name: profile.name || profile.login})
+        return user as any
+      },
+    }
+    ),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID as string,
+      clientSecret: process.env.FACEBOOK_SECRET as string,
+      profile(profile) {
+        const user = signInWithOAuth({...profile, name: profile.name || profile.login})
+        return user as any
+      },
     }),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')

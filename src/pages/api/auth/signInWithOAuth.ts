@@ -15,8 +15,7 @@ export async function signInWithOAuth(profile:ProfileType) {
     const newUser = await prisma.user.create({
       data:{
       name: profile.name ?? profile.email,
-        email:profile.email,
-        password: 'oauth',
+      email:profile.email,
       }})
     return newUser
   }
