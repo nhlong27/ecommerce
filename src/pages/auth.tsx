@@ -1,9 +1,11 @@
 import { useSession, signIn, signOut,  } from "next-auth/react"
+import { redirect } from "next/dist/server/api-utils"
 import React from 'react'
 
-const Auth = () => {
+const AuthPage = () => {
   const { data: session } = useSession()
-  // console.log(session)
+  
+
   if (session) {
     return (
       <>
@@ -20,4 +22,4 @@ const Auth = () => {
   )
 }
 
-export default Auth
+export default AuthPage

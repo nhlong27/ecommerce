@@ -1,95 +1,149 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import NextAuth, { NextAuthOptions, TokenSet } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { signInWithCredentials } from './.signInWithCredentials'
 import { signInWithOAuth } from './signInWithOAuth'
 import GitHubProvider from 'next-auth/providers/github'
 import FacebookProvider from 'next-auth/providers/facebook'
+import prisma from '@/lib/prisma'
 
 export const authOptions: NextAuthOptions = {
-  // adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
     updateAge: 24 * 60 * 60, // 24 hours in seconds
   },
-  // Configure one or more authentication providers
+
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
       clientSecret: process.env.GOOGLE_SECRET as string,
+      authorization: { params: { access_type: 'offline', prompt: 'consent' } },
       profile(profile) {
-        // Return all the profile information you need.
-        // The only truly required field is `id`
-        // to be able identify the account when added to a database
-        const user = signInWithOAuth({
-          ...profile,
-          name: profile.name || profile.login,
-        })
-        return user as any
-        //  {
-        // id: profile.id.toString(),
-        // name: profile.name || profile.login,
-        // email: profile.email,
-        // image: profile.avatar_url,
-        // }
-      },
-    }),
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
-      profile(profile) {
-        const user = signInWithOAuth({
-          ...profile,
-          name: profile.name || profile.login,
-        })
+        const user = signInWithOAuth(profile)
         return user as any
       },
     }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_ID as string,
-      clientSecret: process.env.FACEBOOK_SECRET as string,
-      profile(profile) {
-        const user = signInWithOAuth({
-          ...profile,
-          name: profile.name || profile.login,
-        })
-        return user as any
-      },
-    }),
-    CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: 'Credentials',
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'long@mail.com' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        const user = await signInWithCredentials({
-          ...credentials!,
-          name: (req.body?.name as string) ?? undefined,
-        })
-
-        console.log(credentials, user)
-        // If no error and we have user data, return it
-        if (user) {
-          return user as any
-        }
-        // Return null if user data could not be retrieved
-        else return null
-      },
-    }),
+    // GitHubProvider({
+    //   clientId: process.env.GITHUB_ID as string,
+    //   clientSecret: process.env.GITHUB_SECRET as string,
+    //   profile(profile) {
+    //     const user = signInWithOAuth({
+    //       ...profile,
+    //       name: profile.name || profile.login,
+    //     })
+    //     return user as any
+    //   },
+    // }),
+    // FacebookProvider({
+    //   clientId: process.env.FACEBOOK_ID as string,
+    //   clientSecret: process.env.FACEBOOK_SECRET as string,
+    //   profile(profile) {
+    //     const user = signInWithOAuth({
+    //       ...profile,
+    //       name: profile.name || profile.login,
+    //     })
+    //     return user as any
+    //   },
+    // }),
   ],
+  callbacks: {
+    //token for jwt strategy, user for database strategy
+    async session({ session, token }) {
+      console.log(token)
+      session.user = token as any
+      return session
+    },
+    async jwt({ token, account, user }) {
+      if (user) {
+        token.role = user.role
+        token.emailVerified = user.emailVerified
+      }
+      if (account) {
+        // Save the access token and refresh token in the JWT on the initial login
+        return {
+          access_token: account.access_token,
+          //@ts-ignore
+
+          expires_at: Math.floor(Date.now() / 1000 + account.expires_in),
+          refresh_token: account.refresh_token,
+          ...token,
+        }
+        //@ts-ignore
+      } else if (Date.now() < token.expires_at * 1000) {
+        // If the access token has not expired yet, return it
+        return token
+      } else {
+        // If the access token has expired, try to refresh it
+        try {
+          const response = await fetch('https://oauth2.googleapis.com/token', {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            //@ts-ignore
+            body: new URLSearchParams({
+              client_id: process.env.GOOGLE_ID,
+              client_secret: process.env.GOOGLE_SECRET,
+              grant_type: 'refresh_token',
+              refresh_token: token.refresh_token,
+            }),
+            method: 'POST',
+          })
+
+          const tokens: TokenSet = await response.json()
+
+          if (!response.ok) throw tokens
+
+          return {
+            ...token, // Keep the previous token properties
+            access_token: tokens.access_token,
+            //@ts-ignore
+            expires_at: Math.floor(Date.now() / 1000 + tokens.expires_in),
+            // Fall back to old refresh token, but note that
+            // many providers may only allow using a refresh token once.
+            refresh_token: tokens.refresh_token ?? token.refresh_token,
+          }
+        } catch (error) {
+          console.error('Error refreshing access token', error)
+          // The error property will be used client-side to handle the refresh token error
+          return { ...token, error: 'RefreshAccessTokenError' as const }
+        }
+      }
+    },
+  },
+  // just to be sure, either set a NEXTAUTH_SECRET in .env or secret here
   secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: '/auth/signin',
+    // signOut: '/auth',
+    // error: '/auth/signin', // Error code passed in query string as ?error=
+    // verifyRequest: '/auth/verify-request', // (used for check email message)
+    // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
+  // cookies: cookies,
 }
 export default NextAuth(authOptions)
+
+// const cookies: Partial<CookiesOptions> = {​
+//   sessionToken: {​
+//       name: `next-auth.session-token`,​
+//       options: {​
+//           httpOnly: true,​
+//           sameSite: "none",​
+//           path: "/",​
+//           domain: process.env.NEXT_PUBLIC_DOMAIN,​
+//           secure: true,​
+//       },​
+//   },​
+//   callbackUrl: {​
+//       name: `next-auth.callback-url`,​
+//       options: {​
+//           ...​
+//       },
+//   },​
+//   csrfToken: {​
+//       name: "next-auth.csrf-token",​
+//       options: {​
+//       ...​
+//       },​
+//   },​
+// };
