@@ -3,9 +3,10 @@ import NextAuth, { NextAuthOptions, TokenSet } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { signInWithCredentials } from './.signInWithCredentials'
-import { signInWithOAuth } from './signInWithOAuth'
+import { signInWithOAuth } from './.signInWithOAuth'
 import GitHubProvider from 'next-auth/providers/github'
 import FacebookProvider from 'next-auth/providers/facebook'
+import { signJWT, verifyJWT } from '@/utils/jwt'
 import prisma from '@/lib/prisma'
 
 export const authOptions: NextAuthOptions = {
@@ -47,15 +48,52 @@ export const authOptions: NextAuthOptions = {
     //     return user as any
     //   },
     // }),
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: {
+          label: 'Email',
+          type: 'email',
+          placeholder: 'jsmith@mail.com',
+        },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        const user = signInWithCredentials(
+          credentials as {
+            email: string
+            password: string
+            name?: string
+          }
+        )
+        if (user) {
+          return user as any
+        } else {
+          return null
+        }
+      },
+    }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === 'credentials') {
+        const accessToken = signJWT({ ...user }, { expiresIn: '15m' }) // 15mins
+        const refreshToken = signJWT({ ...user }, { expiresIn: '1y' }) //1 year
+        account.access_token = accessToken
+        account.refresh_token = refreshToken
+        account.expires_at = Math.floor(Date.now() / 1000 + 15 * 60)
+      }
+      return true
+    },
     //token for jwt strategy, user for database strategy
     async session({ session, token }) {
-      console.log(token)
       session.user = token as any
       return session
     },
     async jwt({ token, account, user }) {
+      console.log('token' + JSON.stringify(token, null, '\t'))
+      console.log('account' + JSON.stringify(account, null, '\t'))
+      console.log('user' + JSON.stringify(user, null, '\t'))
       if (user) {
         token.role = user.role
         token.emailVerified = user.emailVerified
@@ -63,10 +101,10 @@ export const authOptions: NextAuthOptions = {
       if (account) {
         // Save the access token and refresh token in the JWT on the initial login
         return {
+          provider: account.provider,
           access_token: account.access_token,
           //@ts-ignore
-
-          expires_at: Math.floor(Date.now() / 1000 + account.expires_in),
+          expires_at: account.expires_at,
           refresh_token: account.refresh_token,
           ...token,
         }
@@ -77,6 +115,23 @@ export const authOptions: NextAuthOptions = {
       } else {
         // If the access token has expired, try to refresh it
         try {
+        if (token.provider === 'credentials') {
+          const { decoded } = verifyJWT(token.refresh_token as string)
+          if (!decoded) throw new Error
+          const user = await prisma.user.findFirst({ 
+            where: {
+               email: (decoded as any).email  
+              }
+            })
+          if (!user) throw new Error
+          const accessToken = signJWT({ ...user }, { expiresIn: '15m' })
+          return {
+            ...token, // Keep the previous token properties
+            access_token: accessToken,
+            //@ts-ignore
+            expires_at: Math.floor(Date.now() / 1000 + 15*60),
+          }
+        } else {
           const response = await fetch('https://oauth2.googleapis.com/token', {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             //@ts-ignore
@@ -92,7 +147,7 @@ export const authOptions: NextAuthOptions = {
           const tokens: TokenSet = await response.json()
 
           if (!response.ok) throw tokens
-
+          
           return {
             ...token, // Keep the previous token properties
             access_token: tokens.access_token,
@@ -102,6 +157,7 @@ export const authOptions: NextAuthOptions = {
             // many providers may only allow using a refresh token once.
             refresh_token: tokens.refresh_token ?? token.refresh_token,
           }
+        }
         } catch (error) {
           console.error('Error refreshing access token', error)
           // The error property will be used client-side to handle the refresh token error
@@ -112,13 +168,13 @@ export const authOptions: NextAuthOptions = {
   },
   // just to be sure, either set a NEXTAUTH_SECRET in .env or secret here
   secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: '/auth/signin',
-    // signOut: '/auth',
-    // error: '/auth/signin', // Error code passed in query string as ?error=
-    // verifyRequest: '/auth/verify-request', // (used for check email message)
-    // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
-  },
+  // pages: {
+  // signIn: '/auth/signin',
+  // signOut: '/auth',
+  // error: '/auth/signin', // Error code passed in query string as ?error=
+  // verifyRequest: '/auth/verify-request', // (used for check email message)
+  // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+  // },
   // cookies: cookies,
 }
 export default NextAuth(authOptions)

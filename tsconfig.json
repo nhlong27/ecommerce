@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2015",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,9 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "resolveJsonModule": true,
     "isolatedModules": true
@@ -30,9 +24,9 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/pages/api/auth/.signInWithCredentials.ts"
-, "src/middleware.ts"  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "src/pages/api/auth/.signInWithCredentials.ts",
+    "src/middleware.ts",
+    "src/pages/api/auth/.signInWithOAuth.ts"
+  ],
+  "exclude": ["node_modules"]
 }

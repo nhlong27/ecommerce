@@ -1,5 +1,4 @@
 import { useSession, signIn, signOut,  } from "next-auth/react"
-import { redirect } from "next/dist/server/api-utils"
 import React from 'react'
 
 const AuthPage = () => {
@@ -10,6 +9,7 @@ const AuthPage = () => {
     return (
       <>
         Signed in as {session.user?.email} <br />
+        <pre>{JSON.stringify(session, null, '\t')}</pre>
         <button onClick={() => signOut()}>Sign out</button>
       </>
     )

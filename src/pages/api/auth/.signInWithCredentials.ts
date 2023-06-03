@@ -1,5 +1,4 @@
 import prisma from '@/lib/prisma';
-import * as bcrypt from 'bcrypt';
 
 
 type CredentialsType = {
@@ -20,12 +19,12 @@ export async function signInWithCredentials(credentials:CredentialsType) {
         name: credentials.name as string,
         email:credentials.email,
         password: credentials.password,
+        emailVerified: false,
       }})
     const {password, ...newUserWithoutPass} = newUser;
     return newUserWithoutPass;
   }
   if (user){
-
     //TODO: bcrypt 
     const {password, ...userWithoutPass} = user;
     return userWithoutPass
