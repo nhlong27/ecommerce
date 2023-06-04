@@ -9,8 +9,25 @@ const updateUser = gql`
       email
     }
   }
-` 
+`
+const addBook = gql`
+  mutation addBook($title: String!) {
+    addBook(title: $title) {
+      title
+    }
+  }
+`
 
-export const updateUserMutationFn = async ({email, name}: {email: string, name:string}) => {
+export const updateUserMutationFn = async ({
+  email,
+  name,
+}: {
+  email: string
+  name: string
+}) => {
   return request(`${GRAPHQL_API_URL}`, updateUser, { email, name })
+}
+
+export const addBookMutationFn = async ({ title }: { title: string }) => {
+  return request(`${GRAPHQL_API_URL}`, addBook, { title })
 }

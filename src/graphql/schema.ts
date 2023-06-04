@@ -16,11 +16,17 @@ export const typeDefs = gql`
     role: Role 
   }
 
+  type Book {
+    title: String!
+  }
+
   type Query {
     users: [User]
+    books: [Book]
   }
 
   type Mutation {
     updateUser(email: String!, name: String!): User
+    addBook(title: String!): Book
   }
 `;
