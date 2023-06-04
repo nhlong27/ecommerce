@@ -91,9 +91,9 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async jwt({ token, account, user }) {
-      console.log('token' + JSON.stringify(token, null, '\t'))
-      console.log('account' + JSON.stringify(account, null, '\t'))
-      console.log('user' + JSON.stringify(user, null, '\t'))
+      // console.log('token' + JSON.stringify(token, null, '\t'))
+      // console.log('account' + JSON.stringify(account, null, '\t'))
+      // console.log('user' + JSON.stringify(user, null, '\t'))
       if (user) {
         token.role = user.role
         token.emailVerified = user.emailVerified
@@ -115,49 +115,54 @@ export const authOptions: NextAuthOptions = {
       } else {
         // If the access token has expired, try to refresh it
         try {
-        if (token.provider === 'credentials') {
-          const { decoded } = verifyJWT(token.refresh_token as string)
-          if (!decoded) throw new Error
-          const user = await prisma.user.findFirst({ 
-            where: {
-               email: (decoded as any).email  
-              }
+          if (token.provider === 'credentials') {
+            const { decoded } = verifyJWT(token.refresh_token as string)
+            if (!decoded) throw new Error()
+            const user = await prisma.user.findFirst({
+              where: {
+                email: (decoded as any).email,
+              },
             })
-          if (!user) throw new Error
-          const accessToken = signJWT({ ...user }, { expiresIn: '15m' })
-          return {
-            ...token, // Keep the previous token properties
-            access_token: accessToken,
-            //@ts-ignore
-            expires_at: Math.floor(Date.now() / 1000 + 15*60),
-          }
-        } else {
-          const response = await fetch('https://oauth2.googleapis.com/token', {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            //@ts-ignore
-            body: new URLSearchParams({
-              client_id: process.env.GOOGLE_ID,
-              client_secret: process.env.GOOGLE_SECRET,
-              grant_type: 'refresh_token',
-              refresh_token: token.refresh_token,
-            }),
-            method: 'POST',
-          })
+            if (!user) throw new Error()
+            const accessToken = signJWT({ ...user }, { expiresIn: '15m' })
+            return {
+              ...token, // Keep the previous token properties
+              access_token: accessToken,
+              //@ts-ignore
+              expires_at: Math.floor(Date.now() / 1000 + 15 * 60),
+            }
+          } else {
+            const response = await fetch(
+              'https://oauth2.googleapis.com/token',
+              {
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                //@ts-ignore
+                body: new URLSearchParams({
+                  client_id: process.env.GOOGLE_ID,
+                  client_secret: process.env.GOOGLE_SECRET,
+                  grant_type: 'refresh_token',
+                  refresh_token: token.refresh_token,
+                }),
+                method: 'POST',
+              }
+            )
 
-          const tokens: TokenSet = await response.json()
+            const tokens: TokenSet = await response.json()
 
-          if (!response.ok) throw tokens
-          
-          return {
-            ...token, // Keep the previous token properties
-            access_token: tokens.access_token,
-            //@ts-ignore
-            expires_at: Math.floor(Date.now() / 1000 + tokens.expires_in),
-            // Fall back to old refresh token, but note that
-            // many providers may only allow using a refresh token once.
-            refresh_token: tokens.refresh_token ?? token.refresh_token,
+            if (!response.ok) throw tokens
+
+            return {
+              ...token, // Keep the previous token properties
+              access_token: tokens.access_token,
+              //@ts-ignore
+              expires_at: Math.floor(Date.now() / 1000 + tokens.expires_in),
+              // Fall back to old refresh token, but note that
+              // many providers may only allow using a refresh token once.
+              refresh_token: tokens.refresh_token ?? token.refresh_token,
+            }
           }
-        }
         } catch (error) {
           console.error('Error refreshing access token', error)
           // The error property will be used client-side to handle the refresh token error

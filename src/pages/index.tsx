@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import axios from 'axios'
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query'
-import { UserSchema } from '@/types'
+import { UserSchema } from '@/types/types'
 import { signIn, useSession } from 'next-auth/react'
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,7 +15,7 @@ export const getUser = async (id: string) => {
     const user = UserSchema.parse(await res.data)
     return user
   } catch (err) {
-    console.log(err)
+    console.log('err' + err)
     throw new Error()
   }
 }
@@ -57,7 +57,6 @@ export async function getStaticProps() {
     const queryClient = new QueryClient()
 
     await queryClient.prefetchQuery(['2'], () => getUser('2'))
-    console.log('SSR:' + queryClient.getQueryData(['default']))
     return {
       props: {
         dehydratedState: dehydrate(queryClient),
