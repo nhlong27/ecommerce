@@ -9,6 +9,7 @@
     "import/no-anonymous-default-export": "off",
     "prefer-const": "off",
     "no-explicit-any": "off",
-    "ban-ts-comment": "off"
+    "ban-ts-comment": "off",
+    "no-non-null-assertion": "off",
   }
 }

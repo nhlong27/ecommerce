@@ -21,11 +21,6 @@ export const getUser = async (id: string) => {
 }
 
 function HomePage() {
-  const { data, error: CSR } = useQuery({
-    queryKey: ['2'],
-    queryFn: () => getUser('2'),
-  })
-
   const { data: session } = useSession()
   React.useEffect(() => {
     if (session?.error === 'RefreshAccessTokenError') {
@@ -47,22 +42,7 @@ function HomePage() {
       <Link className="underline" href="/admin">
         {'To admin'}
       </Link>
-      <div>{data?.name}</div>
     </main>
   )
 }
 export default HomePage
-export async function getStaticProps() {
-  try {
-    const queryClient = new QueryClient()
-
-    await queryClient.prefetchQuery(['2'], () => getUser('2'))
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    }
-  } catch (err) {
-    return { notFound: true }
-  }
-}
