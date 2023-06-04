@@ -11,13 +11,10 @@ const users = gql`
   }
 `
 
-export const getUsers = async () => {
-  return await request(`${GRAPHQL_API_URL}`, users)
-}
 
 export const getUsersQuery = () => {
   return {
     queryKey: ['users'],
-    queryFn: getUsers,
+    queryFn:  async () => request(`${GRAPHQL_API_URL}`, users),
   }
 }
