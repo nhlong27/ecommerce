@@ -42,6 +42,9 @@ function HomePage() {
       <Link className="underline" href="/admin">
         {'To admin'}
       </Link>
+      <Link className="underline" href="/book">
+        {'To book'}
+      </Link>
     </main>
   )
 }

@@ -1,6 +1,7 @@
+import { redis } from '@/lib/redis'
 import { addBookMutationFn } from '@/mutations'
 import { getBooksQuery } from '@/queries'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { QueryClient, dehydrate, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React from 'react'
 
 const BookPage = () => {
@@ -41,3 +42,16 @@ const BookPage = () => {
 }
 
 export default BookPage
+
+
+export async function getStaticProps() {
+    const queryClient = new QueryClient()
+
+    await queryClient.prefetchQuery(['books'], getBooksQuery().queryFn)
+    
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
+    }
+  }
