@@ -1,8 +1,15 @@
 import { redis } from '@/lib/redis'
 import { addBookMutationFn } from '@/mutations'
 import { getBooksQuery } from '@/queries'
-import { QueryClient, dehydrate, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  QueryClient,
+  dehydrate,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import React from 'react'
+import { toast } from 'react-hot-toast'
 
 const BookPage = () => {
   const { data, error } = useQuery({ ...getBooksQuery() })
@@ -13,6 +20,9 @@ const BookPage = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(['books'])
     },
+    onError(err: Error) {
+      toast.error(err.message)
+    }
   })
   return (
     <div>
@@ -23,7 +33,7 @@ const BookPage = () => {
         }}
       >
         <input
-          className='text-black'
+          className="text-black"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.currentTarget.value)}
@@ -33,7 +43,11 @@ const BookPage = () => {
       {data ? (
         <pre>{JSON.stringify(data, null, '\t')}</pre>
       ) : error ? (
-        <div>error</div>
+        <>
+          {(error as any).response.errors.map((err: any) =>
+            {toast.error(err.message); return 'error'}
+          )}
+        </>
       ) : (
         <div>Loading..</div>
       )}
@@ -43,15 +57,14 @@ const BookPage = () => {
 
 export default BookPage
 
-
 export async function getStaticProps() {
-    const queryClient = new QueryClient()
+  const queryClient = new QueryClient()
 
-    await queryClient.prefetchQuery(['books'], getBooksQuery().queryFn)
-    
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    }
+  await queryClient.prefetchQuery(['books'], getBooksQuery().queryFn)
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   }
+}

@@ -15,6 +15,8 @@ export const resolvers = {
         const books = await BookModel.find(args.title, {}, { lean: true })
         return books
       })
+      if (!data) 
+        throw new Error('Unable to get resources')
       return data
     },
   },
@@ -35,8 +37,13 @@ export const resolvers = {
       args: Omit<BookDocument, 'createdAt' | 'updatedAt'>
     ) => {
       await connectMongo()
-      await BookModel.create({ ...args })
-      return { ...args }
+      const newBook = await BookModel.create({ ...args })
+      await redis.connect();
+      await redis.del('books')
+      await redis.disconnect();
+      if (!newBook)
+        throw new Error('Unable to create resource')
+      return newBook
     },
   },
 }

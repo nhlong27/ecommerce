@@ -1,5 +1,6 @@
 import { request, gql } from 'graphql-request'
 import { GRAPHQL_API_URL } from './constants/urls'
+import { BookSchema } from './types/types'
 
 const updateUser = gql`
   mutation updateUser($email: String!, $name: String!) {

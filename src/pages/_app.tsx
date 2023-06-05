@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { SessionProvider } from 'next-auth/react'
+import { Toaster } from 'react-hot-toast'
 
 export default function App({
   Component,
@@ -20,6 +21,8 @@ export default function App({
   Router.events.on('routeChangeStart', () => setIsLoading(true))
   Router.events.on('routeChangeComplete', () => setIsLoading(false))
   return (
+    <>
+    <Toaster />
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
@@ -28,5 +31,6 @@ export default function App({
         <ReactQueryDevtools />
       </QueryClientProvider>
     </SessionProvider>
+    </>
   )
 }
