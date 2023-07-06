@@ -1,0 +1,85 @@
+import React from 'react'
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  renderHook,
+  act,
+} from '@testing-library/react'
+import { setupServer } from 'msw/node'
+import { rest } from 'msw'
+import New from '../pages/new'
+import '@testing-library/jest-dom'
+import { useRandom } from '@/hooks/randomHook'
+import { useRandomAsync } from '@/hooks/randomAsyncHook'
+import { Provider } from 'react-redux'
+import { createStore } from '@/store/store'
+
+const server = setupServer(
+  rest.get('/api', (req, res, ctx) => {
+    return res(ctx.json({ name: 'Long' }))
+  })
+)
+
+beforeAll(() => server.listen())
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())
+
+describe('New', () => {
+  it('test multiple components', () => {
+    
+    render(<Provider store={createStore()}>
+      <New />
+    </Provider>)
+    const anchorElements = screen.getAllByRole('new')
+    expect(anchorElements.length).toBe(2)
+  })
+  it('test events', () => {
+    render(<Provider store={createStore()}>
+      <New />
+    </Provider>)
+    const onClick = jest.fn()
+    const buttonElement = screen.getByText('click me')
+    buttonElement.onclick = onClick
+    fireEvent.click(buttonElement)
+    expect(onClick).toHaveBeenCalledTimes(1)
+  })
+  it('test hooks', async () => {
+    render(<Provider store={createStore()}>
+      <New />
+    </Provider>)
+    const buttonElement = screen.getByText('click me')
+    const divElement = screen.getByRole('counter')
+    fireEvent.click(buttonElement)
+    expect(divElement).toHaveTextContent('1')
+  })
+  it('test custom hooks', async () => {
+    const { result } = renderHook(() => useRandom())
+    act(() => {
+      result.current.increment()
+    })
+    expect(result.current.counter).toBe(1)
+  })
+  it('test async', async () => {
+    render(<Provider store={createStore()}>
+      <New />
+    </Provider>)
+    const dataElements = await waitFor(() => screen.getAllByRole('data'))
+    expect(dataElements[0]).toHaveTextContent('male')
+  })
+  it('test async hook', async () => {
+    const { result } = renderHook(() => useRandomAsync())
+    await waitFor(() => expect(result.current.data).toEqual({ name: 'Long' }))
+  })
+  it('test state management', async () => {
+    render(<Provider store={createStore()}>
+      <New />
+    </Provider>)
+    const counter = screen.getByRole('redux-counter')
+    expect(counter).toHaveTextContent('0')
+    const addButton = screen.getByText(/click me - redux/i)
+    fireEvent.click(addButton)
+    expect(counter).toHaveTextContent('1')
+  })
+})

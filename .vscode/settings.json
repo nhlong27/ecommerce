@@ -3,5 +3,6 @@
   "editor.minimap.renderCharacters": false,
   "editor.formatOnSave": true,
   "files.autoSave": "afterDelay",
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.wordWrap": "bounded"
 }

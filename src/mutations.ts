@@ -1,6 +1,6 @@
 import { request, gql } from 'graphql-request'
 import { GRAPHQL_API_URL } from './constants/urls'
-import { BookSchema } from './types/types'
+import { BookSchema, ProductType } from './types/types'
 
 const updateUser = gql`
   mutation updateUser($email: String!, $name: String!) {
@@ -18,6 +18,37 @@ const addBook = gql`
     }
   }
 `
+const addProduct = gql`
+  mutation addProduct(
+    $title: String!
+    $price: Float
+    $description: String
+    $category: String
+    $image: String
+    $rating: RatingInput
+  ) {
+    addProduct(
+      input: {
+        title: $title
+        price: $price
+        description: $description
+        category: $category
+        image: $image
+        rating: $rating
+      }
+    ) {
+      title
+      price
+      description
+      category
+      image
+      rating {
+        rate
+        count
+      }
+    }
+  }
+`
 
 export const updateUserMutationFn = async ({
   email,
@@ -31,4 +62,8 @@ export const updateUserMutationFn = async ({
 
 export const addBookMutationFn = async ({ title }: { title: string }) => {
   return request(`${GRAPHQL_API_URL}`, addBook, { title })
+}
+
+export const addProductMutationFn = async (product: ProductType) => {
+  return request(`${GRAPHQL_API_URL}`, addProduct, { ...product })
 }

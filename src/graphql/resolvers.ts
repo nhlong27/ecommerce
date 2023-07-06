@@ -1,23 +1,32 @@
-import prisma from '@/lib/prisma'
-import { mongo } from '../../mongoose/client'
-import { BookDocument, BookModel } from '../../mongoose/models/book.model'
+import prisma from '@/lib/prisma';
+import { mongo } from '../../mongoose/client';
+import { BookDocument, BookModel } from '../../mongoose/models/book.model';
 
-import connectMongo from '@/lib/mongodb'
-import { redis } from '@/lib/redis'
-import { getOrSetCache } from '@/utils/getOrSetCache'
+import connectMongo from '@/lib/mongodb';
+import { redis } from '@/lib/redis';
+import { getOrSetCache } from '@/utils/getOrSetCache';
+import { ProductDocument, ProductModel } from '../../mongoose/models/product.model';
 
 export const resolvers = {
   Query: {
     users: async () => await prisma.user.findMany(),
     books: async (_: any, args: any) => {
       const data = await getOrSetCache('books', async () => {
-        await connectMongo()
-        const books = await BookModel.find(args.title, {}, { lean: true })
-        return books
-      })
-      if (!data) 
-        throw new Error('Unable to get resources')
-      return data
+        await connectMongo();
+        const books = await BookModel.find(args.title, {}, { lean: true });
+        return books;
+      });
+      if (!data) throw new Error('Unable to get resources');
+      return data;
+    },
+    products: async (_: any, args: any) => {
+      const data = await getOrSetCache('products', async () => {
+        await connectMongo();
+        const products = await ProductModel.find().lean();
+        return products;
+      });
+      if (!data) throw new Error('Unable to get resources');
+      return data;
     },
   },
   Mutation: {
@@ -29,21 +38,30 @@ export const resolvers = {
         data: {
           name: args.name,
         },
-      })
-      return updateUser
+      });
+      return updateUser;
     },
-    addBook: async (
-      _: any,
-      args: Omit<BookDocument, 'createdAt' | 'updatedAt'>
-    ) => {
-      await connectMongo()
-      const newBook = await BookModel.create({ ...args })
+    addBook: async (_: any, args: Omit<BookDocument, 'createdAt' | 'updatedAt'>) => {
+      await connectMongo();
+      const newBook = await BookModel.create({ ...args });
       await redis.connect();
-      await redis.del('books')
+      await redis.del('books');
       await redis.disconnect();
-      if (!newBook)
-        throw new Error('Unable to create resource')
-      return newBook
+      if (!newBook) throw new Error('Unable to create resource');
+      return newBook;
+    },
+    addProduct: async (
+      _: any,
+      { input }: { input: Omit<ProductDocument, 'createdAt' | 'updatedAt'> },
+    ) => {
+      await connectMongo();
+      const newProduct = await ProductModel.create({ ...input });
+      console.log(newProduct._id.toString());
+      await redis.connect();
+      await redis.del('products');
+      await redis.disconnect();
+      if (!newProduct) throw new Error('Unable to create resource');
+      return newProduct;
     },
   },
-}
+};

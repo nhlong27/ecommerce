@@ -8,6 +8,16 @@ const nextConfig = {
     config.experiments.topLevelAwait = true
     return config
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'fakestoreapi.com',
+        port: '',
+        pathname: '/img/**',
+      },
+    ],
+  },
 }
 
 module.exports = nextConfig

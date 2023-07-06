@@ -5,6 +5,8 @@ import { getUsersQuery } from '@/queries'
 import { useGetUsersQuery } from '@/hooks/useGetUsersQuery'
 import { getSession } from 'next-auth/react'
 import { useUpdateUserMutation } from '@/hooks/useUpdateUserMutation'
+import Filter from '@/components/Filter'
+import Results from '@/components/Results'
 
 const UserPage = () => {
   const { data, error, session } = useGetUsersQuery()
@@ -15,6 +17,8 @@ const UserPage = () => {
   return data ? (
     <div className="flex min-h-screen flex-col items-center justify-center p-24">
       User Page
+      <Filter />
+      <Results />
       <pre>{JSON.stringify(data, null, '\t')}</pre>
       <Link className="underline" href="/">
         {'To home'}
