@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SessionProvider } from 'next-auth/react';
 import { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';
-import { store } from '@/redux/store';
+import { store } from '@/store/store';
 import Header from '@/components/Header';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {

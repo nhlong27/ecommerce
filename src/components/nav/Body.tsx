@@ -33,7 +33,7 @@ export default function Body({ links, selectedLink, setSelectedLink }: BodyProps
       {links.map((link, index) => {
         const { title, href } = link;
         return (
-          <Link className='w-16 h-16 uppercase' key={`l_${index}`} href={href}>
+          <Link role='nav-link'  className='w-16 h-16 uppercase' key={`l_${index}`} href={href}>
             <motion.p
               onMouseOver={() => {
                 setSelectedLink({ isActive: true, index });

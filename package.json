@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "cls && jest"
   },
   "dependencies": {
     "@apollo/server": "^4.7.1",

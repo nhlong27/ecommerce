@@ -1,4 +1,4 @@
-import { setFilter } from '@/redux/slices/filterSlice'
+import { setFilter } from '@/store/slices/filterSlice'
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 

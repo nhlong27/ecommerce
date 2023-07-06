@@ -12,18 +12,18 @@ export default function Header() {
   return (
     <div className='sticky z-10 top-0 py-4 w-full bg-white'>
       <div className='flex w-11/12 mx-auto'>
-        <Link href='/'>Olivier</Link>
+        <Link role='title' href='/'>EcommerceSite</Link>
         <div
+          
           className='grid place-items-center grow'
           onClick={() => {
             setIsActive(!isActive);
           }}
         >
-          <div className={`${isActive ? 'bg-black' : ''}`}></div>
           {isActive ? (
-            <button onClick={() => setIsActive(false)}>Close</button>
+            <button role='menu-toggle' onClick={() => setIsActive(false)}>Close</button>
           ) : (
-            <button onClick={() => setIsActive(true)}>Menu</button>
+            <button role='menu-toggle' onClick={() => setIsActive(true)}>Menu</button>
           )}
         </div>
         <motion.div
@@ -31,11 +31,11 @@ export default function Header() {
           variants={opacity}
           animate={!isActive ? 'open' : 'closed'}
         >
-          <p>Shop</p>
-          <div className='flex gap-2'>
+          <Link href='/shop' role='shop-link'>Shop</Link>
+          <Link href='/user/cart' role='cart-link' className='flex gap-2'>
             {helper.icon.shop}
-            <p>Cart(0)</p>
-          </div>
+            <p>(0)</p>
+          </Link>
         </motion.div>
       </div>
       <AnimatePresence mode='wait'>{isActive && <Nav />}</AnimatePresence>
