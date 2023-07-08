@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { opacity, background } from '@/utils/anim';
 import Nav from './nav/Nav';
 import helper from '@/constants/helper';
+import { Text } from './common/Text';
+import Button from './common/Button';
 
 export default function Header() {
   const [isActive, setIsActive] = useState(false);
@@ -12,18 +14,24 @@ export default function Header() {
   return (
     <div className='sticky z-10 top-0 py-4 w-full bg-white'>
       <div className='flex w-11/12 mx-auto'>
-        <Link role='title' href='/'>EcommerceSite</Link>
+        <Button role='title' href='/' variant='link' size='sm'>
+          <Text variant='large/semibold/primary'>Ecommerce</Text>
+        </Button>
+
         <div
-          
           className='grid place-items-center grow'
           onClick={() => {
             setIsActive(!isActive);
           }}
         >
           {isActive ? (
-            <button role='menu-toggle' onClick={() => setIsActive(false)}>Close</button>
+            <button role='menu-toggle' onClick={() => setIsActive(false)}>
+              Close
+            </button>
           ) : (
-            <button role='menu-toggle' onClick={() => setIsActive(true)}>Menu</button>
+            <button role='menu-toggle' onClick={() => setIsActive(true)}>
+              Menu
+            </button>
           )}
         </div>
         <motion.div
@@ -31,7 +39,9 @@ export default function Header() {
           variants={opacity}
           animate={!isActive ? 'open' : 'closed'}
         >
-          <Link href='/shop' role='shop-link'>Shop</Link>
+          <Link href='/shop' role='shop-link'>
+            Shop
+          </Link>
           <Link href='/user/cart' role='cart-link' className='flex gap-2'>
             {helper.icon.shop}
             <p>(0)</p>

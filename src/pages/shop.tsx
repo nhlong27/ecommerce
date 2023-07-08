@@ -3,7 +3,7 @@ import { ProductList } from '@/features/catalog';
 
 const shop = () => {
   return (
-    <div className='w-11/12 mx-auto flex flex-wrap gap-8 justify-center'>
+    <div className='w-11/12 mx-auto'>
       <ProductList />
     </div>
   );
