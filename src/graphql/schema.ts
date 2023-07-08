@@ -52,6 +52,7 @@ export const typeDefs = gql`
     users: [User]
     books: [Book]
     products: [Product]
+    stripe_secret: String
   }
 
   type Mutation {
