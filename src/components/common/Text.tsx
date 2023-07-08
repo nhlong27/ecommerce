@@ -18,9 +18,12 @@ const textVariants = cva([], {
       bold: 'font-bold',
     },
     color: {
-      primary: 'text-blue-300',
-      secondary: 'text-gray-300',
-      danger: 'text-red-300',
+      primary: 'text-primary',
+      secondary: 'text-secondary',
+      tertiary: 'text-tertiary',
+      danger: 'text-danger',
+      black: 'text-black',
+      ghost: 'text-gray-400',
     },
   },
 });

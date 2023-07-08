@@ -3,21 +3,22 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { opacity, background } from '@/utils/anim';
-import Nav from './nav/Nav';
 import helper from '@/constants/helper';
 import { Text } from './common/Text';
 import Button from './common/Button';
+import Nav from './nav/Nav';
+import SingleImage from './common/SingleImage';
 
 export default function Header() {
   const [isActive, setIsActive] = useState(false);
-
   return (
-    <div className='sticky z-10 top-0 py-4 w-full bg-white'>
-      <div className='flex w-11/12 mx-auto'>
-        <Button role='title' href='/' variant='link' size='sm'>
-          <Text variant='large/semibold/primary'>Ecommerce</Text>
-        </Button>
-
+    <div className='sticky z-20 top-0 py-6 w-full bg-white'>
+      <nav className='flex w-11/12 mx-auto'>
+        <SingleImage
+          href='/'
+          imgSrc={'https://cdn.tailgrids.com/1.0/assets/images/logo/logo.svg'}
+          className='w-[10rem] h-11'
+        />
         <div
           className='grid place-items-center grow'
           onClick={() => {
@@ -25,13 +26,13 @@ export default function Header() {
           }}
         >
           {isActive ? (
-            <button role='menu-toggle' onClick={() => setIsActive(false)}>
+            <Button variant='subtle' size='lg' role='menu-toggle' onClick={() => setIsActive(false)}>
               Close
-            </button>
+            </Button>
           ) : (
-            <button role='menu-toggle' onClick={() => setIsActive(true)}>
+            <Button variant='subtle' size='lg' role='menu-toggle' onClick={() => setIsActive(true)}>
               Menu
-            </button>
+            </Button>
           )}
         </div>
         <motion.div
@@ -39,15 +40,15 @@ export default function Header() {
           variants={opacity}
           animate={!isActive ? 'open' : 'closed'}
         >
-          <Link href='/shop' role='shop-link'>
+          <Button size='lg' variant='default' href='/shop' role='shop-link'>
             Shop
-          </Link>
-          <Link href='/user/cart' role='cart-link' className='flex gap-2'>
+          </Button>
+          <Button size='lg' variant='default' href='/user/cart' role='cart-link' className='flex gap-2'>
             {helper.icon.shop}
             <p>(0)</p>
-          </Link>
+          </Button>
         </motion.div>
-      </div>
+      </nav>
       <AnimatePresence mode='wait'>{isActive && <Nav />}</AnimatePresence>
       {/* <motion.div
         variants={background}

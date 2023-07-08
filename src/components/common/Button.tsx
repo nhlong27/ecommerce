@@ -5,18 +5,24 @@ import React from 'react';
 import { Balancer } from 'react-wrap-balancer';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 dark:hover:bg-slate-800 dark:hover:text-slate-100 disabled:opacity-50 dark:focus:ring-slate-400 disabled:pointer-events-none dark:focus:ring-offset-slate-900 data-[state=open]:bg-slate-100 dark:data-[state=open]:bg-slate-800',
+  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors  disabled:opacity-50 disabled:pointer-events-none data-[state=open]:bg-slate-100 dark:data-[state=open]:bg-slate-800',
   {
     variants: {
       variant: {
-        default: 'bg-slate-900 text-white hover:bg-slate-700 dark:bg-slate-50 dark:text-slate-900',
-        destructive: 'bg-red-500 text-white hover:bg-red-600 dark:hover:bg-red-600',
+        default:
+          'text-gray-700 hover:text-black inline-flex items-center justify-center rounded-[5px] bg-white py-3 px-6 text-center text-base font-medium',
+        primary:
+          'bg-primary inline-flex items-center justify-center rounded-md py-4 px-10 text-center text-base font-normal text-white hover:bg-opacity-90 lg:px-8 xl:px-10',
+        destructive:
+          'bg-warning inline-flex items-center justify-center rounded-md py-4 px-10 text-center text-base font-normal text-white hover:bg-danger lg:px-8 xl:px-10',
+        destructiveOutline:
+          'text-danger border-warning hover:bg-danger hover:border-danger inline-flex items-center justify-center rounded-md border py-4 px-10 text-center text-base transition hover:text-white lg:px-8 xl:px-10',
         outline:
-          'bg-transparent border border-slate-200 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-100',
+          'text-primary border-primary hover:bg-primary hover:border-primary inline-flex items-center justify-center rounded-md border py-4 px-10 text-center text-base transition hover:text-white lg:px-8 xl:px-10',
         subtle:
-          'bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-100',
+          'text-secondary hover:text-primary inline-flex items-center justify-center rounded-[5px] bg-white py-3 px-6 text-center text-base font-medium',
         ghost:
-          'bg-transparent dark:bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-100 dark:hover:text-slate-100 data-[state=open]:bg-transparent dark:data-[state=open]:bg-transparent',
+          'text-gray-400 border-gray-400  hover:border-gray-800 hover:text-gray-800  inline-flex items-center justify-center rounded-md border py-4 px-10 text-center text-base transition lg:px-8 xl:px-10',
         link: 'bg-transparent dark:bg-transparent underline-offset-4 hover:underline text-slate-900 dark:text-slate-300 hover:bg-transparent dark:hover:bg-transparent',
       },
       size: {
@@ -55,7 +61,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-        disabled = {disabled}
+        disabled={disabled}
       >
         {children}
       </button>

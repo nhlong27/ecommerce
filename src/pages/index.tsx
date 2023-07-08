@@ -3,6 +3,9 @@ import Link from 'next/link';
 import React from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import Header from '@/components/Header';
+import Hero from '@/components/Hero';
+import Footer from '@/components/Footer';
+import { HomeCategories, Slider, SpecialOffer } from '@/features/catalog';
 const inter = Inter({ subsets: ['latin'] });
 
 function HomePage() {
@@ -17,19 +20,10 @@ function HomePage() {
     <main
       className={`flex min-h-screen flex-col bg-white items-center ${inter.className} text-black`}
     >
-      hi
-      {/* <Link className='underline' href='/auth'>
-        {'Sign In'}
-      </Link>
-      <Link className='underline' href='/user'>
-        {'To user'}
-      </Link>
-      <Link className='underline' href='/admin'>
-        {'To admin'}
-      </Link>
-      <Link className='underline' href='/book'>
-        {'To book'}
-      </Link> */}
+      <Hero />
+      <HomeCategories />
+      {/* <Slider /> */}
+      <SpecialOffer />
     </main>
   );
 }

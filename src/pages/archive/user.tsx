@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import React from 'react'
 import { QueryClient, dehydrate } from '@tanstack/react-query'
-import { getUsersQuery } from '@/queries'
-import { useGetUsersQuery } from '@/hooks/useGetUsersQuery'
+import { getUsersQuery } from '@/features/user/queries'
+import { useGetUsersQuery } from '@/features/user'
 import { getSession } from 'next-auth/react'
-import { useUpdateUserMutation } from '@/hooks/useUpdateUserMutation'
+import { useUpdateUserMutation } from '@/features/user'
 import Filter from '@/components/Filter'
 import Results from '@/components/Results'
 
@@ -12,7 +12,6 @@ const UserPage = () => {
   const { data, error, session } = useGetUsersQuery()
   const [email, setEmail] = React.useState('')
   const [name, setName] = React.useState('')
-  console.log(data, session)
   const updateUser = useUpdateUserMutation()
   return data ? (
     <div className="flex min-h-screen flex-col items-center justify-center p-24">

@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -30,6 +31,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
           </QueryClientProvider>
         </Provider>
       </SessionProvider>
+      <Footer />
     </div>
   );
 }
