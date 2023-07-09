@@ -16,6 +16,12 @@ const nextConfig = {
         port: '',
         pathname: '/img/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.pepsicopartners.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 }
