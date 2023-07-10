@@ -16,9 +16,9 @@ export default function Body({ links, selectedLink, setSelectedLink }: BodyProps
         <motion.span
           custom={[i * 0.02, (word.length - i) * 0.01]}
           variants={translate}
-          initial='initial'
-          animate='enter'
-          exit='exit'
+          initial={{ y: 0, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 0, opacity: 0 }}
           key={char + i}
         >
           {char}
@@ -29,7 +29,7 @@ export default function Body({ links, selectedLink, setSelectedLink }: BodyProps
   };
 
   return (
-    <div className='flex flex-wrap h-40 gap-8'>
+    <div className='flex flex-wrap h-full gap-8 w-2/5'>
       {links.map((link, index) => {
         const { title, href } = link;
         return (

@@ -10,6 +10,7 @@ const textVariants = cva([], {
       small: 'text-sm',
       medium: 'text-md',
       large: 'text-lg',
+      XL: 'text-3xl',
     },
     weight: {
       light: 'font-light',
@@ -24,6 +25,7 @@ const textVariants = cva([], {
       danger: 'text-danger',
       black: 'text-black',
       ghost: 'text-gray-400',
+      white: 'text-white',
     },
   },
 });

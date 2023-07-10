@@ -11,6 +11,8 @@ import { Provider } from 'react-redux';
 import { store } from '@/store/store';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Head from 'next/head'
+import Headermd from '@/components/Headermd';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -18,9 +20,15 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   Router.events.on('routeChangeStart', () => setIsLoading(true));
   Router.events.on('routeChangeComplete', () => setIsLoading(false));
   return (
-    <div className='flex flex-col index-0 w-screen min-h-screen max-w-[1980px] mx-auto'>
+    <div className='flex flex-col index-0 w-screen min-h-screen max-w-[1780px] mx-auto'>
+      <Head>
+        <title>Ecommerce Store</title>
+        <meta property="og:title" content="Ecommerce Store" key="title" />
+        <link rel="shortcut icon" href="/images/logo.png" />
+      </Head>
       <Toaster />
       <Header />
+      <Headermd />
       <SessionProvider session={session}>
         <Provider store={store}>
           <QueryClientProvider client={queryClient}>

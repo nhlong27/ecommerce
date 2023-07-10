@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
   return (
     <>
-      <footer className='mx-auto hidden w-full max-w-[1200px] justify-between border-t pb-10 lg:flex'>
+      <footer className='hidden w-full justify-between pb-10 lg:flex text-black bg-white relative'>
         <div className='ml-5'>
           <img className='mt-10 mb-5' src='./assets/images/company-logo.svg' alt='company logo' />
           <p className='pl-0'>
@@ -109,7 +109,7 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-      <footer className='mx-auto flex w-full max-w-[1200px] justify-center bg-violet-900 pb-10 md:hidden'>
+      <footer className='flex w-full justify-center  bg-white text-black pb-10 lg:hidden'>
         <div>
           <img
             className='mt-10'
@@ -119,7 +119,7 @@ const Footer = () => {
           <p className='pl-0 text-center text-white'>&copy; Bogdan Bulakh, 2023</p>
         </div>
       </footer>
-      <section className='h-11 bg-amber-400'>
+      <section className='h-11 bg-primary text-white'>
         <div className='mx-auto flex max-w-[1200px] items-center justify-between px-4 pt-2'>
           <p>&copy; Bogdan Bulakh, 2023</p>
           <div className='flex items-center space-x-3'>

@@ -12,7 +12,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <div className='p-4 w-[20rem] overflow-hidden h-[20rem] whitespace-normal' role='product'>
       <SingleImage
         className='h-[10rem] w-full'
-        imgSrc={`${process.env.NEXT_PUBLIC_DATA_SOURCE}${product.image}`}
+        src={`${process.env.NEXT_PUBLIC_DATA_SOURCE}${product.image}`}
       />
       <Text variant='medium/semibold/black'>{product.title}</Text>
       <Text variant='small/normal/black'>{product.size}</Text>

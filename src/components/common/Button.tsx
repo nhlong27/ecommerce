@@ -2,15 +2,14 @@ import { cn } from '@/utils/cn';
 import { VariantProps, cva } from 'class-variance-authority';
 import Link from 'next/link';
 import React from 'react';
-import { Balancer } from 'react-wrap-balancer';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors  disabled:opacity-50 disabled:pointer-events-none data-[state=open]:bg-slate-100 dark:data-[state=open]:bg-slate-800',
+  'inline-flex items-center justify-center text-sm font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none data-[state=open]:bg-slate-100',
   {
     variants: {
       variant: {
         default:
-          'text-gray-700 hover:text-black inline-flex items-center justify-center rounded-[5px] bg-white py-3 px-6 text-center text-base font-medium',
+          '',
         primary:
           'bg-primary inline-flex items-center justify-center rounded-md py-4 px-10 text-center text-base font-normal text-white hover:bg-opacity-90 lg:px-8 xl:px-10',
         destructive:
@@ -47,7 +46,7 @@ export interface ButtonProps
   disabled?: boolean;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps> (
   ({ className, children, href, variant, size, disabled, ...props }, ref) => {
     if (href) {
       return (
