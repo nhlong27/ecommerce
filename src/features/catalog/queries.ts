@@ -31,7 +31,12 @@ import axios from 'axios';
 export const getProductsQuery = () => {
   return {
     queryKey: ['products'],
-    queryFn: async () => ({ products: (await axios.get(`/products.json`)).data }),
+    // queryFn: async () => ({
+    //   products: (await axios.get(`/products.json`)).data,
+    // }),
+    queryFn: async () => ({
+      products: (await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/scrape`)).data,
+    }),
     refetchOnReconnect: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
