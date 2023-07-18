@@ -1,10 +1,13 @@
-import React from 'react'
+import React from 'react';
+import { LineWave } from 'react-loader-spinner';
 
 const LoadingPage = () => {
-  console.log('Loading')
+  console.log('Loading');
   return (
-    <div className='min-h-screen'>..loading</div>
-  )
-}
+    <div className='flex min-h-dynamic-screen w-full justify-center items-center'>
+      <LineWave color='blue' />
+    </div>
+  );
+};
 
-export default LoadingPage
+export default LoadingPage;

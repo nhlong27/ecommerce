@@ -1,25 +1,54 @@
-import { useSession, signIn, signOut,  } from "next-auth/react"
-import React from 'react'
+import helper from '@/constants/helper';
+import { AuthTabs, SignInWithProviders } from '@/features/auth';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { getServerSession } from 'next-auth';
+import { useSession, signIn, signOut, getProviders, getCsrfToken } from 'next-auth/react';
+import Image from 'next/image';
+import React from 'react';
+import { authOptions } from './api/auth/[...nextauth]';
 
-const AuthPage = () => {
-  const { data: session } = useSession()
-  
-
-  if (session) {
-    return (
-      <div className="min-h-screen">
-        Signed in as {session.user?.email} <br />
-        <pre>{JSON.stringify(session, null, '\t')}</pre>
-        <button onClick={() => signOut()}>Sign out</button>
-      </div>
-    )
-  }
+const AuthPage = ({
+  providers,
+  csrfToken,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <div className="min-h-screen">
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+    <div className='min-h-dynamic-screen w-11/12 mx-auto flex justify-center items-start'>
+      <div className='flex overflow-hidden w-full h-screen'>
+        <div className='h-full w-1/2 hidden md:block relative'>
+          <Image src={helper.images.commercial1} alt='auth' fill className='h-full object-cover' />
+        </div>
+        <div className='w-full md:w-1/2 h-full flex justify-center items-center bg-blue-100 dark:bg-gray-900 flex-col gap-8'>
+          <div>
+            <SignInWithProviders providers={providers} csrfToken={csrfToken} />
+          </div>
+          <div className='w-[400px] flex items-center'>
+            <span className='grow border-b-[1px] border-gray-500'></span>
+            <span className='mx-3'>or</span>
+            <span className='grow border-b-[1px] border-gray-500'></span>
+          </div>
+          <AuthTabs {...{ providers, csrfToken }} />
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default AuthPage
+export default AuthPage;
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  // If the user is already logged in, redirect.
+  // Note: Make sure not to redirect to the same page
+  // To avoid an infinite loop!
+  if (session) {
+    return { redirect: { destination: '/' } };
+  }
+
+  const providers = await getProviders();
+  const csrfToken = await getCsrfToken(context);
+
+  return {
+    props: { providers: providers ?? [], csrfToken },
+  };
+}

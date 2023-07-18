@@ -44,7 +44,7 @@ const Hero = () => {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
-                        <div className='w-24 md:w-40'>
+                        <div className='w-24 md:w-32'>
                           <AspectRatio ratio={16 / 9}>
                             <Image
                               src={helper.icon.pepsi}
@@ -60,7 +60,7 @@ const Hero = () => {
                     </Tooltip>
                     <Tooltip>
                       <TooltipTrigger>
-                        <div className='w-24 md:w-40'>
+                        <div className='w-24 md:w-32'>
                           <AspectRatio ratio={16 / 9}>
                             <Image
                               src={helper.icon.coca}
@@ -76,7 +76,7 @@ const Hero = () => {
                     </Tooltip>
                     <Tooltip>
                       <TooltipTrigger>
-                        <div className='w-24 md:w-40'>
+                        <div className='w-24 md:w-32'>
                           <AspectRatio ratio={16 / 9}>
                             <Image
                               src={helper.icon.monster}

@@ -33,8 +33,11 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Text } from '../common/Text';
+import { signOut, useSession } from 'next-auth/react';
 
 const Nav = () => {
+  const { data: session } = useSession();
+
   return (
     <>
       <nav className='hidden md:flex w-11/12 h-full mx-auto'>
@@ -78,14 +81,31 @@ const Nav = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar className='w-8 h-8'>
-                    <AvatarImage src='https://github.com/shadcn.png' />
+                    <AvatarImage src={session ? `https://github.com/shadcn.png` : ''} />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  {session ? (
+                    <>
+                      <DropdownMenuItem>
+                        <Link href='/account'>
+                          Settings
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Button variant='ghost' className='p-0' onClick={() => signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_SERVER}/`})}>
+                          Sign out
+                        </Button>
+                      </DropdownMenuItem>
+                    </>
+                  ) : (
+                    <DropdownMenuItem>
+                      <Link href='/auth'>Sign in</Link>
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </NavigationMenuItem>

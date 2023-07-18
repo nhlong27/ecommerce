@@ -2,10 +2,13 @@ import logo from 'public/images/logo.svg';
 import logo3 from 'public/images/logo3.png';
 import hero from 'public/images/commercial14.png';
 import commercial13 from 'public/images/commercial13.png';
+import commercial15 from 'public/images/commercial15.png';
+import commercial14 from 'public/images/commercial14.png';
 import commercial11 from 'public/images/commercial11.png';
 import commercial3 from 'public/images/commercial3.png';
 import commercial5 from 'public/images/commercial5.png';
 import commercial2 from 'public/images/commercial2.png';
+import commercial1 from 'public/images/commercial1.png';
 import pepsi from 'public/images/pepsi.svg';
 import coca from 'public/images/coca.svg';
 import monster from 'public/images/monster.svg';
@@ -53,5 +56,8 @@ const images = {
   commercial3: commercial3,
   commercial5: commercial5,
   commercial2: commercial2,
+  commercial14: commercial14,
+  commercial15: commercial15,
+  commercial1: commercial1,
 };
 export default { icon, images };
