@@ -7,10 +7,12 @@ import { Balancer } from 'react-wrap-balancer';
 const textVariants = cva([], {
   variants: {
     size: {
-      small: 'text-sm',
-      medium: 'text-md',
-      large: 'text-lg',
-      XL: 'text-3xl',
+      sm: 'text-sm',
+      base: 'text-base',
+      lg: 'text-lg',
+      xl: 'text-xl',
+      "2xl": 'text-2xl',
+      "3xl": 'text-3xl'
     },
     weight: {
       light: 'font-light',
@@ -33,14 +35,14 @@ const textVariants = cva([], {
 type TextStylesProps = VariantProps<typeof textVariants>;
 
 export interface TextProps extends Omit<TextStylesProps, 'size' | 'weight' | 'color'> {
-  variant: `${NonNullable<TextStylesProps['size']>}/${NonNullable<
+  variant?: `${NonNullable<TextStylesProps['size']>}/${NonNullable<
     TextStylesProps['weight']
   >}/${NonNullable<TextStylesProps['color']>}`;
   children?: ReactNode;
   className?: string;
 }
 
-export function Text({ variant, children, className }: TextProps) {
+function Text({ variant = 'base/normal/black', children, className }: TextProps) {
   const [size, weight, color] = (variant as string).split('/') as [
     TextStylesProps['size'],
     TextStylesProps['weight'],
@@ -52,3 +54,7 @@ export function Text({ variant, children, className }: TextProps) {
     </div>
   );
 }
+Text.displayName = "Text"
+
+
+export {Text, textVariants}

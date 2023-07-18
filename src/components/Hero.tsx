@@ -1,6 +1,6 @@
 import React from 'react';
 import SingleImage from './common/SingleImage';
-import { Text } from './common/Text';
+import { Text } from './common/text';
 import Button from './common/Button';
 import Link from 'next/link';
 import Image from 'next/image';

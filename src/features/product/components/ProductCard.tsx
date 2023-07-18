@@ -1,5 +1,5 @@
 import SingleImage from '@/components/common/SingleImage';
-import { Text } from '@/components/common/Text';
+import { Text } from '@/components/common/text';
 import Image from 'next/image';
 import React from 'react';
 

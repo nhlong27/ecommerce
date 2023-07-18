@@ -1,36 +1,45 @@
 import React from 'react';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import Image from 'next/image';
+import helper from '@/constants/helper';
+import { Text } from './common/text';
 
 const Footer = () => {
   return (
     <>
-      <footer className='hidden w-full justify-between pb-10 lg:flex text-black bg-white relative'>
-        <div className='ml-5'>
-          <img className='mt-10 mb-5' src='./assets/images/company-logo.svg' alt='company logo' />
+      <footer className='hidden w-11/12 mx-auto justify-between pb-10 md:flex relative'>
+        <div className='ml-5 mt-5'>
+          <div className='flex gap-2 items-center'>
+            <div className='w-[50px]'>
+              <AspectRatio ratio={1 / 1}>
+                <Image
+                  src={helper.icon.logo}
+                  alt='Image'
+                  className='object-cover bg-white h-full w-full'
+                />
+              </AspectRatio>
+            </div>
+            <Text variant='lg/semibold/primary' className='dark:text-secondary'>
+              Epicola
+            </Text>
+          </div>
           <p className='pl-0'>
-            Lorem ipsum dolor sit amet consectetur <br />
-            adipisicing elit.
+            Stay up to date with the latest discounts
+            <br />
+            through our social media.
           </p>
           <div className='mt-10 flex gap-3'>
-            <a href='https://github.com/bbulakh'>
-              <img
-                className='h-5 w-5 cursor-pointer'
-                src='./assets/images/github.svg'
-                alt='github icon'
-              />
+            <a href='https://www.instagram.com' target='_blank'>
+              {helper.icon.instagram}
             </a>
-            <a href='https://t.me/b_bulakh'>
-              <img
-                className='h-5 w-5 cursor-pointer'
-                src='./assets/images/telegram.svg'
-                alt='telegram icon'
-              />
+            <a href='https://twitter.com' target='_blank'>
+              {helper.icon.twitter}
             </a>
-            <a href='https://www.linkedin.com/in/bogdan-bulakh-393284190/'>
-              <img
-                className='h-5 w-5 cursor-pointer'
-                src='./assets/images/linkedin.svg'
-                alt='twitter icon'
-              />
+            <a href='https://www.linkedin.com/in/long-nguyen-95517b250/' target='_blank'>
+              {helper.icon.linkedin}
+            </a>
+            <a href='https://github.com/nhlong27' target='_blank'>
+              {helper.icon.github}
             </a>
           </div>
         </div>
@@ -109,19 +118,49 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-      <footer className='flex w-full justify-center  bg-white text-black pb-10 lg:hidden'>
-        <div>
-          <img
-            className='mt-10'
-            src='./assets/images/company-logo-inverted.svg'
-            alt='company logo'
-          />
-          <p className='pl-0 text-center text-white'>&copy; Bogdan Bulakh, 2023</p>
+      <footer className='flex w-full justify-center pb-10 md:hidden'>
+        <div className='flex-col flex justify-between w-11/12 mx-auto items-start ml-8'>
+          <div className='flex items-center mt-2 gap-24'>
+            <div className='w-[50px]'>
+              <AspectRatio ratio={1 / 1}>
+                <Image
+                  src={helper.icon.logo}
+                  alt='Image'
+                  className='object-cover bg-white h-full w-full'
+                />
+              </AspectRatio>
+            </div>
+            <Text variant='lg/semibold/primary' className='dark:text-secondary'>
+              Epicola
+            </Text>
+          </div>
+          <div className='flex flex-col items-start mt-4'>
+            <p className='pl-0'>
+              Stay up to date with the latest discounts
+              <br />
+              through our social media.
+            </p>
+            <div className='mt-2 flex gap-3'>
+              <a href='https://www.instagram.com' target='_blank'>
+                {helper.icon.instagram}
+              </a>
+              <a href='https://twitter.com' target='_blank'>
+                {helper.icon.twitter}
+              </a>
+              <a href='https://www.linkedin.com/in/long-nguyen-95517b250/' target='_blank'>
+                {helper.icon.linkedin}
+              </a>
+              <a href='https://github.com/nhlong27' target='_blank'>
+                {helper.icon.github}
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
-      <section className='h-11 bg-primary text-white'>
+      <span className='w-11/12 mx-auto border-b-[1px] border-primary/30 dark:border-white'></span>
+      <section className='h-11'>
         <div className='mx-auto flex max-w-[1200px] items-center justify-between px-4 pt-2'>
-          <p>&copy; Bogdan Bulakh, 2023</p>
+          <p>&copy; nhlong, 2023</p>
           <div className='flex items-center space-x-3'>
             <img
               className='h-8'
