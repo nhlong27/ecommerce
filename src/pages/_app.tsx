@@ -7,8 +7,8 @@ import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query
 import { Provider } from 'react-redux';
 
 import Loading from './loading';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import Head from 'next/head';
 import { store } from '@/store/store';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';

@@ -5,7 +5,7 @@ import { getUsersQuery } from '@/features/user/queries'
 import { useGetUsersQuery } from '@/features/user'
 import { getSession } from 'next-auth/react'
 import { useUpdateUserMutation } from '@/features/user'
-import Filter from '@/components/Filter'
+import Filter from '@/components/layout/Filter'
 import Results from '@/components/Results'
 
 const UserPage = () => {

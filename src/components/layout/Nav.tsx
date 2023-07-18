@@ -10,7 +10,7 @@ import {
 import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-import { ThemeToggle } from './ThemeToggle';
+import { ThemeToggle } from '../ThemeToggle';
 import Link from 'next/link';
 import helper from '@/constants/helper';
 import Image from 'next/image';
@@ -22,8 +22,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu';
-import { Button } from './ui/button';
+} from '../ui/dropdown-menu';
+import { Button } from '../ui/button';
 import {
   Sheet,
   SheetContent,
@@ -32,7 +32,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { Text } from './common/text';
+import { Text } from '../common/Text';
 
 const Nav = () => {
   return (
@@ -51,7 +51,7 @@ const Nav = () => {
                 </AspectRatio>
               </div>
               <Text variant='xl/semibold/primary' className='dark:text-secondary'>
-              Epicola
+                Epicola
               </Text>
             </NavigationMenuItem>
             <NavigationMenuItem>
@@ -189,7 +189,7 @@ const Nav = () => {
             </NavigationMenuItem>
             <NavigationMenuItem></NavigationMenuItem>
             <NavigationMenuItem>
-              <Button variant='ghost' size='icon' >
+              <Button variant='ghost' size='icon'>
                 <helper.icon.shop className='h-4 w-4' />
               </Button>
             </NavigationMenuItem>

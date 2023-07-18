@@ -1,13 +1,14 @@
 import { Inter } from 'next/font/google';
 import React from 'react';
 import { signIn, useSession } from 'next-auth/react';
-import Hero from '@/components/Hero';
-import { HomeCategories, ProductSwiper } from '@/features/catalog';
+import Hero from '@/components/layout/Hero';
+import { ProductSwiper } from '@/features/catalog';
 import helper from '@/constants/helper';
 import Image from 'next/image';
-import { Text } from '@/components/common/text';
-import Home from '@/components/Test';
-import Benefits from '@/components/Benefits';
+import { Text } from '@/components/common/Text';
+import Promo from '@/components/Promo';
+import Categories from '@/features/catalog/components/Categories';
+import Incentives from '@/components/Incentives';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,31 +25,12 @@ function HomePage() {
     <main className={`flex flex-col min-h-dynamic-screen w-full ${inter.className}`}>
       <Hero />
       <span className='mx-auto w-11/12 border-b-[1px] border-primary/30 dark:border-white'></span>
-      <HomeCategories />
-      <div className='w-full h-[30rem]'>
-        <Home />
-      </div>
+      <Promo />
+      <span className='mx-auto w-11/12 border-b-[1px] border-primary/30 dark:border-white'></span>
+      <Categories />
       <ProductSwiper />
-      <div className='mb-8 mt-auto w-full aspect-[3/1] relative flex justify-center items-center overflow-hidden'>
-        <Image
-          src={helper.images.hero}
-          alt={'hero'}
-          className='brightness-150 opacity-30 object-cover'
-          fill
-        />
-        <div className='absolute tracking-widest font-serif'>
-          <Text variant='XL/bold/black' className='text-center'>
-            Quench your thirst
-          </Text>
-          <Text variant='medium/bold/black' className='text-center'>
-            Recommend us to a friend
-          </Text>
-          <Text variant='medium/bold/black' className='text-center'>
-            button
-          </Text>
-        </div>
-      </div>
-      <Benefits />
+      <span className='mx-auto w-11/12 border-b-[1px] border-primary/30 dark:border-white'></span>
+      <Incentives />
     </main>
   );
 }

@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import * as React from 'react';
 import '@testing-library/jest-dom';
-import Header from '../Header';
+import Header from '../layout/Header';
 
 describe('Test Component - Header', () => {
   it('test navigation contents', () => {

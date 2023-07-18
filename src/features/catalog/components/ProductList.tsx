@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGetProductsQuery } from '../hooks/useGetProductsQuery';
 import Image from 'next/image';
-import { Text } from '@/components/common/text';
+import { Text } from '@/components/common/Text';
 import ProductCard from '@/features/product/components/ProductCard';
 
 const ProductList = () => {

@@ -14,7 +14,7 @@ import { useGetProductsQuery } from '../hooks/useGetProductsQuery';
 export default function ProductSwiper() {
   const { data, isLoading, error } = useGetProductsQuery();
   return (
-    <>
+    <div className='mx-auto w-11/12 p-8'>
       <Swiper
         slidesPerView={1}
         spaceBetween={10}
@@ -40,17 +40,17 @@ export default function ProductSwiper() {
       >
         {data
           ? data.products.map((product: any, index: number) => (
-                <SwiperSlide className='h-full relative' key={index}>
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_DATA_SOURCE}${product.image}`}
-                    fill
-                    className='object-contain hover:scale-110 transition-all duration-300'
-                    alt='product'
-                  />
-                </SwiperSlide>
-              ))
+              <SwiperSlide className='h-full relative' key={index}>
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_DATA_SOURCE}${product.image}`}
+                  fill
+                  className='object-contain hover:scale-110 transition-all duration-300'
+                  alt='product'
+                />
+              </SwiperSlide>
+            ))
           : null}
       </Swiper>
-    </>
+    </div>
   );
 }

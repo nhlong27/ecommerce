@@ -2,7 +2,7 @@ import React from 'react';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import Image from 'next/image';
 import helper from '@/constants/helper';
-import { Text } from './common/text';
+import { Text } from '@/components/common/Text';
 
 const Footer = () => {
   return (
@@ -160,7 +160,7 @@ const Footer = () => {
       <span className='w-11/12 mx-auto border-b-[1px] border-primary/30 dark:border-white'></span>
       <section className='h-11'>
         <div className='mx-auto flex max-w-[1200px] items-center justify-between px-4 pt-2'>
-          <p>&copy; nhlong, 2023</p>
+          <Text variant='sm/light/black'>&copy; 2023 NHLong. All rights reserved.</Text>
           <div className='flex items-center space-x-3'>
             <img
               className='h-8'

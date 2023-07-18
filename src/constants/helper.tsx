@@ -5,12 +5,19 @@ import commercial13 from 'public/images/commercial13.png';
 import commercial11 from 'public/images/commercial11.png';
 import commercial3 from 'public/images/commercial3.png';
 import commercial5 from 'public/images/commercial5.png';
+import commercial2 from 'public/images/commercial2.png';
+import pepsi from 'public/images/pepsi.svg';
+import coca from 'public/images/coca.svg';
+import monster from 'public/images/monster.svg';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 
 const icon = {
   shop: AiOutlineShoppingCart,
   logo: logo,
   logo3: logo3,
+  pepsi: pepsi,
+  coca: coca,
+  monster: monster,
   hamburger: (
     <svg width='15' height='15' viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <path
@@ -45,5 +52,6 @@ const images = {
   commercial11: commercial11,
   commercial3: commercial3,
   commercial5: commercial5,
+  commercial2: commercial2,
 };
 export default { icon, images };
