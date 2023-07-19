@@ -6,16 +6,6 @@ export const typeDefs = gql`
     ADMIN
   }
 
-  type User {
-    id: ID!
-    name: String
-    email: String!
-    emailVerified: Boolean
-    image: String
-    password: String
-    role: Role
-  }
-
   type Book {
     title: String!
   }
@@ -50,14 +40,32 @@ export const typeDefs = gql`
 
   type Query {
     users: [User]
-    books: [Book]
     products: [Product]
     stripe_secret: String
   }
 
+  type User {
+    id: ID!
+    name: String
+    email: String!
+    emailVerified: Boolean
+    image: String
+    password: String
+    role: Role
+  }
+
+  type ReturnedUser {
+    id: ID!
+    name: String
+    email: String!
+    emailVerified: Boolean
+    image: String
+    role: Role
+  }
+
   type Mutation {
     updateUser(email: String!, name: String!): User
-    addBook(title: String!): Book
-    addProduct(input: ProductInput): Product
+    addUser(name: String!, email: String!, password: String!): ReturnedUser
+    addShit(test: String): String
   }
 `;

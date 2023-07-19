@@ -14,6 +14,7 @@ import { store } from '@/store/store';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import { Separator } from '@/components/ui/separator';
+import { Toaster } from "@/components/ui/toaster"
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -34,6 +35,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
               <Hydrate state={pageProps.dehydratedState}>
                 <div className='flex flex-col min-h-dynamic-screen w-full mx-auto max-w-[1600px]'>
                   <Header />
+                  <Toaster />
                   <Separator className='mx-auto w-11/12' />
                   {isLoading ? <Loading /> : <Component {...pageProps} />}
                   <Separator className='mx-auto min-w-full' />

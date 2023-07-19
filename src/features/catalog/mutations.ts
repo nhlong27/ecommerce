@@ -1,6 +1,5 @@
-import { request, gql } from 'graphql-request'
-import { GRAPHQL_API_URL } from '@/constants/urls'
-import {  ProductType } from '@/types/types'
+import { request, gql } from 'graphql-request';
+import { GRAPHQL_API_URL } from '@/constants/urls';
 
 const addProduct = gql`
   mutation addProduct(
@@ -32,8 +31,8 @@ const addProduct = gql`
       }
     }
   }
-`
+`;
 
-export const addProductMutationFn = async (product: ProductType) => {
-  return request(`${GRAPHQL_API_URL}`, addProduct, { ...product })
-}
+export const addProductMutationFn = async (product: any) => {
+  return request(`${GRAPHQL_API_URL}`, addProduct, { ...product });
+};

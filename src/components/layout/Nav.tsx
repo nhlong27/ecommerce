@@ -206,7 +206,7 @@ const Nav = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar className='w-6 h-6'>
-                    <AvatarImage src='https://github.com/shadcn.png' />
+                    <AvatarImage src={session ? `https://github.com/shadcn.png` : ''} />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>

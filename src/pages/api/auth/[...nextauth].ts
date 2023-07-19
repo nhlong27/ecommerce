@@ -77,6 +77,9 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
+      if (!user){
+        return false
+      }
       if (account?.provider === 'credentials') {
         const accessToken = signJWT({ ...user }, { expiresIn: '15m' }); // 15mins
         const refreshToken = signJWT({ ...user }, { expiresIn: '1y' }); //1 year

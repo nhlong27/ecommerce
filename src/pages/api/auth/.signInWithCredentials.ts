@@ -13,17 +13,17 @@ export async function signInWithCredentials(credentials:CredentialsType) {
       email: credentials.email,
     }
   })
-  if (!user){
-    const newUser = await prisma.user.create({
-      data:{
-        name: credentials.name as string,
-        email:credentials.email,
-        password: credentials.password,
-        emailVerified: false,
-      }})
-    const {password, ...newUserWithoutPass} = newUser;
-    return newUserWithoutPass;
-  }
+  // if (!user){
+  //   const newUser = await prisma.user.create({
+  //     data:{
+  //       name: credentials.name as string,
+  //       email:credentials.email,
+  //       password: credentials.password,
+  //       emailVerified: false,
+  //     }})
+  //   const {password, ...newUserWithoutPass} = newUser;
+  //   return newUserWithoutPass;
+  // }
   if (user){
     //TODO: bcrypt 
     const {password, ...userWithoutPass} = user;
