@@ -5,7 +5,7 @@ import { Button } from '../ui/button'
 const SearchBar = () => {
   return (
     <div className="flex w-full max-w-sm items-center space-x-2">
-      <Input type="email" placeholder="Find a product" />
+      <Input type="email" className='bg-blue-50' placeholder="Find a product" />
       <Button type="submit">Search</Button>
     </div>
   )

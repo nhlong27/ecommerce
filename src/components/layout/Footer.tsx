@@ -15,6 +15,7 @@ const Footer = () => {
                 <Image
                   src={helper.icon.logo}
                   alt='Image'
+                  sizes={helper.images.size}
                   className='object-cover bg-white h-full w-full'
                 />
               </AspectRatio>
@@ -126,6 +127,7 @@ const Footer = () => {
                 <Image
                   src={helper.icon.logo}
                   alt='Image'
+                  sizes={helper.images.size}
                   className='object-cover bg-white h-full w-full'
                 />
               </AspectRatio>
@@ -157,7 +159,7 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-      <span className='w-11/12 mx-auto border-b-[1px] border-primary/30 dark:border-white'></span>
+      <span className='w-11/12 mx-auto border-b border-gray-200 dark:border-gray-500'></span>
       <section className='h-11'>
         <div className='mx-auto flex max-w-[1200px] items-center justify-between px-4 pt-2'>
           <Text variant='sm/light/black'>&copy; 2023 NHLong. All rights reserved.</Text>

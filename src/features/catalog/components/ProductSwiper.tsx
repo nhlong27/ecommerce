@@ -8,8 +8,8 @@ import 'swiper/css/pagination';
 
 // import required modules
 import { Pagination } from 'swiper/modules';
-import Image from 'next/image';
 import { useGetProductsQuery } from '../hooks/useGetProductsQuery';
+import ProductCard from './product/ProductCard';
 
 export default function ProductSwiper() {
   const { data, isLoading, error } = useGetProductsQuery();
@@ -22,31 +22,30 @@ export default function ProductSwiper() {
           clickable: true,
         }}
         breakpoints={{
-          640: {
+          700: {
             slidesPerView: 2,
             spaceBetween: 20,
           },
-          768: {
+          900: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+          1100: {
             slidesPerView: 4,
             spaceBetween: 40,
           },
-          1024: {
+          1300: {
             slidesPerView: 5,
             spaceBetween: 50,
           },
         }}
         modules={[Pagination]}
-        className='w-full h-[20rem]'
+        className='w-full h-auto'
       >
         {data
           ? data.products.map((product: any, index: number) => (
-              <SwiperSlide className='h-full relative' key={index}>
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_DATA_SOURCE}${product.image}`}
-                  fill
-                  className='object-contain hover:scale-110 transition-all duration-300'
-                  alt='product'
-                />
+              <SwiperSlide className='h-full relative mb-8' key={index}>
+                <ProductCard product={product} />
               </SwiperSlide>
             ))
           : null}

@@ -17,6 +17,7 @@ export default function Promo() {
               alt='product1'
               className='object-cover  brightness-75 hover:scale-125 transition-all duration-300'
               fill
+              sizes={helper.images.size}
             />
           </div>
           <div className='basis-2/5 p-8'>
@@ -43,6 +44,7 @@ export default function Promo() {
               alt='product1'
               className='object-cover  brightness-75 hover:scale-125 transition-all duration-300'
               fill
+              sizes={helper.images.size}
             />
           </div>
         </div>

@@ -12,19 +12,20 @@ const AuthPage = ({
   csrfToken,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <div className='min-h-dynamic-screen w-11/12 mx-auto flex justify-center items-start'>
+    <div className='min-h-dynamic-screen w-full mx-auto flex justify-center items-start bg-blue-100 dark:bg-gray-900'>
       <div className='flex overflow-hidden w-full h-screen'>
         <div className='h-full w-1/2 hidden md:block relative'>
-          <Image src={helper.images.commercial1} alt='auth' fill className='h-full object-cover' />
+          <Image src={helper.images.commercial1} alt='auth' fill className='h-full object-cover hover:brightness-110 transition-all duration-1000'
+          sizes={helper.images.size} priority={true} />
         </div>
-        <div className='w-full md:w-1/2 h-full flex justify-center items-center bg-blue-100 dark:bg-gray-900 flex-col gap-8'>
+        <div className='w-full md:w-1/2 h-full flex justify-center items-center  flex-col gap-8'>
           <div>
             <SignInWithProviders providers={providers} csrfToken={csrfToken} />
           </div>
           <div className='w-[400px] flex items-center'>
-            <span className='grow border-b-[1px] border-gray-500'></span>
+            <span className='grow border-b-[1px] border-gray-400'></span>
             <span className='mx-3'>or</span>
-            <span className='grow border-b-[1px] border-gray-500'></span>
+            <span className='grow border-b-[1px] border-gray-400'></span>
           </div>
           <AuthTabs {...{ providers, csrfToken }} />
         </div>

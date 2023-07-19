@@ -34,6 +34,8 @@ import {
 } from '@/components/ui/sheet';
 import { Text } from '../common/Text';
 import { signOut, useSession } from 'next-auth/react';
+import { CartSection } from '@/features/user';
+import { Separator } from '../ui/separator';
 
 const Nav = () => {
   const { data: session } = useSession();
@@ -49,6 +51,8 @@ const Nav = () => {
                   <Image
                     src={helper.icon.logo}
                     alt='Image'
+                    sizes={helper.images.size}
+                    fill
                     className='object-cover bg-white h-full w-full'
                   />
                 </AspectRatio>
@@ -91,14 +95,18 @@ const Nav = () => {
                   {session ? (
                     <>
                       <DropdownMenuItem>
-                        <Link href='/account'>
-                          Settings
-                        </Link>
+                        <Link href='/account'
+                        >Profile</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
-                        <Button variant='ghost' className='p-0' onClick={() => signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_SERVER}/`})}>
+                        <Link
+                          href='#'
+                          onClick={() =>
+                            signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_SERVER}/` })
+                          }
+                        >
                           Sign out
-                        </Button>
+                        </Link>
                       </DropdownMenuItem>
                     </>
                   ) : (
@@ -111,15 +119,15 @@ const Nav = () => {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Sheet>
-                <SheetTrigger>
-                  <Button variant='ghost' size='icon' className='ml-4'>
-                    <helper.icon.shop className='h-5 w-5' />
-                  </Button>
+                <SheetTrigger className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 px-4 py-2'>
+                  <helper.icon.shop className='h-5 w-5' />
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
                     <SheetTitle>Your cart</SheetTitle>
-                    <SheetDescription>This section for cart content</SheetDescription>
+                    <SheetDescription className='h-screen'>
+                      <CartSection />
+                    </SheetDescription>
                   </SheetHeader>
                 </SheetContent>
               </Sheet>
@@ -132,20 +140,20 @@ const Nav = () => {
           <NavigationMenuList>
             <NavigationMenuItem>
               <Sheet>
-                <SheetTrigger>
-                  <Button variant='ghost' size='icon'>
-                    {helper.icon.hamburger}
-                  </Button>
+                <SheetTrigger className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 px-4 py-2'>
+                  {helper.icon.hamburger}
                 </SheetTrigger>
 
                 <SheetContent side='left' className='w-1/2'>
                   <SheetHeader>
-                    <SheetTitle className='flex items-center gap-2 border-b-[1px] border-primary/30'>
+                    <SheetTitle className='flex items-center gap-2 border-b border-gray-200 dark:border-gray-500'>
                       <div className='w-[40px]'>
                         <AspectRatio ratio={1 / 1}>
                           <Image
                             src={helper.icon.logo}
                             alt='Image'
+                            sizes={helper.images.size}
+                            fill
                             className='object-cover bg-white h-full w-full'
                           />
                         </AspectRatio>
@@ -183,6 +191,8 @@ const Nav = () => {
                   <Image
                     src={helper.icon.logo}
                     alt='Image'
+                    sizes={helper.images.size}
+                    fill
                     className='object-cover bg-white h-full w-full'
                   />
                 </AspectRatio>
@@ -203,15 +213,39 @@ const Nav = () => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  {session ? (
+                    <>
+                    <DropdownMenuItem>
+                      <Link href='/account'
+                      >Profile</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link
+                        href='#'
+                        onClick={() =>
+                          signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_SERVER}/` })
+                        }
+                      >
+                        Sign out
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                  ) : (
+                    <DropdownMenuItem>
+                      <Link href='/auth'>Sign in</Link>
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </NavigationMenuItem>
             <NavigationMenuItem></NavigationMenuItem>
             <NavigationMenuItem>
-              <Button variant='ghost' size='icon'>
+              <Link
+                href='/account/cart'
+                className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 px-4 py-2'
+              >
                 <helper.icon.shop className='h-4 w-4' />
-              </Button>
+              </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>

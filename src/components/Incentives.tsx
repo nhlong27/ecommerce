@@ -21,7 +21,8 @@ const Incentives = () => {
             </p>
           </div>
           <div className='hidden lg:block relative w-full h-[16rem] xl:h-[18rem] overflow-hidden rounded-md'>
-            <Image src={helper.images.commercial2} alt='incentives' className='object-cover' fill />
+            <Image src={helper.images.commercial2} alt='incentives' className='object-cover' fill 
+            sizes={helper.images.size} />
           </div>
         </div>
         <div className='mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3 '>

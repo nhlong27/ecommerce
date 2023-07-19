@@ -1,5 +1,7 @@
 import React from 'react';
-import Nav from './Nav';
+import dynamic from 'next/dynamic';
+
+const Nav = dynamic(() => import('./Nav'), { ssr: false });
 
 export default function Header() {
   return (

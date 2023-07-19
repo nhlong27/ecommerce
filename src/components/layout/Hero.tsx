@@ -15,7 +15,7 @@ const Hero = () => {
       <div className='h-[30rem]'>
         <div className='flex h-full flex-wrap -mx-4'>
           <div className='w-full h-full px-4 lg:w-5/12'>
-            <div className='h-full px-0 md:px-8 pt-4'>
+            <div className='h-full px-0 md:px-8 pt-4 text-center lg:text-left'>
               <Text variant='4xl/bold/black' className='dark:text-white'>
                 Revitalize Your Thirst with Our Refreshing Soft Drinks
               </Text>
@@ -40,7 +40,7 @@ const Hero = () => {
                 <Text variant='sm/normal/black' className='mb-4 dark:text-white'>
                   Our Top Manufacturers
                 </Text>
-                <div className='flex items-center space-x-4 w-full h-20 gap-4'>
+                <div className='flex items-center justify-center space-x-4 w-full h-20 gap-4'>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
@@ -50,6 +50,8 @@ const Hero = () => {
                               src={helper.icon.pepsi}
                               alt='pepsi'
                               className='object-contain h-full w-full'
+                              fill
+                              sizes={helper.images.size}
                             />
                           </AspectRatio>
                         </div>
@@ -66,6 +68,8 @@ const Hero = () => {
                               src={helper.icon.coca}
                               alt='coca'
                               className='object-contain h-full w-full'
+                              fill
+                              sizes={helper.images.size}
                             />
                           </AspectRatio>
                         </div>
@@ -82,6 +86,8 @@ const Hero = () => {
                               src={helper.icon.monster}
                               alt='monster'
                               className='object-contain h-full w-full'
+                              fill
+                              sizes={helper.images.size}
                             />
                           </AspectRatio>
                         </div>
@@ -105,7 +111,7 @@ const Hero = () => {
                   </Text>
                   <Popover>
                     <PopoverTrigger>
-                      <Button variant='outline'>See what's new this week</Button>
+                      <div className='border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 px-4 py-1'>See what's new this week</div>
                     </PopoverTrigger>
                     <PopoverContent>Feature in development.</PopoverContent>
                   </Popover>
@@ -114,14 +120,20 @@ const Hero = () => {
                   <Image
                     src={helper.images.commercial13}
                     alt='hero'
+                    sizes={helper.images.size}
                     className='h-full object-cover brightness-75 hover:scale-110 transition-all duration-300'
+                    fill
+                    priority={true}
                   />
                 </div>
                 <div className='relative h-full w-1/2 overflow-hidden rounded-sm'>
                   <Image
                     src={helper.images.commercial11}
                     alt='hero'
+                    sizes={helper.images.size}
                     className='h-full  object-cover brightness-75 hover:scale-110 transition-all duration-300'
+                    fill
+                    priority={true}
                   />
                 </div>
                 <span className='hidden lg:block absolute -right-8 -top-8 z-[-1]'>
