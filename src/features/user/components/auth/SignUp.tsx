@@ -59,14 +59,6 @@ const SignUp = () => {
   const router = useRouter()
 
   function onSubmit(data: z.infer<typeof SignUpFormSchema>) {
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    //     <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-    //       <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
     addUserMutation.mutate(data, {
       onSuccess: () => {
         toast({
@@ -74,11 +66,11 @@ const SignUp = () => {
         });
         router.push('/auth')
       },
-      onError: (error) => {
+      onError: (error: any) => {
         console.log(error);
         toast({
           title: 'User creation failed',
-          description: error.response.errors[0].message,
+          description: error.response.errors[0].message, variant: 'destructive'
         });
       },
     });
@@ -91,10 +83,7 @@ const SignUp = () => {
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='w-full'>
-          {/* <form method='post' action='/api/auth/callback/credentials'> */}
-
           <CardContent className='space-y-2'>
-            {/* <Input name='csrfToken' type='hidden' defaultValue={csrfToken} /> */}
             <FormField
               control={form.control}
               name='name'
@@ -104,9 +93,6 @@ const SignUp = () => {
                   <FormControl>
                     <Input placeholder='Longnguyen' {...field} />
                   </FormControl>
-                  <FormDescription>
-                    How will you be perceived and <span>mentioned</span> by other users.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -152,7 +138,7 @@ const SignUp = () => {
             />
           </CardContent>
           <CardFooter>
-            <Button type='submit'>Sign in</Button>
+            <Button type='submit'>Register</Button>
           </CardFooter>
         </form>
       </Form>

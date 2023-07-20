@@ -21,6 +21,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from '@/components/ui/use-toast';
+import * as auth from 'next-auth/react';
 
 const SignInFormSchema = z.object({
   email: z.string().email({ message: 'Invalid email.' }),
@@ -33,16 +34,18 @@ const SignIn = () => {
   const form = useForm<z.infer<typeof SignInFormSchema>>({
     resolver: zodResolver(SignInFormSchema),
   });
-
   function onSubmit(data: z.infer<typeof SignInFormSchema>) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    auth
+      .signIn('credentials', { email: data.email, password: data.password, redirect: false })
+      .then((response) => {
+        if (response?.ok) {
+          toast({ title: 'Sign in successfully'});
+          window.location.replace('/account');
+        } else {
+          console.log(response);
+          toast({ title: 'Sign in failed', description: 'No matching credentials', variant: 'destructive'});
+        }
+      });
   }
   return (
     <Card>
@@ -52,11 +55,7 @@ const SignIn = () => {
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='w-full'>
-          {/* <form method='post' action='/api/auth/callback/credentials'> */}
-
           <CardContent className='space-y-2'>
-            {/* <Input name='csrfToken' type='hidden' defaultValue={csrfToken} /> */}
-
             <FormField
               control={form.control}
               name='email'

@@ -1,6 +1,7 @@
 import { request, gql } from 'graphql-request';
 import { GRAPHQL_API_URL } from '@/constants/urls';
 import { useMutation } from '@tanstack/react-query';
+import axios from 'axios'
 
 const updateUser = gql`
   mutation updateUser($email: String!, $name: String!) {
@@ -11,6 +12,7 @@ const updateUser = gql`
     }
   }
 `;
+
 const addUser = gql`
   mutation addUser($name: String!, $email: String!, $password: String!) {
     addUser(name: $name, email: $email, password: $password) {
@@ -38,4 +40,8 @@ export const addUserMutationFn = async ({
   password: String;
 }) => {
   return request(`${GRAPHQL_API_URL}`, addUser, { name, email, password });
+};
+
+export const signInMutationFn = async ({ email, password }: { email: string; password: string }) => {
+  return (axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/auth/callback/credentials`, { email, password }))
 };

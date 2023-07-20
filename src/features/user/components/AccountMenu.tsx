@@ -16,7 +16,7 @@ import { TabsContent } from '@radix-ui/react-tabs';
 import { Text } from '@/components/common/Text';
 import { BreadCrumbs } from '@/features/catalog';
 import { useAtom } from 'jotai';
-import { accountSectionAtom } from '@/pages/account/[[...slug]]';
+import { accountSectionAtom } from '@/pages/account';
 
 const frameworks = [
   {

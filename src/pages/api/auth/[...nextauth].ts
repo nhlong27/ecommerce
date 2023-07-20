@@ -27,28 +27,28 @@ export const authOptions: NextAuthOptions = {
         return user as any;
       },
     }),
-    // GitHubProvider({
-    //   clientId: process.env.GITHUB_ID as string,
-    //   clientSecret: process.env.GITHUB_SECRET as string,
-    //   profile(profile) {
-    //     const user = signInWithOAuth({
-    //       ...profile,
-    //       name: profile.name || profile.login,
-    //     })
-    //     return user as any
-    //   },
-    // }),
-    // FacebookProvider({
-    //   clientId: process.env.FACEBOOK_ID as string,
-    //   clientSecret: process.env.FACEBOOK_SECRET as string,
-    //   profile(profile) {
-    //     const user = signInWithOAuth({
-    //       ...profile,
-    //       name: profile.name || profile.login,
-    //     })
-    //     return user as any
-    //   },
-    // }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
+      profile(profile) {
+        const user = signInWithOAuth({
+          ...profile,
+          name: profile.name || profile.login,
+        })
+        return user as any
+      },
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID as string,
+      clientSecret: process.env.FACEBOOK_SECRET as string,
+      profile(profile) {
+        const user = signInWithOAuth({
+          ...profile,
+          name: profile.name || profile.login,
+        })
+        return user as any
+      },
+    }),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -70,16 +70,13 @@ export const authOptions: NextAuthOptions = {
         if (user) {
           return user as any;
         } else {
-          return null;
+          return null
         }
       },
     }),
   ],
   callbacks: {
     async signIn({ user, account }) {
-      if (!user){
-        return false
-      }
       if (account?.provider === 'credentials') {
         const accessToken = signJWT({ ...user }, { expiresIn: '15m' }); // 15mins
         const refreshToken = signJWT({ ...user }, { expiresIn: '1y' }); //1 year
