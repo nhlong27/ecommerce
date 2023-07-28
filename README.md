@@ -200,6 +200,7 @@ cartSchema_custom = {
 <a id='challenges'></a>
 <h2>Challenges</h2>
 
+
 <ul>
   <li>Use 100% Typescript with frontend and backend</li>
   <li>Pick a suitable API</li>
@@ -213,6 +214,11 @@ cartSchema_custom = {
 
 <a id='solutions'></a>
 <h2>Solutions</h2>
+
+
+Companies can scrape product data from websites using web scraping tools or custom scripts. Web scraping involves extracting data from web pages and storing it in a structured format within a database. However, it's important to comply with website terms of service and legal considerations when scraping data
+
+the website's terms of service and ensure that your scraping activities comply with legal and ethical guidelines. Some websites may have restrictions or require permission for scraping their data.
 
 <h3>API Source</h3>
 The Movie Database API. (refer https://developer.themoviedb.org/docs/getting-started)

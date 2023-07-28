@@ -13,15 +13,16 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { ProductType } from '../../types';
 
 interface ProductCardProps {
-  product: any;
+  product: ProductType;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Link
-      href={`/catalogue/cat1/${product.sku}`}
+      href={`/catalogue/${product.category}/${product.sku}`}
       className='group overflow-hidden rounded-lg flex flex-col justify-start w-[15rem]'
     >
       <Card>
@@ -38,11 +39,27 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </AspectRatio>
           </div>
           <h1 className='text-base font-semibold mt-2 truncate'>{product.title}</h1>
-          <Text variant='sm/normal/black' className='text-left '>{product.sku}</Text>
+          <div className='flex justify-between w-full'>
+            <Text variant='sm/normal/black' className='text-left '>
+              {product.price}
+            </Text>
+            <div className='ml-auto flex gap-3'>
+              <Text variant='sm/normal/black' className='text-left '>
+                {product.score}
+              </Text>
+              <Text variant='sm/normal/black' className='text-left '>
+                {product.n_o_reviews}
+              </Text>
+            </div>
+          </div>
         </CardContent>
         <CardFooter className='flex justify-between -mt-4'>
-          <Button variant='secondary' size='sm' className=''>Add to cart</Button>
-          <Button variant='ghost' size='icon'>Fav</Button>
+          <Button variant='secondary' size='sm' className=''>
+            Add to cart
+          </Button>
+          <Button variant='ghost' size='icon'>
+            Fav
+          </Button>
         </CardFooter>
       </Card>
     </Link>

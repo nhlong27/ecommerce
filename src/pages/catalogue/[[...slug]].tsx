@@ -1,5 +1,5 @@
 import React from 'react';
-import { Categories, ProductDetails, ProductList } from '@/features/catalog';
+import { Categories, Filters, ProductDetails, ProductList } from '@/features/catalog';
 import BreadCrumbs from '@/features/catalog/components/BreadCrumbs';
 import Link from 'next/link';
 import CategorySection from './[[...slug]]';
@@ -16,8 +16,8 @@ const CataloguePage = () => {
     <div className='w-full min-h-screen flex flex-col relative'>
       {!router.query.slug?.[1] && (
         <>
-          <div className='w-full h-[20rem] flex justify-center items-center gap-8'>
-            <Text variant='3xl/normal/white' className='text-white dark:text-white font-serif  '>Have a name in mind?</Text>
+          <div className='w-full h-[20rem] flex justify-center lg:flex-row flex-col items-center gap-8'>
+            <Text variant='3xl/normal/white' className='text-white dark:text-white font-serif'>Have a name in mind?</Text>
             <SearchBar />
           </div>
           <div className='h-[30rem] absolute w-full overflow-hidden -z-10'>
@@ -45,7 +45,7 @@ const CataloguePage = () => {
           <ProductDetails />
         ) : (
           <>
-            <Categories />
+            <Filters />
             <ProductList />
           </>
         )}

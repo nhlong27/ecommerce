@@ -7,7 +7,6 @@ import { scrapeWebsite } from './.scrapeWebsite';
 
 export default function handler(req: Request, res: Response) {
   let productArray: any[] = [];
-  console.log('starting');
   let driver = new Builder()
   .forBrowser(Browser.CHROME)
   .usingServer('http://localhost:4444/wd/hub')
@@ -29,7 +28,6 @@ export default function handler(req: Request, res: Response) {
       lastHeight = newHeight;
     }
     const html = await driver.getPageSource();
-    if (html) console.log('html')
     const result = await scrapeWebsite(html, 'link');
     return result;
   };
@@ -46,7 +44,6 @@ export default function handler(req: Request, res: Response) {
     .finally(() => {
       driver.quit();
     });
-  console.log('ended');
   return res.status(200).send(productArray);
 }
 
@@ -55,7 +52,7 @@ export default function handler(req: Request, res: Response) {
 const saveTextToFile = (filepath: string, text: string) => {
   fs.writeFile(filepath, text, 'utf8', (err) => {
     if (err) {
-      return console.log(err);
+      return console.error(err);
     }
     console.log('The file was saved!');
   });

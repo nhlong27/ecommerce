@@ -92,9 +92,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async jwt({ token, account, user }) {
-      // console.log('token' + JSON.stringify(token, null, '\t'))
-      // console.log('account' + JSON.stringify(account, null, '\t'))
-      // console.log('user' + JSON.stringify(user, null, '\t'))
+
       if (user) {
         token.role = user.role;
         token.emailVerified = user.emailVerified;

@@ -1,4 +1,7 @@
 import { Text } from '@/components/common/Text';
+import helper from '@/constants/helper';
+import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 const Categories = () => {
   return (
@@ -7,54 +10,86 @@ const Categories = () => {
         <div className='mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-16'>
           <Text variant='2xl/semibold/black' >Categories</Text>
 
-          <div className='mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0'>
+          <div className='mt-6 space-y-12 lg:grid lg:grid-cols-5 lg:gap-x-6 lg:space-y-0'>
             <div className='group relative'>
               <div className='relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64'>
-                <img
-                  src='https://tailwindui.com/img/ecommerce-images/home-page-02-edition-01.jpg'
-                  alt='Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug.'
+                <Image
+                  src={helper.images.commercial10}
+                  alt='coffee_tea'
                   className='h-full w-full object-cover object-center'
                 />
               </div>
               <h3 className='mt-6 text-sm '>
-                <a href='#'>
+                <Link href='/catalogue/coffee_tea'>
                   <span className='absolute inset-0'></span>
-                  Desk and Office
-                </a>
+                  Coffees / Teas
+                </Link>
               </h3>
-              <p className='text-base font-semibold '>Work from home accessories</p>
+              <p className='text-base font-semibold '>Our Coffee and Tea Collection</p>
             </div>
             <div className='group relative'>
               <div className='relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64'>
-                <img
-                  src='https://tailwindui.com/img/ecommerce-images/home-page-02-edition-02.jpg'
-                  alt='Wood table with porcelain mug, leather journal, brass pen, leather key ring, and a houseplant.'
+              <Image
+                  src={helper.images.commercial12}
+                  alt='energy_drink'
                   className='h-full w-full object-cover object-center'
                 />
               </div>
               <h3 className='mt-6 text-sm '>
                 <a href='#'>
                   <span className='absolute inset-0'></span>
-                  Self-Improvement
+                  Energy drinks
                 </a>
               </h3>
-              <p className='text-base font-semibold '>Journals and note-taking</p>
+              <p className='text-base font-semibold '>Refreshing, powerful flavors</p>
             </div>
             <div className='group relative'>
               <div className='relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64'>
-                <img
-                  src='https://tailwindui.com/img/ecommerce-images/home-page-02-edition-03.jpg'
-                  alt='Collection of four insulated travel bottles on wooden shelf.'
+              <Image
+                  src={helper.images.commercial5}
+                  alt='juice_shake'
                   className='h-full w-full object-cover object-center'
                 />
               </div>
               <h3 className='mt-6 text-sm '>
                 <a href='#'>
                   <span className='absolute inset-0'></span>
-                  Travel
+                  Juice Shakes
                 </a>
               </h3>
-              <p className='text-base font-semibold '>Daily commute essentials</p>
+              <p className='text-base font-semibold '>Natural, refreshing ingredients</p>
+            </div>
+            <div className='group relative'>
+              <div className='relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64'>
+              <Image
+                  src={helper.images.commercial8}
+                  alt='sport_drink'
+                  className='h-full w-full object-cover object-center'
+                />
+              </div>
+              <h3 className='mt-6 text-sm '>
+                <a href='#'>
+                  <span className='absolute inset-0'></span>
+                  Sport drinks
+                </a>
+              </h3>
+              <p className='text-base font-semibold '>Stay hydrated, fuel performance</p>
+            </div>
+            <div className='group relative'>
+              <div className='relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64'>
+              <Image
+                  src={helper.images.commercial6}
+                  alt='water'
+                  className='h-full w-full object-cover object-center'
+                />
+              </div>
+              <h3 className='mt-6 text-sm '>
+                <a href='#'>
+                  <span className='absolute inset-0'></span>
+                  Pure water
+                </a>
+              </h3>
+              <p className='text-base font-semibold '>Embrace the simplicity and purity</p>
             </div>
           </div>
         </div>

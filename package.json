@@ -67,6 +67,7 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.10.1",
     "react-loader-spinner": "^5.3.4",
+    "react-paginate": "^8.2.0",
     "react-redux": "^8.1.0",
     "react-wrap-balancer": "^1.0.0",
     "redis": "^4.6.7",

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 
 const Incentives = () => {
   return (
-    <div className='pt-8 pb-20 px-8'>
+    <div className='pt-8 pb-20 px-8 bg-secondary/10'>
       <div className='mx-auto max-w-7xl px-6 lg:px-8'>
         <div className='flex justify-between gap-16 items-center'>
           <div className='mx-auto max-w-2xl lg:mx-0'>
@@ -28,7 +28,7 @@ const Incentives = () => {
         <div className='mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3 '>
           <article className='flex max-w-xl flex-col items-start justify-between'>
             <div className='flex items-center gap-x-4 text-xs'>
-            <Badge variant="outline">Free shipping</Badge>
+            <Badge variant="outline" className='bg-white dark:bg-gray-600'>Free shipping</Badge>
             </div>
             <div className='group relative'>
               <p className='mt-5 line-clamp-3 text-sm leading-6 text-gray-600 dark:text-gray-200'>
@@ -39,7 +39,7 @@ const Incentives = () => {
           </article>
           <article className='flex max-w-xl flex-col items-start justify-between'>
             <div className='flex items-center gap-x-4 text-xs'>
-            <Badge variant="outline">10-year warranty</Badge>
+            <Badge variant="outline" className='bg-white dark:bg-gray-600'>10-year warranty</Badge>
             </div>
             <div className='group relative'>
               <p className='mt-5 line-clamp-3 text-sm leading-6 text-gray-600 dark:text-gray-200'>
@@ -50,7 +50,7 @@ const Incentives = () => {
           </article>
           <article className='flex max-w-xl flex-col items-start justify-between'>
             <div className='flex items-center gap-x-4 text-xs'>
-            <Badge variant="outline">Exchanges</Badge>
+            <Badge variant="outline" className='bg-white dark:bg-gray-600'>Exchanges</Badge>
 
             </div>
             <div className='group relative'>

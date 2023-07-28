@@ -3,7 +3,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useGetStripeSessionQuery } from '@/features/payment/hooks/useGetStripeSessionQuery';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import Button from '@/components/common/Button';
+import { Button } from '@/components/ui/button';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -37,7 +37,7 @@ function PaymentPage() {
           <Button
             variant='destructive'
             className='cursor-pointer mb-8'
-            onClick={() => {console.log('working');
+            onClick={() => {
             setShouldGetSecret(true)}}
           >
             Get secret

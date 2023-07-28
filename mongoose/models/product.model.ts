@@ -2,29 +2,31 @@ import mongoose from 'mongoose';
 
 interface ProductDocument extends mongoose.Document {
   title: string;
-  price: number;
-  description: string;
-  category: string;
+  size: string;
+  quantity: string;
+  sku: string;
   image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-  createdAt: Date;
-  updatedAt: Date;
+  category: string;
+  price: number;
+  score: number;
+  n_o_reviews: number;
+  instock_reserved: number;
+  instock_available: number;
 }
 
 const ProductSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    price: { type: Number },
-    description: { type: String },
-    category: { type: String },
+    size: { type: String },
+    quantity: { type: String },
+    sku: { type: String, required: true },
     image: { type: String },
-    rating: {
-      rate: { type: Number, default: 0 },
-      count: { type: Number, default: 0 },
-    },
+    category: { type: String },
+    price: { type: Number },
+    score: { type: Number },
+    n_o_reviews: { type: Number },
+    instock_reserved: { type: Number },
+    instock_available: { type: Number },
   },
   { timestamps: true },
 );

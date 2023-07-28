@@ -106,32 +106,39 @@ const Hero = () => {
             <div className='hidden h-full lg:block lg:ml-auto lg:text-right'>
               <div className='h-full w-full relative z-10 pt-11 flex lg:pt-0'>
                 <div className='w-full absolute top-0 z-20 text-center'>
-                  <Text variant='xl/semibold/white' className='mt-8 mb-4 italic tracking-widest'>
+                  <Text
+                    variant='xl/semibold/white'
+                    className='mt-8 mb-4 italic tracking-widest dark:text-secondary'
+                  >
                     Always something new
                   </Text>
                   <Popover>
                     <PopoverTrigger>
-                      <div className='border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 px-4 py-1'>See what's new this week</div>
+                      <div className='border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 px-4 py-1'>
+                        See what's new this week
+                      </div>
                     </PopoverTrigger>
-                    <PopoverContent>Feature in development.</PopoverContent>
+                    <PopoverContent>
+                      Feature in development.
+                    </PopoverContent>
                   </Popover>
                 </div>
-                <div className='relative h-full w-1/2 overflow-hidden rounded-sm'>
+                <div className='relative h-full w-1/2 overflow-hidden rounded-l-md'>
                   <Image
-                    src={helper.images.commercial13}
+                    src={helper.images.commercial3}
                     alt='hero'
                     sizes={helper.images.size}
-                    className='h-full object-cover brightness-75 hover:scale-110 transition-all duration-300'
+                    className='h-full  object-cover brightness-50 hover:brightness-75 hover:scale-105 transition-all duration-500'
                     fill
                     priority={true}
                   />
                 </div>
-                <div className='relative h-full w-1/2 overflow-hidden rounded-sm'>
+                <div className='relative h-full w-1/2 overflow-hidden rounded-r-md'>
                   <Image
-                    src={helper.images.commercial11}
+                    src={helper.images.commercial5}
                     alt='hero'
                     sizes={helper.images.size}
-                    className='h-full  object-cover brightness-75 hover:scale-110 transition-all duration-300'
+                    className='h-full  object-cover brightness-50 hover:brightness-75 hover:scale-105 transition-all duration-500'
                     fill
                     priority={true}
                   />

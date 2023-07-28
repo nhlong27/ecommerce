@@ -6,42 +6,19 @@ export const typeDefs = gql`
     ADMIN
   }
 
-  type Book {
-    title: String!
-  }
-
-  type Rating {
-    rate: Float
-    count: Int
-  }
-
-  input RatingInput {
-    rate: Float
-    count: Int
-  }
-
   type Product {
+    id: ID!
     title: String!
-    price: Float
-    description: String
-    category: String
+    size: String
+    quantity: String
+    sku: String!
     image: String
-    rating: Rating
-  }
-
-  input ProductInput {
-    title: String!
-    price: Float
-    description: String
     category: String
-    image: String
-    rating: RatingInput
-  }
-
-  type Query {
-    users: [User]
-    products: [Product]
-    stripe_secret: String
+    price: Float
+    score: Float
+    n_o_reviews: Int
+    instock_reserved: Int
+    instock_available: Int
   }
 
   type User {
@@ -63,9 +40,13 @@ export const typeDefs = gql`
     role: Role
   }
 
+  type Query {
+    products: [Product]
+    stripe_secret: String
+  }
+
   type Mutation {
     updateUser(email: String!, name: String!): User
     addUser(name: String!, email: String!, password: String!): ReturnedUser
-    addShit(test: String): String
   }
 `;

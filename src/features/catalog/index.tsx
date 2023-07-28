@@ -7,7 +7,7 @@ import Recommendation from './components/Recommendation';
 import BreadCrumbs from './components/BreadCrumbs';
 import Categories from './components/Categories';
 import ProductCard from './components/product/ProductCard';
-import Filters from './components/Filters';
+import Filters from './components/filters/Filters';
 import ProductDetails from './components/product/ProductDetails';
 export {
   ProductList,

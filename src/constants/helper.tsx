@@ -10,6 +10,11 @@ import commercial5 from 'public/images/commercial5.png';
 import commercial2 from 'public/images/commercial2.png';
 import commercial1 from 'public/images/commercial1.png';
 import commercial6 from 'public/images/commercial6.png';
+import commercial8 from 'public/images/commercial8.png';
+import commercial12 from 'public/images/commercial12.png';
+import commercial16 from 'public/images/commercial16.png';
+import commercial17 from 'public/images/commercial17.png';
+import commercial10 from 'public/images/commercial10.png';
 import pepsi from 'public/images/pepsi.svg';
 import coca from 'public/images/coca.svg';
 import monster from 'public/images/monster.svg';
@@ -86,6 +91,11 @@ const images = {
   commercial15: commercial15,
   commercial1: commercial1,
   commercial6: commercial6,
+  commercial10: commercial10,
+  commercial12: commercial12,
+  commercial17: commercial17,
+  commercial8: commercial8,
+  commercial16: commercial16,
   size: '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
 };
 

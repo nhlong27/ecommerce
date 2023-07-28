@@ -5,7 +5,7 @@ const BreadCrumbs = ({ routerQueries }: { routerQueries: string[] }) => {
     <nav aria-label='Breadcrumb' className='w-full py-4'>
       <ol
         role='list'
-        className='mx-auto flex max-w-2xl items-center space-x-2 px-4 lg:max-w-7xl'
+        className='mx-auto flex flex-wrap max-w-2xl items-center space-x-2 px-4 lg:max-w-7xl'
       >
         <li>
           <div className='flex items-center'>

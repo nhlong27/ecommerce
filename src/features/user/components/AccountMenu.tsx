@@ -31,6 +31,10 @@ const frameworks = [
     value: 'history',
     label: 'History',
   },
+  {
+    value: 'payment',
+    label: 'Payment',
+  },
 ];
 
 const AccountMenu = () => {
@@ -49,6 +53,9 @@ const AccountMenu = () => {
           </TabsContent>
           <TabsContent value='history' className='w-full mb-4'>
             <Text variant='3xl/semibold/black'>Order History</Text>
+          </TabsContent>
+          <TabsContent value='payment' className='w-full mb-4'>
+            <Text variant='3xl/semibold/black'>Payment Details</Text>
           </TabsContent>
           <BreadCrumbs routerQueries={['account', value]} />
           <TabsList className='w-full flex flex-col h-auto'>
@@ -73,12 +80,19 @@ const AccountMenu = () => {
             >
               Order History
             </TabsTrigger>
+            <TabsTrigger
+              onClick={() => setValue('payment')}
+              value='payment'
+              className='w-full justify-start'
+            >
+              Payment Details
+            </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
       <div className='block lg:hidden pb-8'>
         <Text variant='3xl/semibold/black'>
-          {value === 'profile' ? 'User Profile' : value === 'cart' ? 'User Cart' : 'Order History'}
+          {value === 'profile' ? 'User Profile' : value === 'cart' ? 'User Cart' : value === 'payment' ? 'Payment Details' : 'Order History'}
         </Text>
         <div className='w-1/2'>
           <BreadCrumbs routerQueries={['account', value]} />

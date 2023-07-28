@@ -23,7 +23,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { Button } from '../ui/button';
 import {
   Sheet,
   SheetContent,
@@ -35,7 +34,9 @@ import {
 import { Text } from '../common/Text';
 import { signOut, useSession } from 'next-auth/react';
 import { CartSection } from '@/features/user';
-import { Separator } from '../ui/separator';
+import { Skeleton } from '../ui/skeleton';
+import SearchBar from '../common/SearchBar';
+import { ScrollArea } from '@radix-ui/react-scroll-area';
 
 const Nav = () => {
   const { data: session } = useSession();
@@ -71,7 +72,52 @@ const Nav = () => {
             <NavigationMenuItem>
               <NavigationMenuTrigger>Catalogue</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <NavigationMenuLink>Link</NavigationMenuLink>
+                <ul className='grid gap-8 p-6 w-[700px] grid-cols-5'>
+                  <li className='col-span-5 flex justify-center items-center gap-6 bg-gradient-to-bl from-gray-100 dark:from-gray-800 dark:via-transparent dark:to-transparent via-white to-white rounded-md'>
+                    <SearchBar />
+                    <NavigationMenuLink asChild>
+                      <Link
+                        className='flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted no-underline outline-none focus:shadow-md pl-3'
+                        href='/catalogue'
+                      >
+                        <div className='mb-2 mt-4 text-lg font-medium'>Explore our catalogue</div>
+                        <p className='text-sm leading-tight text-muted-foreground'>
+                          Search for your product. Or select one of our categories.
+                        </p>
+                      </Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <NavigationMenuLink
+                    href='/catalogue/coffee_tea'
+                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100'
+                  >
+                    Coffees / Teas.
+                  </NavigationMenuLink>
+                  <NavigationMenuLink
+                    href='/catalogue/energy_drink'
+                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100'
+                  >
+                    Energy drinks.
+                  </NavigationMenuLink>
+                  <NavigationMenuLink
+                    href='/catalogue/juice_shake'
+                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100'
+                  >
+                    Juice Shakes.
+                  </NavigationMenuLink>
+                  <NavigationMenuLink
+                    href='/catalogue/sport_drink'
+                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100'
+                  >
+                    Sport drinks.
+                  </NavigationMenuLink>
+                  <NavigationMenuLink
+                    href='/catalogue/water'
+                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100'
+                  >
+                    Water.
+                  </NavigationMenuLink>
+                </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
@@ -84,10 +130,14 @@ const Nav = () => {
             <NavigationMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <Avatar className='w-8 h-8'>
-                    <AvatarImage src={session ? `https://github.com/shadcn.png` : ''} />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
+                  {session ? (
+                    <Avatar className='w-8 h-8'>
+                      <AvatarImage src='https://github.com/shadcn.png' />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <Skeleton className='w-8 h-8 rounded-full' />
+                  )}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -95,8 +145,7 @@ const Nav = () => {
                   {session ? (
                     <>
                       <DropdownMenuItem>
-                        <Link href='/account'
-                        >Profile</Link>
+                        <Link href='/account'>Profile</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Link
@@ -144,7 +193,7 @@ const Nav = () => {
                   {helper.icon.hamburger}
                 </SheetTrigger>
 
-                <SheetContent side='left' className='w-1/2'>
+                <SheetContent side='left' className='md:w-1/2 w-5/6'>
                   <SheetHeader>
                     <SheetTitle className='flex items-center gap-2 border-b border-gray-200 dark:border-gray-500'>
                       <div className='w-[40px]'>
@@ -161,27 +210,43 @@ const Nav = () => {
                       Epicola
                     </SheetTitle>
                   </SheetHeader>
-                  <NavigationMenu>
-                    <NavigationMenuList className='flex flex-col items-start'>
-                      <NavigationMenuItem>
-                        <Link href='/' legacyBehavior passHref>
-                          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Home
-                          </NavigationMenuLink>
-                        </Link>
-                      </NavigationMenuItem>
-                      <NavigationMenuItem>
-                        <Link href='/' legacyBehavior passHref>
-                          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Catalogue
-                          </NavigationMenuLink>
-                        </Link>
-                      </NavigationMenuItem>
-                      <NavigationMenuItem>
-                        <ThemeToggle />
-                      </NavigationMenuItem>
-                    </NavigationMenuList>
-                  </NavigationMenu>
+                  <ScrollArea className='min-h-screen w-full'>
+                    <NavigationMenu>
+                      <NavigationMenuList className='flex flex-col items-start p-3'>
+                        <NavigationMenuItem>
+                          <Link href='/' legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                              Home
+                            </NavigationMenuLink>
+                          </Link>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                          <ul className='flex gap-3 py-6 w-full flex-col'>
+                            <li className='flex flex-col justify-center items-center gap-6 bg-gradient-to-bl from-gray-100 dark:from-gray-800 dark:via-transparent dark:to-transparent via-white to-white rounded-md'>
+                              <SearchBar />
+                              <NavigationMenuLink asChild>
+                                <Link
+                                  className='flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted no-underline outline-none focus:shadow-md pl-3'
+                                  href='/catalogue'
+                                >
+                                  <div className='mb-2 mt-4 text-lg font-medium'>
+                                    Explore our catalogue
+                                  </div>
+                                  <p className='text-sm leading-tight text-muted-foreground'>
+                                    Search for your product. Or select one of our categories.
+                                  </p>
+                                </Link>
+                              </NavigationMenuLink>
+                            </li>
+                            
+                          </ul>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                          <ThemeToggle />
+                        </NavigationMenuItem>
+                      </NavigationMenuList>
+                    </NavigationMenu>
+                  </ScrollArea>
                 </SheetContent>
               </Sheet>
             </NavigationMenuItem>
@@ -205,31 +270,34 @@ const Nav = () => {
             <NavigationMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <Avatar className='w-6 h-6'>
-                    <AvatarImage src={session ? `https://github.com/shadcn.png` : ''} />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
+                  {session ? (
+                    <Avatar className='w-6 h-6'>
+                      <AvatarImage src='https://github.com/shadcn.png' />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <Skeleton className='w-6 h-6 rounded-full' />
+                  )}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {session ? (
                     <>
-                    <DropdownMenuItem>
-                      <Link href='/account'
-                      >Profile</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link
-                        href='#'
-                        onClick={() =>
-                          signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_SERVER}/` })
-                        }
-                      >
-                        Sign out
-                      </Link>
-                    </DropdownMenuItem>
-                  </>
+                      <DropdownMenuItem>
+                        <Link href='/account'>Profile</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link
+                          href='#'
+                          onClick={() =>
+                            signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_SERVER}/` })
+                          }
+                        >
+                          Sign out
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
                   ) : (
                     <DropdownMenuItem>
                       <Link href='/auth'>Sign in</Link>
