@@ -11,7 +11,6 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Head from 'next/head';
 import { store } from '@/store/store';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import { Separator } from '@/components/ui/separator';
 import { Toaster } from "@/components/ui/toaster"
@@ -42,7 +41,6 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                   <Footer />
                 </div>
               </Hydrate>
-              <ReactQueryDevtools />
             </QueryClientProvider>
           </Provider>
         </SessionProvider>

@@ -60,7 +60,7 @@ const BrandFilter = () => {
             </label>
           </div>
           <Separator />
-          <ScrollArea className="max-h-[400px] w-[350px] flex flex-col">
+          <ScrollArea className="max-h-[400px] flex flex-col">
           {brands.map((brand) => (
             <div key={brand} className='flex gap-4 py-2'>
               <Checkbox

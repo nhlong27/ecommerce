@@ -1,224 +1,75 @@
+import { Text } from '@/components/common/Text';
+import { Button } from '@/components/ui/button';
 import React from 'react';
 
 const Options = () => {
+  const [amount, setAmount] = React.useState(1);
   return (
     <form className='mt-10'>
-      <div>
-        <h3 className='text-sm font-medium '>Color</h3>
-
-        <fieldset className='mt-4'>
-          <legend className='sr-only'>Choose a color</legend>
-          <div className='flex items-center space-x-3'>
-            <label className='relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400'>
-              <input
-                type='radio'
-                name='color-choice'
-                value='White'
-                className='sr-only'
-                aria-labelledby='color-choice-0-label'
-              />
-              <span id='color-choice-0-label' className='sr-only'>
-                White
-              </span>
-              <span
-                aria-hidden='true'
-                className='h-8 w-8 bg-white rounded-full border border-black border-opacity-10'
-              ></span>
-            </label>
-
-            <label className='relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400'>
-              <input
-                type='radio'
-                name='color-choice'
-                value='Gray'
-                className='sr-only'
-                aria-labelledby='color-choice-1-label'
-              />
-              <span id='color-choice-1-label' className='sr-only'>
-                Gray
-              </span>
-              <span
-                aria-hidden='true'
-                className='h-8 w-8 bg-gray-200 dark:bg-gray-500 rounded-full border border-black border-opacity-10'
-              ></span>
-            </label>
-
-            <label className='relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-900'>
-              <input
-                type='radio'
-                name='color-choice'
-                value='Black'
-                className='sr-only'
-                aria-labelledby='color-choice-2-label'
-              />
-              <span id='color-choice-2-label' className='sr-only'>
-                Black
-              </span>
-              <span
-                aria-hidden='true'
-                className='h-8 w-8 bg-gray-900 dark:border-gray-500 rounded-full border border-black border-opacity-10'
-              ></span>
-            </label>
-          </div>
-        </fieldset>
+      <div className='flex items-center justify-start'>
+        <Text variant='lg/normal/ghost' className='mr-4'>
+          Amount:
+        </Text>
+        <Button
+          disabled={amount <= 1}
+          variant='secondary'
+          size='icon'
+          onClick={(e) => {
+            e.preventDefault();
+            setAmount((prev) => prev - 1);
+          }}
+        >
+          <svg
+            width='15'
+            height='15'
+            viewBox='0 0 15 15'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path
+              d='M2.25 7.5C2.25 7.22386 2.47386 7 2.75 7H12.25C12.5261 7 12.75 7.22386 12.75 7.5C12.75 7.77614 12.5261 8 12.25 8H2.75C2.47386 8 2.25 7.77614 2.25 7.5Z'
+              fill='currentColor'
+              fillRule='evenodd'
+              clipRule='evenodd'
+            ></path>
+          </svg>
+        </Button>
+        <Text variant='lg/normal/black' className='mx-4'>
+          {amount}
+        </Text>
+        <Button
+          variant='secondary'
+          size='icon'
+          onClick={(e) => {
+            e.preventDefault();
+            setAmount((prev) => prev + 1);
+          }}
+        >
+          <svg
+            width='15'
+            height='15'
+            viewBox='0 0 15 15'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path
+              d='M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z'
+              fill='currentColor'
+              fillRule='evenodd'
+              clipRule='evenodd'
+            ></path>
+          </svg>
+        </Button>
       </div>
 
-      <div className='mt-10'>
-        <div className='flex items-center justify-between'>
-          <h3 className='text-sm font-medium '>Size</h3>
-          <a href='#' className='text-sm font-medium text-primary dark:text-secondary hover:text-primary/70 dark:hover:text-secondary/70'>
-            Size guide
-          </a>
-        </div>
-
-        <fieldset className='mt-4'>
-          <legend className='sr-only'>Choose a size</legend>
-          <div className='grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4'>
-            <label className='group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 cursor-not-allowed bg-gray-50 text-gray-200'>
-              <input
-                type='radio'
-                name='size-choice'
-                value='XXS'
-                disabled
-                className='sr-only'
-                aria-labelledby='size-choice-0-label'
-              />
-              <span id='size-choice-0-label'>XXS</span>
-              <span
-                aria-hidden='true'
-                className='pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200'
-              >
-                <svg
-                  className='absolute inset-0 h-full w-full stroke-2 text-gray-200'
-                  viewBox='0 0 100 100'
-                  preserveAspectRatio='none'
-                  stroke='currentColor'
-                >
-                  <line x1='0' y1='100' x2='100' y2='0' vector-effect='non-scaling-stroke' />
-                </svg>
-              </span>
-            </label>
-
-            <label className='group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 cursor-pointer bg-white text-gray-900 shadow-sm'>
-              <input
-                type='radio'
-                name='size-choice'
-                value='XS'
-                className='sr-only'
-                aria-labelledby='size-choice-1-label'
-              />
-              <span id='size-choice-1-label'>XS</span>
-
-              <span
-                className='pointer-events-none absolute -inset-px rounded-md'
-                aria-hidden='true'
-              ></span>
-            </label>
-
-            <label className='group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 cursor-pointer bg-white text-gray-900 shadow-sm'>
-              <input
-                type='radio'
-                name='size-choice'
-                value='S'
-                className='sr-only'
-                aria-labelledby='size-choice-2-label'
-              />
-              <span id='size-choice-2-label'>S</span>
-
-              <span
-                className='pointer-events-none absolute -inset-px rounded-md'
-                aria-hidden='true'
-              ></span>
-            </label>
-
-            <label className='group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 cursor-pointer bg-white text-gray-900 shadow-sm'>
-              <input
-                type='radio'
-                name='size-choice'
-                value='M'
-                className='sr-only'
-                aria-labelledby='size-choice-3-label'
-              />
-              <span id='size-choice-3-label'>M</span>
-
-              <span
-                className='pointer-events-none absolute -inset-px rounded-md'
-                aria-hidden='true'
-              ></span>
-            </label>
-
-            <label className='group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 cursor-pointer bg-white text-gray-900 shadow-sm'>
-              <input
-                type='radio'
-                name='size-choice'
-                value='L'
-                className='sr-only'
-                aria-labelledby='size-choice-4-label'
-              />
-              <span id='size-choice-4-label'>L</span>
-
-              <span
-                className='pointer-events-none absolute -inset-px rounded-md'
-                aria-hidden='true'
-              ></span>
-            </label>
-
-            <label className='group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 cursor-pointer bg-white text-gray-900 shadow-sm'>
-              <input
-                type='radio'
-                name='size-choice'
-                value='XL'
-                className='sr-only'
-                aria-labelledby='size-choice-5-label'
-              />
-              <span id='size-choice-5-label'>XL</span>
-
-              <span
-                className='pointer-events-none absolute -inset-px rounded-md'
-                aria-hidden='true'
-              ></span>
-            </label>
-
-            <label className='group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 cursor-pointer bg-white text-gray-900 shadow-sm'>
-              <input
-                type='radio'
-                name='size-choice'
-                value='2XL'
-                className='sr-only'
-                aria-labelledby='size-choice-6-label'
-              />
-              <span id='size-choice-6-label'>2XL</span>
-
-              <span
-                className='pointer-events-none absolute -inset-px rounded-md'
-                aria-hidden='true'
-              ></span>
-            </label>
-
-            <label className='group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 cursor-pointer bg-white text-gray-900 shadow-sm'>
-              <input
-                type='radio'
-                name='size-choice'
-                value='3XL'
-                className='sr-only'
-                aria-labelledby='size-choice-7-label'
-              />
-              <span id='size-choice-7-label'>3XL</span>
-
-              <span
-                className='pointer-events-none absolute -inset-px rounded-md'
-                aria-hidden='true'
-              ></span>
-            </label>
-          </div>
-        </fieldset>
-      </div>
-      <button
+      <Button
         type='submit'
-        className='mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-primary dark:bg-secondary px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+        variant='default'
+        size='lg'
+        className='mt-10 flex w-full items-center justify-center rounded-md border border-transparent2 text-base font-medium text-white bg-primary hover:bg-primary/70 dark:bg-secondary dark:hover:bg-secondary/70 dark:border-transparent'
       >
-        Add to bag
-      </button>
+        Add to cart
+      </Button>
     </form>
   );
 };

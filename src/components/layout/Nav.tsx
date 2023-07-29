@@ -37,6 +37,7 @@ import { CartSection } from '@/features/user';
 import { Skeleton } from '../ui/skeleton';
 import SearchBar from '../common/SearchBar';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
+import { Button } from '../ui/button';
 
 const Nav = () => {
   const { data: session } = useSession();
@@ -92,46 +93,35 @@ const Nav = () => {
                     className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Coffees / Teas.
-                    <span className='absolute top-1 right-1'>
-                    {helper.icon.menu}
-                    </span>
-                      
+                    <span className='absolute top-1 right-1'>{helper.icon.menu}</span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
                     href='/catalogue/energy_drink'
                     className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Energy drinks.
-                    <span className='absolute top-1 right-1'>
-                    {helper.icon.menu}
-                    </span>
+                    <span className='absolute top-1 right-1'>{helper.icon.menu}</span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
                     href='/catalogue/juice_shake'
                     className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Juice Shakes.
-                    <span className='absolute top-1 right-1'>
-                    {helper.icon.menu}
-                    </span>
+                    <span className='absolute top-1 right-1'>{helper.icon.menu}</span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
                     href='/catalogue/sport_drink'
                     className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Sport drinks.
-                    <span className='absolute top-1 right-1'>
-                    {helper.icon.menu}
-                    </span>
+                    <span className='absolute top-1 right-1'>{helper.icon.menu}</span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
                     href='/catalogue/water'
                     className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Water.
-                    <span className='absolute top-1 right-1'>
-                    {helper.icon.menu}
-                    </span>
+                    <span className='absolute top-1 right-1'>{helper.icon.menu}</span>
                   </NavigationMenuLink>
                 </ul>
               </NavigationMenuContent>
@@ -146,14 +136,10 @@ const Nav = () => {
             <NavigationMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  {session ? (
-                    <Avatar className='w-8 h-8'>
-                      <AvatarImage src='https://github.com/shadcn.png' />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  ) : (
-                    <Skeleton className='w-8 h-8 rounded-full' />
-                  )}
+                  <Avatar className='w-8 h-8'>
+                    <AvatarImage src={session ? 'https://github.com/shadcn.png' : ''} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -189,9 +175,20 @@ const Nav = () => {
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
-                    <SheetTitle>Your cart</SheetTitle>
+                    <SheetTitle>
+                      <Text variant='2xl/bold/black'>
+                        Cart
+                      </Text>
+                    </SheetTitle>
                     <SheetDescription className='h-screen'>
-                      <CartSection />
+                      {session ? <CartSection /> : <div className='flex flex-col justify-start items-start gap-4'>
+                        <Text variant='base/normal/primary' className='dark:text-secondary'>
+                        You must sign in to view this section
+                        </Text>
+                        <Button variant='secondary' className='mt-4 mx-auto'>
+                          <Link href='/auth'>Sign in</Link>
+                        </Button>
+                        </div>}
                     </SheetDescription>
                   </SheetHeader>
                 </SheetContent>
@@ -254,7 +251,6 @@ const Nav = () => {
                                 </Link>
                               </NavigationMenuLink>
                             </li>
-                            
                           </ul>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
@@ -286,14 +282,10 @@ const Nav = () => {
             <NavigationMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  {session ? (
-                    <Avatar className='w-6 h-6'>
-                      <AvatarImage src='https://github.com/shadcn.png' />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  ) : (
-                    <Skeleton className='w-6 h-6 rounded-full' />
-                  )}
+                  <Avatar className='w-6 h-6'>
+                    <AvatarImage src={session ? 'https://github.com/shadcn.png' : ''} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>

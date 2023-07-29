@@ -41,6 +41,7 @@ export const typeDefs = gql`
   }
 
   type Query {
+    product(sku: String!): Product
     products: [Product]
     stripe_secret: String
   }

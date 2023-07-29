@@ -18,7 +18,7 @@ export default function SignInWithProviders({
               return (
                 <div key={provider.name}>
                   <Button
-                    variant='default'
+                    variant='secondary'
                     onClick={() => signIn(provider.id, { callbackUrl: '/account' })}
                     className='flex gap-4'
                   >
@@ -51,7 +51,7 @@ export default function SignInWithProviders({
               return (
                 <div key={provider.name}>
                   <Button
-                    variant='default'
+                    variant='secondary'
                     onClick={() => signIn(provider.id, { callbackUrl: '/account' })}
                     className='flex gap-4'
                   >
@@ -64,7 +64,7 @@ export default function SignInWithProviders({
               return (
                 <div key={provider.name}>
                   <Button
-                    variant='default'
+                    variant='secondary'
                     onClick={() => signIn(provider.id, { callbackUrl: '/account' })}
                     className='flex gap-4'
                   >

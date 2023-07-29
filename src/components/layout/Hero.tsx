@@ -128,7 +128,7 @@ const Hero = () => {
                     src={helper.images.commercial3}
                     alt='hero'
                     sizes={helper.images.size}
-                    className='h-full  object-cover brightness-50 hover:brightness-75 hover:scale-105 transition-all duration-500'
+                    className='h-full  object-cover brightness-75 hover:brightness-100 hover:scale-105 transition-all duration-500'
                     fill
                     priority={true}
                   />
@@ -138,7 +138,7 @@ const Hero = () => {
                     src={helper.images.commercial5}
                     alt='hero'
                     sizes={helper.images.size}
-                    className='h-full  object-cover brightness-50 hover:brightness-75 hover:scale-105 transition-all duration-500'
+                    className='h-full  object-cover brightness-75 hover:brightness-100 hover:scale-105 transition-all duration-500'
                     fill
                     priority={true}
                   />

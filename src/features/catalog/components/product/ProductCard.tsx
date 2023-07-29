@@ -35,6 +35,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 sizes={helper.images.size}
                 className=' object-contain transition-all duration-300 hover:scale-110'
                 fill
+                placeholder='blur'
+                blurDataURL={helper.images.blur}
               />
             </AspectRatio>
           </div>

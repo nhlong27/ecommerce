@@ -1,6 +1,7 @@
 import React from 'react';
+import { ProductType } from '../../types';
 
-const Details = () => {
+const Details = ({ product }: { product: ProductType }) => {
   return (
     <div className='py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 dark:border-gray-500 lg:pb-16 lg:pr-8 lg:pt-6'>
       <div>
@@ -8,10 +9,10 @@ const Details = () => {
 
         <div className='space-y-6'>
           <p className='text-base'>
-            The Basic Tee 6-Pack allows you to fully express your vibrant personality with three
-            grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a
-            trendsetter? Try our exclusive colorway: &quot;Black&quot;. Need to add an extra pop of
-            color to your outfit? Our white tee has you covered.
+            {`
+          This iconic drink is crafted from high-quality ingredients, carefully brewed to extract the full flavor profile, resulting in a satisfying and thirst-quenching experience with every sip. ${product.title} is known for its crisp and clean taste, making it a favorite among tea enthusiasts and those looking for a low-calorie and refreshing option.
+
+          `}
           </p>
         </div>
       </div>
@@ -22,16 +23,16 @@ const Details = () => {
         <div className='mt-4'>
           <ul role='list' className='list-disc space-y-2 pl-4 text-sm'>
             <li className=''>
-              <span className=''>Hand cut and sewn locally</span>
+              <span className=''>Expertly crafted for an unparalleled taste experience</span>
             </li>
             <li className=''>
-              <span className=''>Dyed with our proprietary colors</span>
+              <span className=''>Sourced from the finest, natural ingredients</span>
             </li>
             <li className=''>
-              <span className=''>Pre-washed &amp; pre-shrunk</span>
+              <span className=''>Thoughtfully infused with essential nutrients for your well-being</span>
             </li>
             <li className=''>
-              <span className=''>Ultra-soft 100% cotton</span>
+              <span className=''>Prepared with precision for consistent taste in every sip</span>
             </li>
           </ul>
         </div>
@@ -41,10 +42,8 @@ const Details = () => {
         <h2 className='text-sm font-medium '>Details</h2>
 
         <div className='mt-4 space-y-6'>
-          <p className='text-sm '>
-            The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for
-            our subscription service and be the first to get new, exciting colors, like our upcoming
-            &quot;Charcoal Gray&quot; limited release.
+          <p className='text-base text-gray-500 dark:text-gray-400'>
+            {`Packaged in convenient sizes, including bottles and cans, ${product.title} is the perfect companion for on-the-go moments, outdoor adventures, and gatherings with family and friends. With its invigorating taste and distinctive branding, this has become a beloved classic in the world of beverages, capturing the hearts of tea enthusiasts and offering a delightful way to quench your thirst.`}
           </p>
         </div>
       </div>

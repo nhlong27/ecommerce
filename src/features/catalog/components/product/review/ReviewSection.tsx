@@ -9,7 +9,7 @@ import ReviewForm from './ReviewForm';
 
 const ReviewSection = () => {
   return (
-    <div className='mx-auto  mt-6 max-w-2xl sm:px-6 lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 flex flex-col justify-start items-start'>
+    <div className='mx-auto mt-6 max-w-2xl sm:px-6 lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 flex flex-col justify-start items-start'>
       <Text variant='2xl/semibold/black'>Reviews</Text>
       <div className='w-full flex gap-4 lg:gap-16 lg:flex-row flex-col'>
         <div className='order-1 lg:order-2 w-full lg:w-1/2 my-8'>

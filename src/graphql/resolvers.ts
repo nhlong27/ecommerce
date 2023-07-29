@@ -12,10 +12,19 @@ import bcrypt from 'bcrypt';
 
 export const resolvers = {
   Query: {
+    product: async (_: any, args: any) => {
+      const data = await getOrSetCache(args.sku, async () => {
+        await connectMongo();
+        const product = await ProductModel.findOne({ sku: args.sku }).lean();
+        return product;
+      });
+      if (!data) throw new Error('Unable to get resources');
+      return data;
+    },
     products: async (_: any, args: any) => {
       const data = await getOrSetCache('products', async () => {
         await connectMongo();
-        const products = await ProductModel.find({category: ['coffee_tea','energy_drink', 'juice_shake', 'sport_drink', 'water']}).lean();
+        const products = await ProductModel.find({category: ['coffee_tea','energy_drink', 'juice_shake', 'sport_drink', 'water']}).limit(400).lean()
         return products;
       });
       if (!data) throw new Error('Unable to get resources');

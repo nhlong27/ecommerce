@@ -65,6 +65,8 @@ const ProductList = () => {
     }
   }, [sort]);
 
+  console.log(brandSet)
+
   React.useEffect(() => {
     if (data) {
       if (categorySet.size > 0) {
@@ -88,8 +90,7 @@ const ProductList = () => {
   React.useEffect(() => {
     if (data) {
       if (brandSet.size > 0) {
-        const products = data.products;
-        // .filter((product) => Array.from(brandSet).some((brand) => product.title.includes(brand)));
+        const products = data.products.filter((product) => Array.from(brandSet).some((brand) => product.title.toLowerCase().includes(brand.toLowerCase())));
         setFilteredProducts(products);
       } else {
         setFilteredProducts(null);
@@ -103,6 +104,9 @@ const ProductList = () => {
       setBrandSet(new Set(brands));
     }
   }, [brands]);
+
+
+  console.log(data)
 
   if (filteredProducts) {
     const endOffset = itemOffset + itemsPerPage;

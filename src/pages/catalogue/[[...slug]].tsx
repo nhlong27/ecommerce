@@ -84,14 +84,14 @@ const CataloguePage = () => {
       <div className='w-11/12 mx-auto min-h-screen p-8 rounded-lg z-10 bg-white dark:bg-stone-950'>
         <Text variant='3xl/semibold/black'>
           {router.query.slug?.[1]
-            ? router.query.slug?.[1]
+            ? 'Product (SKU): ' + router.query.slug?.[1]
             : router.query.slug?.[0]
             ? router.query.slug?.[0]
             : 'Catalogue'}
         </Text>
         <BreadCrumbs routerQueries={['catalogue', ...(router.query.slug || [])]} />
         {router.query.slug?.[1] ? (
-          <ProductDetails />
+          <ProductDetails sku={router.query.slug?.[1]} />
         ) : (
           <>
             <Filters />
