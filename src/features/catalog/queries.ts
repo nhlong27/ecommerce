@@ -1,7 +1,7 @@
 import { request, gql } from 'graphql-request';
 import { GRAPHQL_API_URL } from '@/constants/urls';
 import axios from 'axios';
-import { ProductSchema, ProductsSchema } from './types';
+import { CartItemsSchema, ProductSchema, ProductsSchema } from './types';
 import { ProductDocument } from '../../../mongoose/models/product.model';
 
 const products = gql`
@@ -40,6 +40,24 @@ const product = gql`
   }
 `;
 
+const cartItems = gql`
+  query cartItems($email: String!) {
+    cartItems (email: $email) {
+      id
+      userId
+      productId
+      productTitle
+      productPrice
+      productCategory
+      productSize
+      productImage
+      productQuantity
+      quantity
+    }
+  }
+`;
+
+
 export const getProductsQuery = () => {
   return {
     queryKey: ['products'],
@@ -65,3 +83,16 @@ export const getProductQuery = (sku: string) => {
     refetchOnWindowFocus: false,
   };
 };
+
+export const getCartItemsQuery = (email: string) => {
+  return {
+    queryKey: ['cartItems'],
+    queryFn: async () => {
+      const response = await request(`${GRAPHQL_API_URL}`, cartItems, { email });
+      return CartItemsSchema.parse(response);
+    },
+    refetchOnReconnect: true,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+  };
+}

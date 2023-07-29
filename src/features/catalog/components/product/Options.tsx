@@ -1,11 +1,70 @@
 import { Text } from '@/components/common/Text';
 import { Button } from '@/components/ui/button';
-import React from 'react';
+import { useSession } from 'next-auth/react';
+import React, { use } from 'react';
+import { ProductType, addToCartSchema } from '../../types';
+import { useAddToCartMutation } from '../../hooks/useAddToCartMutation';
+import { toast } from '@/components/ui/use-toast';
+import { useQueryClient } from '@tanstack/react-query';
 
-const Options = () => {
+
+type OptionsProps = {
+  product: ProductType;
+};
+const Options: React.FC<OptionsProps> = ({product}) => {
   const [amount, setAmount] = React.useState(1);
+  const {data: session} = useSession();
+  const addToCartMutation = useAddToCartMutation();
+  const queryClient = useQueryClient()
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (session) {
+      const toCart = {
+        productId: product.sku,
+        quantity: amount,
+        email: session.user.email,
+        productTitle: product.title,
+        productPrice: product.price,
+        productImage: product.image,
+        productCategory: product.category,
+        productSize: product.size,
+        productQuantity: product.quantity,
+      }
+      try {
+        addToCartSchema.parse(toCart);
+      }
+      catch (error) {
+        console.log(error);
+        toast({ title: 'Command failed', description: 'Check console for error message', variant: 'destructive'});
+        return;
+      };
+
+      addToCartMutation.mutate({
+        productId: product.sku,
+        quantity: amount,
+        email: session.user.email,
+        productTitle: product.title,
+        productPrice: product.price,
+        productImage: product.image,
+        productCategory: product.category,
+        productSize: product.size,
+        productQuantity: product.quantity,
+      }, {
+        onSuccess: () => {
+          setAmount(1);
+          toast({ title: 'Add to cart successfully'});
+          queryClient.invalidateQueries(['cartItems'])
+        },
+        onError: (error) => {
+          console.log(error);
+          toast({ title: 'Command failed', description: 'Check console for error message', variant: 'destructive'});
+        }
+      })  
+    }
+  }
   return (
-    <form className='mt-10'>
+    <form className='mt-10' onSubmit={handleSubmit}>
       <div className='flex items-center justify-start'>
         <Text variant='lg/normal/ghost' className='mr-4'>
           Amount:

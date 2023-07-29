@@ -16,9 +16,11 @@ import { TabsContent } from '@radix-ui/react-tabs';
 import { Text } from '@/components/common/Text';
 import { BreadCrumbs } from '@/features/catalog';
 import { useAtom } from 'jotai';
-import { accountSectionAtom } from '@/pages/account';
+import { accountSectionAtom } from '@/pages/account/[[...slug]]';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-const frameworks = [
+const sections = [
   {
     value: 'profile',
     label: 'Profile',
@@ -44,7 +46,7 @@ const AccountMenu = () => {
   return (
     <>
       <div className='hidden lg:block lg:basis-1/4 min-h-screen px-4'>
-        <Tabs defaultValue='profile' className='w-full'>
+        <Tabs defaultValue={value} className='w-full'>
           <TabsContent value='profile' className='w-full mb-4'>
             <Text variant='3xl/semibold/black'>User Profile</Text>
           </TabsContent>
@@ -59,40 +61,54 @@ const AccountMenu = () => {
           </TabsContent>
           <BreadCrumbs routerQueries={['account', value]} />
           <TabsList className='w-full flex flex-col h-auto'>
-            <TabsTrigger
-              onClick={() => setValue('profile')}
-              value='profile'
-              className='w-full justify-start'
-            >
-              Profile
-            </TabsTrigger>
-            <TabsTrigger
-              onClick={() => setValue('cart')}
-              value='cart'
-              className='w-full justify-start'
-            >
-              Cart
-            </TabsTrigger>
-            <TabsTrigger
-              onClick={() => setValue('history')}
-              value='history'
-              className='w-full justify-start'
-            >
-              Order History
-            </TabsTrigger>
-            <TabsTrigger
-              onClick={() => setValue('payment')}
-              value='payment'
-              className='w-full justify-start'
-            >
-              Payment Details
-            </TabsTrigger>
+            <Link href='/account/profile' className='w-full'>
+              <TabsTrigger
+                onClick={() => setValue('profile')}
+                value='profile'
+                className='w-full justify-start'
+              >
+                Profile
+              </TabsTrigger>
+            </Link>
+            <Link href='/account/cart' className='w-full'>
+              <TabsTrigger
+                onClick={() => setValue('cart')}
+                value='cart'
+                className='w-full justify-start'
+              >
+                Cart
+              </TabsTrigger>
+            </Link>
+            <Link href='/account/history' className='w-full'>
+              <TabsTrigger
+                onClick={() => setValue('history')}
+                value='history'
+                className='w-full justify-start'
+              >
+                Order History
+              </TabsTrigger>
+            </Link>
+            <Link href='/account/payment' className='w-full'>
+              <TabsTrigger
+                onClick={() => setValue('payment')}
+                value='payment'
+                className='w-full justify-start'
+              >
+                Payment Details
+              </TabsTrigger>
+            </Link>
           </TabsList>
         </Tabs>
       </div>
       <div className='block lg:hidden pb-8'>
         <Text variant='3xl/semibold/black'>
-          {value === 'profile' ? 'User Profile' : value === 'cart' ? 'User Cart' : value === 'payment' ? 'Payment Details' : 'Order History'}
+          {value === 'profile'
+            ? 'User Profile'
+            : value === 'cart'
+            ? 'User Cart'
+            : value === 'payment'
+            ? 'Payment Details'
+            : 'Order History'}
         </Text>
         <div className='w-1/2'>
           <BreadCrumbs routerQueries={['account', value]} />
@@ -106,7 +122,7 @@ const AccountMenu = () => {
               className='w-[200px] justify-between'
             >
               {value
-                ? frameworks.find((framework) => framework.value === value)?.label
+                ? sections.find((framework) => framework.value === value)?.label
                 : 'Select section...'}
               <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
             </Button>
@@ -114,22 +130,24 @@ const AccountMenu = () => {
           <PopoverContent className='w-[200px] p-0'>
             <Command>
               <CommandGroup>
-                {frameworks.map((framework) => (
-                  <CommandItem
-                    key={framework.value}
-                    onSelect={(currentValue) => {
-                      setValue(currentValue === value ? '' : currentValue);
-                      setOpen(false);
-                    }}
-                  >
-                    <Check
-                      className={cn(
-                        'mr-2 h-4 w-4',
-                        value === framework.value ? 'opacity-100' : 'opacity-0',
-                      )}
-                    />
-                    {framework.label}
-                  </CommandItem>
+                {sections.map((section) => (
+                  <Link href={`/account/${section.value}`}>
+                    <CommandItem
+                      key={section.value}
+                      onSelect={(currentValue) => {
+                        setValue(currentValue === value ? '' : currentValue);
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          'mr-2 h-4 w-4',
+                          value === section.value ? 'opacity-100' : 'opacity-0',
+                        )}
+                      />
+                      {section.label}
+                    </CommandItem>
+                  </Link>
                 ))}
               </CommandGroup>
             </Command>

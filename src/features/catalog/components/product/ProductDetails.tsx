@@ -75,7 +75,7 @@ const ProductDetails = ({ sku }: { sku: string }) => {
               {data.quantity}
             </Badge>
           </div>
-          <Options />
+          <Options product= {data} />
           <div className='w-full flex flex-col justify-center items-center py-6 mt-8 rounded-md border bg-gray-100 dark:bg-slate-900'>
             <svg
               width='20'

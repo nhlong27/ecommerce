@@ -21,6 +21,53 @@ export const typeDefs = gql`
     instock_available: Int
   }
 
+  type CartItem {
+    id: ID!
+    userId: Int!
+    productId: String!
+    productTitle: String
+    productPrice: Float
+    productCategory: String
+    productSize: String
+    productImage: String
+    productQuantity: String
+    quantity: Int!
+  }
+
+  type Order {
+    id: ID!
+    userId: Int!
+
+    total: Int
+    status: String
+    orderItems: [OrderItem]
+
+  }
+
+  type OrderItem {
+    id: ID!
+    orderId: Int!
+
+    status: String
+
+    productId: String!
+    productTitle: String
+    productPrice: Float
+    productCategory: String
+    productSize: String
+    productImage: String
+    productQuantity: String
+    quantity: Int!
+  }
+
+  type PaymentDetails {
+    id: ID!
+    userId: Int!
+
+    paymentMethod: String
+    paymentAmount: String
+  }
+
   type User {
     id: ID!
     name: String
@@ -28,6 +75,11 @@ export const typeDefs = gql`
     emailVerified: Boolean
     image: String
     password: String
+
+    cartItems: [CartItem]
+    orders: [Order]
+    paymentDetails: [PaymentDetails]
+
     role: Role
   }
 
@@ -37,6 +89,11 @@ export const typeDefs = gql`
     email: String!
     emailVerified: Boolean
     image: String
+
+    cartItems: [CartItem]
+    orders: [Order]
+    paymentDetails: [PaymentDetails]
+
     role: Role
   }
 
@@ -44,10 +101,31 @@ export const typeDefs = gql`
     product(sku: String!): Product
     products: [Product]
     stripe_secret: String
+    cartItems (
+      email: String!
+    ): [CartItem]
   }
 
   type Mutation {
-    updateUser(email: String!, name: String!): User
-    addUser(name: String!, email: String!, password: String!): ReturnedUser
+    updateUser(
+      email: String!
+      name: String!
+    ): User
+    addUser(
+      name: String!,
+      email: String!
+      password: String!
+    ): ReturnedUser
+    addToCart(
+      email: String!
+      productId: String!
+      productTitle: String
+      productPrice: Float
+      productCategory: String
+      productSize: String
+      productImage: String
+      productQuantity: String
+      quantity: Int!
+    ): CartItem
   }
 `;

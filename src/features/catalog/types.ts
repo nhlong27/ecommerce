@@ -18,5 +18,38 @@ export const ProductsSchema = z.object({
   products: z.array(ProductSchema),
 });
 
+export const CartItemSchema = z.object({
+  id: z.string(),
+  userId: z.number(),
+  productId: z.string(),
+  productTitle: z.string(),
+  productPrice: z.number(),
+  productCategory: z.string(),
+  productSize: z.string(),
+  productImage: z.string(),
+  productQuantity: z.string(),
+  quantity: z.number(),
+});
+
+export const CartItemsSchema = z.object({
+  cartItems: z.array(CartItemSchema),
+});
+
+export const addToCartSchema = z.object({
+  productId: z.string(),
+  quantity: z.number(),
+  productImage: z.string(),
+  email: z.string(),
+  productTitle: z.string(),
+  productPrice: z.number(),
+  productCategory: z.string(),
+  productSize: z.string(),
+  productQuantity: z.string(),
+});
+
 export type ProductType = z.infer<typeof ProductSchema>;
 export type ProductsType = z.infer<typeof ProductsSchema>;
+export type CartItemType = z.infer<typeof CartItemSchema>;
+export type addToCartType = z.infer<typeof addToCartSchema>;
+export type CartItemsType = z.infer<typeof CartItemsSchema>;
+

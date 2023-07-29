@@ -24,7 +24,11 @@ export const resolvers = {
     products: async (_: any, args: any) => {
       const data = await getOrSetCache('products', async () => {
         await connectMongo();
-        const products = await ProductModel.find({category: ['coffee_tea','energy_drink', 'juice_shake', 'sport_drink', 'water']}).limit(400).lean()
+        const products = await ProductModel.find({
+          category: ['coffee_tea', 'energy_drink', 'juice_shake', 'sport_drink', 'water'],
+        })
+          .limit(400)
+          .lean();
         return products;
       });
       if (!data) throw new Error('Unable to get resources');
@@ -39,6 +43,20 @@ export const resolvers = {
         },
       });
       return intent.client_secret;
+    },
+    cartItems: async (_: any, args: any) => {
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          email: args.email,
+        },
+      });
+      if (!existingUser) throw new Error('User with that email does not exist');
+      const cartItems = await prisma.cartItem.findMany({
+        where: {
+          userId: existingUser.id,
+        },
+      });
+      return cartItems;
     },
   },
   Mutation: {
@@ -72,6 +90,46 @@ export const resolvers = {
       });
       const { password, ...newUserWithoutPassword } = newUser;
       return newUserWithoutPassword;
+    },
+    addToCart: async (_: any, args: any) => {
+      const owner = await prisma.user.findFirst({
+        where: {
+          email: args.email,
+        },
+      });
+      if (!owner) throw new Error('User with that email does not exist');
+      const existingCartItewm = await prisma.cartItem.findFirst({
+        where: {
+          userId: owner.id,
+          productId: args.productId,
+        },
+      });
+      if (existingCartItewm) {
+        const updatedCartItem = await prisma.cartItem.update({
+          where: {
+            id: existingCartItewm.id,
+          },
+          data: {
+            quantity: existingCartItewm.quantity + args.quantity,
+            productImage: args.productImage,
+          },
+        });
+        return updatedCartItem;
+      }
+      const newCartItem = await prisma.cartItem.create({
+        data: {
+          quantity: args.quantity,
+          userId: owner.id,
+          productId: args.productId,
+          productTitle: args.productTitle,
+          productPrice: args.productPrice,
+          productCategory: args.productCategory,
+          productSize: args.productSize,
+          productImage: args.productImage,
+          productQuantity: args.productQuantity,
+        },
+      });
+      return newCartItem;
     },
   },
 };

@@ -41,7 +41,6 @@ import { Button } from '../ui/button';
 
 const Nav = () => {
   const { data: session } = useSession();
-
   return (
     <>
       <nav className='hidden md:flex w-11/12 h-full mx-auto'>
@@ -173,24 +172,31 @@ const Nav = () => {
                 <SheetTrigger className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 px-4 py-2'>
                   <helper.icon.shop className='h-5 w-5' />
                 </SheetTrigger>
-                <SheetContent>
+                <SheetContent className='flex flex-col'>
                   <SheetHeader>
                     <SheetTitle>
-                      <Text variant='2xl/bold/black'>
-                        Cart
-                      </Text>
+                      <Link href='/account'>
+                        <Text variant='xl/semibold/black'>Your Cart</Text>
+                      </Link>
                     </SheetTitle>
-                    <SheetDescription className='h-screen'>
-                      {session ? <CartSection /> : <div className='flex flex-col justify-start items-start gap-4'>
-                        <Text variant='base/normal/primary' className='dark:text-secondary'>
-                        You must sign in to view this section
-                        </Text>
-                        <Button variant='secondary' className='mt-4 mx-auto'>
-                          <Link href='/auth'>Sign in</Link>
-                        </Button>
-                        </div>}
+                    <SheetDescription>
+                      <Text variant='sm/normal/ghost'>
+                        Your Ultimate Cart: Where Shopping Dreams Come True!
+                      </Text>
                     </SheetDescription>
                   </SheetHeader>
+                  {session ? (
+                    <CartSection style='sheet' session={session} />
+                  ) : (
+                    <div className='flex flex-col justify-start items-start gap-4'>
+                      <Text variant='base/normal/primary' className='dark:text-secondary'>
+                        You must sign in to view this section
+                      </Text>
+                      <Button variant='secondary' className='mt-4 mx-auto'>
+                        <Link href='/auth'>Sign in</Link>
+                      </Button>
+                    </div>
+                  )}
                 </SheetContent>
               </Sheet>
             </NavigationMenuItem>
