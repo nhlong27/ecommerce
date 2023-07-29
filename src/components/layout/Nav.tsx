@@ -89,33 +89,49 @@ const Nav = () => {
                   </li>
                   <NavigationMenuLink
                     href='/catalogue/coffee_tea'
-                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100'
+                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Coffees / Teas.
+                    <span className='absolute top-1 right-1'>
+                    {helper.icon.menu}
+                    </span>
+                      
                   </NavigationMenuLink>
                   <NavigationMenuLink
                     href='/catalogue/energy_drink'
-                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100'
+                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Energy drinks.
+                    <span className='absolute top-1 right-1'>
+                    {helper.icon.menu}
+                    </span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
                     href='/catalogue/juice_shake'
-                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100'
+                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Juice Shakes.
+                    <span className='absolute top-1 right-1'>
+                    {helper.icon.menu}
+                    </span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
                     href='/catalogue/sport_drink'
-                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100'
+                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Sport drinks.
+                    <span className='absolute top-1 right-1'>
+                    {helper.icon.menu}
+                    </span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
                     href='/catalogue/water'
-                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100'
+                    className='col-span-1 h-20 hover:bg-gray-100 dark:hover:bg-gray-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Water.
+                    <span className='absolute top-1 right-1'>
+                    {helper.icon.menu}
+                    </span>
                   </NavigationMenuLink>
                 </ul>
               </NavigationMenuContent>

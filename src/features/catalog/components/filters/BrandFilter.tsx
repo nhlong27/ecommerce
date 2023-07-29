@@ -7,22 +7,23 @@ import { CheckedState } from '@radix-ui/react-checkbox';
 import { useAtom } from 'jotai';
 
 import helper from '@/constants/helper';
-import { categoryFilterAtom, categoryRegistry } from '@/pages/catalogue/[[...slug]]';
+import { brandFilterAtom, brandsAtom } from '@/pages/catalogue/[[...slug]]';
+import { ScrollArea } from "@/components/ui/scroll-area"
 
-
-const CategoryFilter = () => {
-  const [categorySet, setCategorySet] = useAtom(categoryFilterAtom);
+const BrandFilter = () => {
+  const [brandSet, setBrandSet] = useAtom(brandFilterAtom);
+  const [brands, setBrands] = useAtom(brandsAtom);
   const [isAllChecked, setIsAllChecked] = React.useState<CheckedState>(true);
 
-  const handleCheckChange = (category: string) => {
-    if (categorySet.has(category)) {
-      categorySet.delete(category);
-      setCategorySet(new Set(categorySet));
+  const handleCheckChange = (brand: string) => {
+    if (brandSet.has(brand)) {
+      brandSet.delete(brand);
+      setBrandSet(new Set(brandSet));
     } else {
-      categorySet.add(category);
-      setCategorySet(new Set(categorySet));
+      brandSet.add(brand);
+      setBrandSet(new Set(brandSet));
     }
-    if (categorySet.size === Object.keys(categoryRegistry).length) {
+    if (brandSet.size === brands.length) {
       setIsAllChecked(true);
     } else {
       setIsAllChecked(false);
@@ -31,15 +32,15 @@ const CategoryFilter = () => {
   const handleAllChecked = () => {
     if (isAllChecked) {
       setIsAllChecked(false);
-      setCategorySet(new Set());
+      setBrandSet(new Set());
     } else {
       setIsAllChecked(true);
-      setCategorySet(new Set(Object.keys(categoryRegistry)));
+      setBrandSet(new Set(brands));
     }
   };
   return (
     <Popover>
-      <PopoverTrigger className='flex gap-2 items-center'>Categories 
+      <PopoverTrigger className='flex gap-2 items-center'>Brands 
         <span>{helper.icon.chevron_up}</span>
       </PopoverTrigger>
       <PopoverContent>
@@ -59,25 +60,27 @@ const CategoryFilter = () => {
             </label>
           </div>
           <Separator />
-          {Object.keys(categoryRegistry).map((category) => (
-            <div key={category} className='flex gap-4'>
+          <ScrollArea className="max-h-[400px] w-[350px] flex flex-col">
+          {brands.map((brand) => (
+            <div key={brand} className='flex gap-4 py-2'>
               <Checkbox
-                checked={categorySet.has(category)}
-                onCheckedChange={() => handleCheckChange(category)}
-                id={category}
+                checked={brandSet.has(brand)}
+                onCheckedChange={() => handleCheckChange(brand)}
+                id={brand}
               />
               <label
-                htmlFor={category}
+                htmlFor={brand}
                 className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 '
               >
-                {categoryRegistry[category as keyof typeof categoryRegistry].title}
+                {brand}
               </label>
             </div>
           ))}
+          </ScrollArea>
         </div>
       </PopoverContent>
     </Popover>
   );
 };
 
-export default CategoryFilter;
+export default BrandFilter;

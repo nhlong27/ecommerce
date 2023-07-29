@@ -1,17 +1,66 @@
 import React from 'react';
-import { Categories, Filters, ProductDetails, ProductList } from '@/features/catalog';
+import { Filters, ProductDetails, ProductList } from '@/features/catalog';
 import BreadCrumbs from '@/features/catalog/components/BreadCrumbs';
-import Link from 'next/link';
-import CategorySection from './[[...slug]]';
 import { useRouter } from 'next/router';
 import { Text } from '@/components/common/Text';
-import { AspectRatio } from '@radix-ui/react-aspect-ratio';
 import Image from 'next/image';
 import helper from '@/constants/helper';
 import SearchBar from '@/components/common/SearchBar';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
+import { getProductsQuery } from '@/features/catalog/queries';
+import { atom } from 'jotai';
+import { ProductType } from '@/features/catalog/types';
+
+
+export const categoryFilterAtom = atom<Set<string>>(
+  new Set(['coffee_tea', 'energy_drink', 'juice_shake', 'sport_drink', 'water']),
+);
+export const brandFilterAtom = atom<Set<any>>(
+  new Set(),
+);
+export const sortAtom = atom<string>(''
+);
+export const brandsAtom = atom<Array<string>>([]
+);
+export const priceRangeAtom = atom<number[]>([5]
+);
+
+
+export const filteredProductsAtom = atom<ProductType[] | null>(null);
+
+
+export const categoryRegistry = {
+  coffee_tea: {
+    title: 'Coffee / Tea',
+    brands: ['Brisk', 'KeVita', 'Lipton', 'Pure Leaf', 'Frappuccino', 'Yachak'],
+    sizes: ['1L', '12oz', '16oz']
+  },
+  energy_drink:{
+    title: 'Energy drink',
+    brands: ['Amp Energy', 'Celcisu', 'Citrus Springs', 'Gatorade', 'Mtn Dew', 'Rockstar Energy'],
+    sizes: ['12oz', '16oz']
+  },
+  juice_shake: {
+    title: 'Juice shake',
+    brands: ['Naked Juice', 'Tropicana', 'Dole'],
+    sizes: ['1L', '2L', '12oz', '14oz'],
+  },
+  sport_drink: {
+    title: 'Sport drink',
+    brands: ['Gatorade', 'Propel'],
+    sizes: ['12oz', '14oz'] 
+  },
+  water: {
+    title: 'Water',
+    brands: ['Aquafina', 'Bubly', 'Propel', 'Schweppes'],
+    sizes: ['1.5L', '1L', '12oz', '16oz', '500ml']
+  }
+};
+
 
 const CataloguePage = () => {
   const router = useRouter();
+
   return (
     <div className='w-full min-h-screen flex flex-col relative'>
       {!router.query.slug?.[1] && (
@@ -55,3 +104,16 @@ const CataloguePage = () => {
 };
 
 export default CataloguePage;
+
+
+export async function getServerSideProps() {
+  const queryClient = new QueryClient()
+
+  await queryClient.prefetchQuery(['products'], getProductsQuery().queryFn)
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  }
+}
