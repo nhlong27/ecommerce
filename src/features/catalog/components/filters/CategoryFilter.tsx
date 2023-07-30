@@ -9,10 +9,11 @@ import { useAtom } from 'jotai';
 import helper from '@/constants/helper';
 import { categoryFilterAtom, categoryRegistry } from '@/pages/catalogue/[[...slug]]';
 
-
 const CategoryFilter = () => {
   const [categorySet, setCategorySet] = useAtom(categoryFilterAtom);
-  const [isAllChecked, setIsAllChecked] = React.useState<CheckedState>(true);
+  const [isAllChecked, setIsAllChecked] = React.useState<CheckedState>(
+    categorySet.size < 5 ? false : true,
+  );
 
   const handleCheckChange = (category: string) => {
     if (categorySet.has(category)) {
@@ -39,18 +40,15 @@ const CategoryFilter = () => {
   };
   return (
     <Popover>
-      <PopoverTrigger className='flex gap-2 items-center'>Categories 
+      <PopoverTrigger className='flex gap-2 items-center'>
+        Categories
         <span>{helper.icon.chevron_up}</span>
       </PopoverTrigger>
       <PopoverContent>
         <div className='flex flex-col gap-4'>
           <Text variant='sm/semibold/black'>Select one or many</Text>
           <div className='flex gap-4'>
-            <Checkbox
-              checked={isAllChecked}
-              onCheckedChange={handleAllChecked}
-              id='all'
-            />
+            <Checkbox checked={isAllChecked} onCheckedChange={handleAllChecked} id='all' />
             <label
               htmlFor='all'
               className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 '

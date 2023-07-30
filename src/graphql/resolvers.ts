@@ -27,7 +27,7 @@ export const resolvers = {
         const products = await ProductModel.find({
           category: ['coffee_tea', 'energy_drink', 'juice_shake', 'sport_drink', 'water'],
         })
-          .limit(400)
+          .limit(100)
           .lean();
         return products;
       });

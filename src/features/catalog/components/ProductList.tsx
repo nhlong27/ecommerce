@@ -14,6 +14,7 @@ import {
   priceRangeAtom,
   sortAtom,
 } from '@/pages/catalogue/[[...slug]]';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 function Items({ currentItems }: { currentItems: ProductType[] }) {
   return (
@@ -65,7 +66,7 @@ const ProductList = () => {
     }
   }, [sort]);
 
-  console.log(brandSet)
+  console.log(brandSet);
 
   React.useEffect(() => {
     if (data) {
@@ -90,7 +91,11 @@ const ProductList = () => {
   React.useEffect(() => {
     if (data) {
       if (brandSet.size > 0) {
-        const products = data.products.filter((product) => Array.from(brandSet).some((brand) => product.title.toLowerCase().includes(brand.toLowerCase())));
+        const products = data.products.filter((product) =>
+          Array.from(brandSet).some((brand) =>
+            product.title.toLowerCase().includes(brand.toLowerCase()),
+          ),
+        );
         setFilteredProducts(products);
       } else {
         setFilteredProducts(null);
@@ -105,10 +110,9 @@ const ProductList = () => {
     }
   }, [brands]);
 
+  console.log(data);
 
-  console.log(data)
-
-  if (filteredProducts) {
+  if (filteredProducts && filteredProducts.length > 0) {
     const endOffset = itemOffset + itemsPerPage;
 
     const currentItems = filteredProducts.slice(itemOffset, endOffset);
@@ -120,7 +124,7 @@ const ProductList = () => {
       console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
       setItemOffset(newOffset);
     };
-    return currentItems.length > 0 ? (
+    return (
       <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-16 lg:max-w-7xl lg:px-8'>
         <Items currentItems={currentItems} />
         <Pagination
@@ -129,15 +133,16 @@ const ProductList = () => {
           handlePageClick={handlePageClick}
         />
       </div>
-    ) : error ? (
-      <div>Error</div>
-    ) : isLoading ? (
-      <div>Loading</div>
-    ) : null;
+    );
   }
   return (
-    <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
-      <Text variant='2xl/normal/black'>There are no products with that filter.</Text>
+    <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 '>
+      <Alert variant='destructive' className='flex gap-4 items-center dark:bg-slate-800 dark:text-red-400 '>
+        <AlertTitle className='text-2xl'>!</AlertTitle>
+        <AlertDescription className='text-xl'>
+        There are no products with that filter.
+        </AlertDescription>
+      </Alert>
     </div>
   );
 };

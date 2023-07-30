@@ -41,7 +41,6 @@ export const typeDefs = gql`
     total: Int
     status: String
     orderItems: [OrderItem]
-
   }
 
   type OrderItem {
@@ -127,5 +126,6 @@ export const typeDefs = gql`
       productQuantity: String
       quantity: Int!
     ): CartItem
+    
   }
 `;

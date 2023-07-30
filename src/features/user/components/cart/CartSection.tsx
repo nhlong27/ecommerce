@@ -22,9 +22,17 @@ import {
 } from '@/components/ui/form';
 import { toast } from '@/components/ui/use-toast';
 import { Separator } from '@/components/ui/separator';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { CartItemSchema } from '@/features/catalog/types';
+import { useAddToOrderServiceMutation } from '../../hooks/useAddToOrderServiceMutation';
+import {atom, useAtom} from 'jotai'
+import { StockPaymentIntentType } from '../../types';
+import { useRouter } from 'next/router';
+
+export const stockPaymentIntentAtom = atom< StockPaymentIntentType | null>(null)
 
 const CartFormSchema = z.object({
-  cartItems: z.array(z.string()),
+  cartItems: z.array(CartItemSchema),
 });
 
 const CartSection = ({
@@ -35,6 +43,10 @@ const CartSection = ({
   style?: 'profile' | 'sheet';
 }) => {
   const { data, isLoading, error } = useGetCartItemsQuery(session.user.email);
+  const addToOrderServiceMutation = useAddToOrderServiceMutation();
+  const [paymentIntent, setPaymentIntent] = useAtom(stockPaymentIntentAtom)
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof CartFormSchema>>({
     resolver: zodResolver(CartFormSchema),
@@ -44,14 +56,41 @@ const CartSection = ({
   });
 
   function onSubmit(data: z.infer<typeof CartFormSchema>) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    setIsSubmitting(true);
+    const paymentIntent = {
+      userId: data.cartItems[0].userId,
+      total: data.cartItems.length,
+      status: 'pending',
+      cartItems: [...data.cartItems],
+    };
+    addToOrderServiceMutation.mutate(
+      { paymentIntent },
+      {
+        onSuccess: (data) => {
+          toast({
+            title: 'You submitted a total of:',
+            description: (
+              <div className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+                <p className='text-white'>{data.data.paymentIntent.total}{' '}products</p>
+              </div>
+            ),
+          });
+
+          console.log(data)
+          setIsSubmitting(false);
+          setPaymentIntent(data.data)
+          router.push('/checkout');
+        },
+        onError: (error) => {
+          console.log(error);
+          toast({
+            title: 'Command failed',
+            description: 'Check console for error message',
+            variant: 'destructive',
+          });
+        },
+      },
+    );
   }
 
   return data ? (
@@ -91,12 +130,11 @@ const CartSection = ({
                   <div className='mb-4'>
                     <FormLabel className='text-xl font-medium flex gap-4 items-start'>
                       <p className='text-gray-500'>
-
-                      Total items: <span>{data.cartItems.length}</span>
+                        Total items: <span>{data.cartItems.length}</span>
                       </p>
                       <span className='leading-3'>.</span>
                       <p>
-                      Items selected: <span>{form.getValues().cartItems.length}</span>
+                        Items selected: <span>{form.getValues().cartItems.length}</span>
                       </p>
                     </FormLabel>
                     <FormDescription className='mt-2'>
@@ -104,17 +142,31 @@ const CartSection = ({
                     </FormDescription>
                   </div>
                   <div className='w-full flex gap-4 items-center'>
-                    <Checkbox
-                      checked={form.getValues().cartItems.length === data.cartItems.length}
-                      onCheckedChange={(checked) => {
-                        return checked
-                          ? form.setValue(
-                              'cartItems',
-                              data.cartItems.map((item) => item.id),
-                            )
-                          : form.setValue('cartItems', []);
+                    <FormField
+                      control={form.control}
+                      name='cartItems'
+                      render={({ field }) => {
+                        return (
+                          <FormItem className='flex flex-row justify-start items-center space-x-6 space-y-0'>
+                            <FormControl>
+                              <Checkbox
+                                checked={
+                                  form.getValues().cartItems.length === data.cartItems.length
+                                }
+                                onCheckedChange={(checked) => {
+                                  console.log({ data, form: form.getValues().cartItems });
+
+                                  return checked
+                                    ? field.onChange([...data.cartItems])
+                                    : field.onChange([]);
+                                }}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        );
                       }}
                     />
+
                     <Text variant='base/normal/black'>Select All</Text>
                   </div>
                   <Separator className='my-8' />
@@ -131,12 +183,12 @@ const CartSection = ({
                           >
                             <FormControl>
                               <Checkbox
-                                checked={field.value?.includes(item.id)}
+                                checked={field.value?.some((each) => each.id === item.id)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([...field.value, item.id])
+                                    ? field.onChange([...field.value, { ...item }])
                                     : field.onChange(
-                                        field.value?.filter((value) => value !== item.id),
+                                        field.value?.filter((each) => each.id !== item.id),
                                       );
                                 }}
                               />
@@ -162,7 +214,7 @@ const CartSection = ({
               <div className='mt-6 w-full'>
                 <Button
                   type='submit'
-                  disabled={form.formState.isSubmitting || form.getValues().cartItems.length === 0}
+                  disabled={isSubmitting || form.getValues().cartItems.length === 0}
                   className='flex w-full items-center justify-center rounded-md border border-transparent bg-primary dark:bg-secondary px-6 py-6 text-base tracking-wider font-medium text-white shadow-sm hover:bg-primary/70 dark:hover:bg-secondary/70'
                 >
                   Checkout
@@ -185,20 +237,57 @@ const CartSection = ({
     </div>
   ) : error instanceof Error ? (
     <div className='flex flex-col h-full w-full'>
-      <Text variant='base/normal/danger'>
-        {error?.message ?? 'Something went wrong. Please try again later.'}
-      </Text>
+      <Alert
+        variant='destructive'
+        className='flex gap-4 items-center dark:bg-slate-800 dark:text-red-400 '
+      >
+        <AlertTitle className='text-2xl'>!</AlertTitle>
+        <AlertDescription className='text-xl'>
+          {error?.message ?? 'Something went wrong. Please try again later.'}
+        </AlertDescription>
+      </Alert>
     </div>
   ) : (
     <div className='flex flex-col h-full w-full'>
+      {style !== 'sheet' && (
+        <div className='mb-4'>
+          <div className=' flex gap-8 items-start'>
+            <Skeleton className='h-8 w-28' />
+
+            <Skeleton className='h-8 w-28' />
+          </div>
+          <Skeleton className='mt-4 h-4 w-60' />
+        </div>
+      )}
       <ScrollArea className='mt-8 w-full grow pr-8'>
-        <ul role='list' className='-my-6 divide-y divide-gray-200 dark:divide-gray-500'>
+        <ul
+          role='list'
+          className={`-my-6 divide-y divide-gray-200 dark:divide-gray-500  ${
+            style === 'sheet' ? 'h-[25rem]' : ''
+          }`}
+        >
           {Array(6)
             .fill(0)
             .map((_, i) => (
-              <Skeleton key={i} />
+              <li className='flex gap-4 py-6' key={i}>
+                <Skeleton className='h-24 w-24 flex-shrink-0 rounded-md ' />
+                <div className='grow ml-4 grid grid-cols-2 grid-rows-2'>
+                  <Skeleton className='h-4 w-24' />
+                  <Skeleton className='h-4 w-4' />
+                  <Skeleton className='h-4 w-8' />
+                  <Skeleton className='h-4 w-8' />
+                </div>
+              </li>
             ))}
         </ul>
+        <div className='mt-16 w-full'>
+          <div className='flex justify-between mb-8'>
+            <Skeleton className='h-16 w-24' />
+            <Skeleton className='h-16 w-24' />
+          </div>
+          <Skeleton className='h-16 w-full rounded-md' />
+          <Skeleton className='mt-6 h4 w-full' />
+        </div>
       </ScrollArea>
     </div>
   );

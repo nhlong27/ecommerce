@@ -130,8 +130,8 @@ const AccountMenu = () => {
           <PopoverContent className='w-[200px] p-0'>
             <Command>
               <CommandGroup>
-                {sections.map((section) => (
-                  <Link href={`/account/${section.value}`}>
+                {sections.map((section, i) => (
+                  <Link href={`/account/${section.value}`} key={i}>
                     <CommandItem
                       key={section.value}
                       onSelect={(currentValue) => {
