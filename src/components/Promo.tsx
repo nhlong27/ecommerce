@@ -13,12 +13,12 @@ export default function Promo() {
       Discover the perfect companion for your moments of relaxation and celebration, as our drinks add a touch of joy and flavor to every occasion
       </Text>
       <div className='flex flex-col gap-16 md:gap-3 lg:gap-8 md:flex-row w-full divide-x-[1px] justify-center px-8'>
-        <div className='w-11/12 mx-auto lg:mx-0 lg:w-3/5 flex shadow-lg rounded-md overflow-hidden bg-white  dark:bg-transparent'>
-          <div className='h-[18rem] w-[12rem] relative overflow-hidden'>
+        <div className='w-11/12 mx-auto lg:mx-0 lg:w-3/5 flex shadow-lg rounded-md overflow-hidden bg-white  dark:bg-transparent flex-col sm:flex-row'>
+          <div className='h-[18rem] sm:w-[12rem] w-full relative overflow-hidden '>
             <Image
               src={helper.images.commercial17}
               alt='product1'
-              className='object-contain object-left '
+              className='object-contain sm:object-left object-center'
               fill
               sizes={helper.images.size}
             />
@@ -32,12 +32,12 @@ export default function Promo() {
             </Text>
           </div>
         </div>
-        <div className='w-11/12 mx-auto lg:mx-0 lg:w-3/5 flex overflow-hidden shadow-lg rounded-md bg-white dark:bg-transparent'>
-          <div className='h-[18rem] w-[12rem] relative overflow-hidden'>
+        <div className='w-11/12 mx-auto lg:mx-0 lg:w-3/5 flex overflow-hidden shadow-lg rounded-md bg-white dark:bg-transparent flex-col sm:flex-row'>
+          <div className='h-[18rem] sm:w-[12rem] w-full relative overflow-hidden'>
             <Image
               src={helper.images.commercial16}
               alt='product2'
-              className='object-contain object-left'
+              className='object-contain sm:object-left object-center'
               fill
               sizes={helper.images.size}
             />

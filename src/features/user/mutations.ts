@@ -1,9 +1,7 @@
 import { request, gql } from 'graphql-request';
 import { GRAPHQL_API_URL } from '@/constants/urls';
-import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { CartItemType } from '../catalog/types';
-import { PaymentIntentType } from './types';
+import { AddToOrderType, OrderType } from './types';
 
 const updateUser = gql`
   mutation updateUser($email: String!, $name: String!) {
@@ -27,28 +25,6 @@ const addUser = gql`
     }
   }
 `;
-
-// const addToOrderService = gql`
-//   mutation addToOrderService( $cartItems: [CartItemInput]!) {
-//     addToOrderService(cartItems: $cartItems) {
-//       userId
-//       total
-//       status
-//       cartItems {
-//         id
-//         userId
-//         productId
-//         productTitle
-//         productPrice
-//         productCategory
-//         productSize
-//         productImage
-//         productQuantity
-//         quantity
-//       }
-//     }
-//   }
-// `;
 
 export const updateUserMutationFn = async ({ email, name }: { email: string; name: string }) => {
   return request(`${GRAPHQL_API_URL}`, updateUser, { email, name });
@@ -79,14 +55,14 @@ export const signInMutationFn = async ({
   });
 };
 
-// export const addToOrderServiceMutationFn = async ({ cartItems }: { cartItems: CartItemType[] }) => {
-//   return request(`${GRAPHQL_API_URL}`, addToOrderService, { cartItems });
-// }
-
 export const addToOrderServiceMutationFn = async ({
-  paymentIntent,
+  addToOrder,
 }: {
-  paymentIntent: PaymentIntentType;
+  addToOrder: AddToOrderType;
 }) => {
-  return axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/order_service`, paymentIntent);
+  return axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/order_service`, addToOrder);
+};
+
+export const cancelOrderMutationFn = async ({ cancelOrder }: { cancelOrder: OrderType }) => {
+  return axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/order_service`, cancelOrder);
 };

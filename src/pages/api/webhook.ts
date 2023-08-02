@@ -1,3 +1,5 @@
+import prisma from '@/lib/prisma';
+import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -21,10 +23,8 @@ async function buffer(readable: any) {
 }
 
 export default async function webhookHandler(req: NextApiRequest, res: NextApiResponse) {
-  console.log(req.body)
   if (req.method === 'POST') {
-    const buf = await buffer(req);
-
+    let buf = await buffer(req);
     const sig = req.headers['stripe-signature'];
 
     let event;
@@ -40,39 +40,55 @@ export default async function webhookHandler(req: NextApiRequest, res: NextApiRe
     // Handle the event as needed
     switch (event.type) {
       case 'checkout.session.completed':
-        // Handle checkout.session.completed event
-          // Retrieve the session. If you require line items in the response, you may include them by expanding line_items.
-          const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
-            event.data.object.id,
-            {
-              expand: ['line_items'],
-            }
-          );
-          const lineItems = sessionWithLineItems.line_items;
-      
-          // Fulfill the purchase...
-          fulfillOrder(lineItems);
-        break;
+
+        console.log('checkout.session.completed:', event);
+        console.log('metadata:', event.data.object.metadata);
+
+        const order = await prisma.order.update({
+          where: {
+            id: parseInt(event.data.object.metadata.id),
+          },
+          data: {
+            status: 'confirmed',
+          },
+          include: {
+            orderItems: true,
+          }
+        });
+
+        await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/stock_service`, order);
+
+        
       case 'payment_intent.succeeded':
         // Handle payment_intent.succeeded event
-        console.log('Payment intent succeeded:', event);
+        console.log('payment_intent.succeeded:', event);
+        console.log('metadata:', event.data.object.metadata);
+        
         break;
-      // Add other event types as needed
+
+      case 'payment_intent.payment_failed':
+        console.log('payment_intent.payment_failed:', event);
+        
+        await prisma.order.update({
+          where: {
+            id: parseInt(event.data.object.metadata.id),
+          },
+          data: {
+            status: 'failed',
+          },
+          include: {
+            orderItems: true,
+          }
+        });
 
       default:
         console.log('Unhandled event type:', event.type);
+        console.log('event:', event);
     }
 
     res.status(200).json({ received: true });
-
   } else {
     res.setHeader('Allow', 'POST');
     res.status(405).end('Method Not Allowed');
   }
-}
-
-
-const fulfillOrder = (lineItems: any) => {
-  // TODO: fill me in
-  console.log("Fulfilling order", lineItems);
 }

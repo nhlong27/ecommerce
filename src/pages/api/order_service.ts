@@ -3,26 +3,8 @@ import { authOptions } from './auth/[...nextauth]';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 import axios from 'axios';
-
-const PaymentIntentSchema = z.object({
-  userId: z.number(),
-  total: z.number(),
-  status: z.string(),
-  cartItems: z.array(
-    z.object({
-      id: z.string(),
-      userId: z.number(),
-      productId: z.string(),
-      productTitle: z.string(),
-      productPrice: z.number(),
-      productCategory: z.string(),
-      productSize: z.string(),
-      productImage: z.string(),
-      productQuantity: z.string(),
-      quantity: z.number(),
-    }),
-  ),
-});
+import prisma from '@/lib/prisma';
+import { AddToOrderSchema, ItemsSchema, OrderSchema } from './.types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getServerSession(req, res, authOptions);
@@ -31,21 +13,72 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const { status } = PaymentIntentSchema.parse(req.body);
+    const { status } = req.body;
 
     switch (status) {
       case 'pending':
-        const { availableItems, outOfStockItems } = (
-          await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/stock_service`, req.body)
-        ).data;
-        res.status(200).json({ paymentIntent: { ...req.body }, availableItems, outOfStockItems });
+        AddToOrderSchema.parse(req.body);
+
+        const { availableItems, outOfStockItems } = z
+          .object({
+            availableItems: ItemsSchema,
+            outOfStockItems: ItemsSchema,
+          })
+          .parse(
+            (await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/stock_service`, req.body))
+              .data,
+          );
+
+        if (availableItems.length === 0) {
+          res.status(405).end('Out of stock');
+        }
+
+        const order = await prisma.order.create({
+          data: {
+            userId: req.body.userId,
+            total: availableItems.length,
+            status: req.body.status, // 'pending'
+            orderItems: {
+              createMany: {
+                data: availableItems.map((item) => {
+                  return {
+                    ...item,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                  };
+                }),
+              },
+            },
+          },
+          include: {
+            orderItems: true,
+          },
+        });
+
+        res.status(200).json({ order, outOfStockItems });
         break;
-      case 'accept':
-        break;
+
       case 'reject':
+
+        OrderSchema.parse(req.body);
+
+        await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/stock_service`, req.body)        
+
+        await prisma.orderItem.deleteMany({
+          where: {
+            orderId: req.body.id,
+          },
+        });
+
+        await prisma.order.delete({
+          where: {
+            id: req.body.id,
+          },
+        });
+
+        res.status(200).end();
         break;
-      case 'confirm':
-        break;
+
       default:
         break;
     }

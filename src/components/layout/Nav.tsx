@@ -146,7 +146,7 @@ const Nav = () => {
                   {session ? (
                     <>
                       <DropdownMenuItem>
-                        <Link href='/account'>Profile</Link>
+                        <Link href='/account/profile'>Profile</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Link
@@ -175,8 +175,8 @@ const Nav = () => {
                 <SheetContent className='flex flex-col'>
                   <SheetHeader>
                     <SheetTitle>
-                      <Link href='/account'>
-                        <Text variant='xl/semibold/black'>Your Cart</Text>
+                      <Link href='/account/profile' className='text-xl font-semibold'>
+                        Your Cart
                       </Link>
                     </SheetTitle>
                     <SheetDescription>
@@ -299,7 +299,7 @@ const Nav = () => {
                   {session ? (
                     <>
                       <DropdownMenuItem>
-                        <Link href='/account'>Profile</Link>
+                        <Link href='/account/profile'>Profile</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Link

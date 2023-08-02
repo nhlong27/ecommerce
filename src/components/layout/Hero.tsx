@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 const Hero = () => {
   return (
     <div className='relative mb-16 px-12 rounded-lg pt-[20px] pb-[10px] lg:pt-[40px]'>
-      <div className='h-[30rem]'>
+      <div className='sm:h-[30rem] h-auto'>
         <div className='flex h-full flex-wrap -mx-4'>
           <div className='w-full h-full px-4 lg:w-5/12'>
             <div className='h-full px-0 md:px-8 pt-4 text-center lg:text-left'>
@@ -40,7 +40,7 @@ const Hero = () => {
                 <Text variant='sm/normal/black' className='mb-4 dark:text-white'>
                   Our Top Manufacturers
                 </Text>
-                <div className='flex items-center justify-center space-x-4 w-full h-20 gap-4'>
+                <div className='flex items-center justify-center space-x-4 w-full sm:h-20 gap-4 flex-col sm:flex-row'>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
@@ -102,8 +102,8 @@ const Hero = () => {
             </div>
           </div>
           <div className='hidden lg:block lg:w-[2rem]'></div>
-          <div className='h-[30rem] grow w-full px-4 lg:w-6/12'>
-            <div className='hidden h-full lg:block lg:ml-auto lg:text-right'>
+          <div className='hidden lg:block h-[30rem] grow w-full px-4 lg:w-6/12'>
+            <div className=' h-full  lg:ml-auto lg:text-right'>
               <div className='h-full w-full relative z-10 pt-11 flex lg:pt-0'>
                 <div className='w-full absolute top-0 z-20 text-center'>
                   <Text

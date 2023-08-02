@@ -7,14 +7,11 @@ export const UserSchema = z.object({
 export type UserType = z.infer<typeof UserSchema>;
 
 
-export const PaymentIntentSchema = z.object({
-  userId: z.number(),
-  total: z.number(),
+export const AddToOrderSchema = z.object({
   status: z.string(),
+  userId: z.number(),
   cartItems: z.array(
     z.object({
-      id: z.string(),
-      userId: z.number(),
       productId: z.string(),
       productTitle: z.string(),
       productPrice: z.number(),
@@ -27,14 +24,30 @@ export const PaymentIntentSchema = z.object({
   ),
 });
 
-export const StockPaymentIntentSchema = z.object({
-  availableItems: z.array(
+export const OrderSchema = z.object({
+  id: z.string(),
+  userId: z.number(),
+  total: z.number(),
+  status: z.string(),
+  orderItems: z.array(
     z.object({
       productId: z.string(),
-      instock_available: z.number(),
-      instock_reserved: z.number(),
+      productTitle: z.string(),
+      productPrice: z.number(),
+      productCategory: z.string(),
+      productSize: z.string(),
+      productImage: z.string(),
+      productQuantity: z.string(),
+      quantity: z.number(),
     }),
-  ),
+  ).optional(),
+})
+
+export const OrdersSchema = z.object({
+  orders: z.array(OrderSchema)
+})
+
+export const AcceptedOrderSchema = z.object({
   outOfStockItems: z.array(
     z.object({
       productId: z.string(),
@@ -42,9 +55,10 @@ export const StockPaymentIntentSchema = z.object({
       instock_reserved: z.number(),
     }),
   ),
-  paymentIntent: PaymentIntentSchema,
+  order: OrderSchema,
 });
 
-export type StockPaymentIntentType = z.infer<typeof StockPaymentIntentSchema>;
-
-export type PaymentIntentType = z.infer<typeof PaymentIntentSchema>;
+export type AcceptedOrderType = z.infer<typeof AcceptedOrderSchema>;
+export type OrderType = z.infer<typeof OrderSchema>;
+export type OrdersType = z.infer<typeof OrdersSchema>;
+export type AddToOrderType = z.infer<typeof AddToOrderSchema>;

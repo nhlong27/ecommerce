@@ -25,14 +25,12 @@ import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { CartItemSchema } from '@/features/catalog/types';
 import { useAddToOrderServiceMutation } from '../../hooks/useAddToOrderServiceMutation';
-import {atom, useAtom} from 'jotai'
-import { StockPaymentIntentType } from '../../types';
 import { useRouter } from 'next/router';
 
-export const stockPaymentIntentAtom = atom< StockPaymentIntentType | null>(null)
-
 const CartFormSchema = z.object({
-  cartItems: z.array(CartItemSchema),
+  cartItems: z.array(
+    CartItemSchema,
+  ),
 });
 
 const CartSection = ({
@@ -42,9 +40,8 @@ const CartSection = ({
   session: Session;
   style?: 'profile' | 'sheet';
 }) => {
-  const { data, isLoading, error } = useGetCartItemsQuery(session.user.email);
+  const { data, error } = useGetCartItemsQuery(session.user.email);
   const addToOrderServiceMutation = useAddToOrderServiceMutation();
-  const [paymentIntent, setPaymentIntent] = useAtom(stockPaymentIntentAtom)
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const router = useRouter();
 
@@ -55,31 +52,33 @@ const CartSection = ({
     },
   });
 
-  function onSubmit(data: z.infer<typeof CartFormSchema>) {
+  function onSubmit(result: z.infer<typeof CartFormSchema>) {
     setIsSubmitting(true);
-    const paymentIntent = {
-      userId: data.cartItems[0].userId,
-      total: data.cartItems.length,
+    const addToOrder = {
       status: 'pending',
-      cartItems: [...data.cartItems],
+      userId: data?.cartItems[0].userId as number,
+      cartItems: result.cartItems.map((item) => {
+        let { userId, id, ...rest } = item;
+        return { ...rest};
+      }),
     };
     addToOrderServiceMutation.mutate(
-      { paymentIntent },
+      { addToOrder },
       {
-        onSuccess: (data) => {
+        onSuccess: (response) => {
           toast({
             title: 'You submitted a total of:',
             description: (
               <div className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-                <p className='text-white'>{data.data.paymentIntent.total}{' '}products</p>
+                <p className='text-white'>{response.data.order.total} products</p>
               </div>
             ),
           });
 
-          console.log(data)
+          console.log(response);
+
           setIsSubmitting(false);
-          setPaymentIntent(data.data)
-          router.push('/checkout');
+          router.push({ pathname: '/checkout', query: { step: 'order', orderId: response.data.order.id } });
         },
         onError: (error) => {
           console.log(error);
@@ -88,6 +87,7 @@ const CartSection = ({
             description: 'Check console for error message',
             variant: 'destructive',
           });
+          setIsSubmitting(false);
         },
       },
     );
@@ -98,7 +98,7 @@ const CartSection = ({
       {style === 'sheet' ? (
         <>
           <ScrollArea className='h-[25rem] pr-4'>
-            <ul role='list' className='-my-6 divide-y divide-gray-200 dark:divide-gray-500'>
+            <ul role='list' className=' divide-y divide-gray-200 dark:divide-gray-500'>
               {data.cartItems.map((item, i) => (
                 <CartItem key={i} style={style} item={item} />
               ))}

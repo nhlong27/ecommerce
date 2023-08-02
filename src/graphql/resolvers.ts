@@ -1,14 +1,12 @@
 import prisma from '@/lib/prisma';
-import { mongo } from '../../mongoose/client';
-import { BookDocument, BookModel } from '../../mongoose/models/book.model';
 
 import connectMongo from '@/lib/mongodb';
-import { redis } from '@/lib/redis';
 import { getOrSetCache } from '@/utils/getOrSetCache';
-import { ProductDocument, ProductModel } from '../../mongoose/models/product.model';
+import { ProductModel } from '../../mongoose/models/product.model';
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 import bcrypt from 'bcrypt';
+import { isConstValueNode } from 'graphql';
 
 export const resolvers = {
   Query: {
@@ -56,7 +54,34 @@ export const resolvers = {
           userId: existingUser.id,
         },
       });
+      // cartItems = [] if no cartItems
       return cartItems;
+    },
+    order: async (_: any, args: any) => {
+      const order = await prisma.order.findUnique({
+        where: {
+          id: parseInt(args.orderId),
+        },
+        include: {
+          orderItems: true,
+        },
+      });
+      if (!order) throw new Error('Order with that id does not exist');
+      return { ...order };
+    },
+    orders: async (_: any, args: any) => {
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          email: args.email,
+        },
+      });
+      if (!existingUser) throw new Error('User with that email does not exist');
+      const orders = await prisma.order.findMany({
+        where: {
+          userId: existingUser.id,
+        },
+      });
+      return orders;
     },
   },
   Mutation: {

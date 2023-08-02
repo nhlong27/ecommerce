@@ -16,9 +16,10 @@ import { TabsContent } from '@radix-ui/react-tabs';
 import { Text } from '@/components/common/Text';
 import { BreadCrumbs } from '@/features/catalog';
 import { useAtom } from 'jotai';
-import { accountSectionAtom } from '@/pages/account/[[...slug]]';
-import { useRouter } from 'next/router';
+import { accountSectionAtom } from '@/pages/account/[...slug]';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const sections = [
   {
@@ -42,8 +43,8 @@ const sections = [
 const AccountMenu = () => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = useAtom(accountSectionAtom);
-
-  return (
+  const router = useRouter()
+  return value && value === router.query.slug?.[0] ? (
     <>
       <div className='hidden lg:block lg:basis-1/4 min-h-screen px-4'>
         <Tabs defaultValue={value} className='w-full'>
@@ -62,17 +63,16 @@ const AccountMenu = () => {
           <BreadCrumbs routerQueries={['account', value]} />
           <TabsList className='w-full flex flex-col h-auto'>
             <Link href='/account/profile' className='w-full'>
-              <TabsTrigger
-                onClick={() => setValue('profile')}
-                value='profile'
-                className='w-full justify-start'
+            <TabsTrigger
+              
+              value='profile'
+              className='w-full justify-start'
               >
-                Profile
-              </TabsTrigger>
+              Profile
+            </TabsTrigger>
             </Link>
             <Link href='/account/cart' className='w-full'>
               <TabsTrigger
-                onClick={() => setValue('cart')}
                 value='cart'
                 className='w-full justify-start'
               >
@@ -81,7 +81,6 @@ const AccountMenu = () => {
             </Link>
             <Link href='/account/history' className='w-full'>
               <TabsTrigger
-                onClick={() => setValue('history')}
                 value='history'
                 className='w-full justify-start'
               >
@@ -90,7 +89,6 @@ const AccountMenu = () => {
             </Link>
             <Link href='/account/payment' className='w-full'>
               <TabsTrigger
-                onClick={() => setValue('payment')}
                 value='payment'
                 className='w-full justify-start'
               >
@@ -153,6 +151,15 @@ const AccountMenu = () => {
             </Command>
           </PopoverContent>
         </Popover>
+      </div>
+    </>
+  ) : (
+    <>
+      <div className='hidden lg:block lg:basis-1/4 min-h-screen px-4'>
+        <Skeleton className='w-full h-full' />
+      </div>
+      <div className='block lg:hidden pb-8 w-full h-[10rem]'>
+        <Skeleton className='w-full h-full' />
       </div>
     </>
   );

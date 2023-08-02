@@ -60,6 +60,7 @@ model Order {
   status String
   orderItems OrderItem[]
 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -68,8 +69,6 @@ model OrderItem {
   id Int @id @default(autoincrement())
   order Order @relation(fields: [orderId], references: [id])
   orderId Int
-
-  status String
 
   productId String
   productTitle String
@@ -89,8 +88,10 @@ model PaymentDetails {
   user User @relation(fields: [userId], references: [id])
   userId Int
 
-  paymentMethod String
-  paymentAmount Float
+  orderId Int
+  amount_total Float
+  currency String
+  status String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

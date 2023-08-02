@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./auth/[...nextauth]"
+import { OrderSchema } from "./.types";
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -11,35 +12,53 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   if (req.method === 'POST') {
     try {
-      // Create Checkout Sessions from body params.
+      
+      const {orderItems} = OrderSchema.parse(req.body)
+      
       const session = await stripe.checkout.sessions.create({
-        line_items: [
-          {
-            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            // productTitle: req.body.productTitle,
-            // productId: req.body.productId,
-            // currency: 'usd',
-            // unit_amount: 2000,
-
+        line_items: orderItems.map((item) => 
+          ({
             //https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items-price_data
             price_data: {
-              unit_amount: 2,
+              unit_amount: item.productPrice*100 + 50,
               currency: 'usd',
               product_data: {
-                name: 'Stubborn Attachments',
-                description: 'random description',
-                images: ['https://i.imgur.com/EHyR2nP.png'],
+                name: item.productTitle,
+                description: item.orderId,
+                images: [`${process.env.NEXT_PUBLIC_DATA_SOURCE}${item.productImage}`],
               },
             },
-            quantity: 1,
+            quantity: item.quantity,
+          })
+          ),
+        metadata: {
+          id: req.body.id,
+          userId: req.body.userId,
+          status: req.body.status,
+          total: req.body.total,
+        },
+        payment_intent_data: {
+          metadata: {
+            id: req.body.id,
+            userId: req.body.userId,
+            status: req.body.status,
+            total: req.body.total,
           },
-        ],
+        },
         mode: 'payment',
-        success_url: `${process.env.NEXT_PUBLIC_SERVER}/checkout?success=true`,
-        cancel_url: `${process.env.NEXT_PUBLIC_SERVER}/checkout/?canceled=true`,
+        success_url: `${process.env.NEXT_PUBLIC_SERVER}/checkout?step=finish&orderId=${req.body.id.toString()}&redirect=true`,
+        cancel_url: `${process.env.NEXT_PUBLIC_SERVER}/account/cart`,
       });
-      res.redirect(303, session.url);
+      res.json( {session});
     } catch (err: any) {
+      res.status(err.statusCode || 500).json(err.message);
+    }
+  } else if (req.method === 'PATCH') {
+    try {
+      const session = await stripe.checkout.sessions.expire(req.body.id);
+      res.json( {session});
+    }
+    catch (err: any) {
       res.status(err.statusCode || 500).json(err.message);
     }
   } else {

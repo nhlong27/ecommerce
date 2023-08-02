@@ -47,8 +47,6 @@ export const typeDefs = gql`
     id: ID!
     orderId: Int!
 
-    status: String
-
     productId: String!
     productTitle: String
     productPrice: Float
@@ -63,8 +61,10 @@ export const typeDefs = gql`
     id: ID!
     userId: Int!
 
-    paymentMethod: String
-    paymentAmount: String
+    orderId: Int!
+    amount_total: Float
+    currency: String
+    status: String
   }
 
   type User {
@@ -103,6 +103,12 @@ export const typeDefs = gql`
     cartItems (
       email: String!
     ): [CartItem]
+    order (
+      orderId: String!
+    ): Order
+    orders (
+      email: String!
+    ): [Order]
   }
 
   type Mutation {
@@ -126,6 +132,5 @@ export const typeDefs = gql`
       productQuantity: String
       quantity: Int!
     ): CartItem
-    
   }
 `;

@@ -5,66 +5,87 @@ import { z } from 'zod';
 import axios from 'axios';
 import connectMongo from '@/lib/mongodb';
 import { ProductModel } from '../../../mongoose/models/product.model';
-
-const PaymentIntentSchema = z.object({
-  userId: z.number(),
-  total: z.number(),
-  status: z.string(),
-  cartItems: z.array(
-    z.object({
-      id: z.string(),
-      userId: z.number(),
-      productId: z.string(),
-      productTitle: z.string(),
-      productPrice: z.number(),
-      productCategory: z.string(),
-      productSize: z.string(),
-      productImage: z.string(),
-      productQuantity: z.string(),
-      quantity: z.number(),
-    }),
-  ),
-});
+import { AddToOrderSchema, OrderSchema } from './.types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  // const session = await getServerSession(req, res, authOptions);
-  // if (!session) {
-  //   res.status(401).end();
-  // }
-
+  // requests come from order_service, no need for authentication again
   try {
-    const {status, cartItems} = PaymentIntentSchema.parse(req.body);
+    const { status } = req.body;
 
-    switch (status){
+    switch (status) {
       case 'pending':
+        const { cartItems } = AddToOrderSchema.parse(req.body);
+
         await connectMongo();
-        let availableItems = []
-        let outOfStockItems = []
+        let availableItems = [];
+        let outOfStockItems = [];
         for (const item of cartItems) {
           const product = await ProductModel.findOne({ sku: item.productId });
           if (item.quantity < product.instock_available) {
             await ProductModel.updateOne(
               { sku: item.productId },
-              { $inc: { instock_reserved: item.quantity, instock_available: -item.quantity } }
+              { $inc: { instock_reserved: item.quantity, instock_available: -item.quantity } },
             );
-            availableItems.push({productId: item.productId, instock_available: product.instock_available - item.quantity, instock_reserved: product.instock_reserved + item.quantity  });
-          } 
-          else {
-            outOfStockItems.push({productId: item.productId, instock_available: product.instock_available, instock_reserved: product.instock_reserved});
+            availableItems.push({
+              ...item,
+            });
+          } else {
+            outOfStockItems.push({
+              ...item,
+            });
           }
         }
-        res.status(200).json({availableItems, outOfStockItems});
+        res.status(200).json({ availableItems, outOfStockItems });
         break;
+
       case 'reject':
+        try {
+          const { orderItems } = OrderSchema.parse(req.body);
+
+          await connectMongo();
+
+          for (const item of orderItems) {
+            const product = await ProductModel.findOne({ sku: item.productId });
+            if (item.quantity < product.instock_available) {
+              await ProductModel.updateOne(
+                { sku: item.productId },
+                { $inc: { instock_reserved: -item.quantity, instock_available: item.quantity } },
+              );
+            }
+          }
+          res.status(200).end();
+        } catch (e) {
+          console.log(e);
+          res.status(405).end('Problems occured');
+        }
         break;
-      case 'confirm': 
+
+      case 'confirmed':
+        try {
+          const { orderItems } = OrderSchema.parse(req.body);
+
+          await connectMongo();
+          console.log('Settling stocks');
+          for (const item of orderItems) {
+            await ProductModel.updateOne(
+              { sku: item.productId },
+              { $inc: { instock_reserved: -item.quantity } },
+            );
+          }
+          console.log('Stocks settled')
+          
+          res.status(200).end();
+        } catch (e) {
+          console.log(e);
+          res.status(405).end('Problems occured');
+        }
         break;
+
       default:
         break;
     }
     res.end();
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
     res.status(405).end('Problems occured');
   }
