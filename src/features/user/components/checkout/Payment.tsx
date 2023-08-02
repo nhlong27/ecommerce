@@ -6,12 +6,15 @@ import axios from 'axios';
 import { useAtom } from 'jotai';
 import { useGetOrderQuery } from '../../hooks/useGetOrderQuery';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useQueryClient } from '@tanstack/react-query';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const Payment = () => {
   const router = useRouter();
   const { data, error, isLoading } = useGetOrderQuery(router.query.orderId as string);
+  const queryClient = useQueryClient();
+
   return data ? (
     <form
       // action='/api/checkout_sessions'
@@ -24,20 +27,9 @@ const Payment = () => {
             ...data.order, id: parseInt(data.order.id),
           })
           .then((response) => {
+            queryClient.invalidateQueries(['order', router.query.orderId as string]);
             window.open(response.data.session.url, '_blank');
-            return response.data.session;
           })
-          .then((session) => {
-            router.push({
-              pathname: '/checkout',
-              query: {
-                step: 'payment',
-                orderId: data.order.id,
-                sessionId: session.id,
-                url: session.url,
-              },
-            });
-          });
       }}
     >
       <section>

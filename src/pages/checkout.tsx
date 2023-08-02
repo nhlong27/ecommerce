@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import OrderSummary from '@/features/user/components/checkout/OrderSummary';
 import PaymentProcessing from '@/features/user/components/checkout/PaymentProcessing';
@@ -8,7 +7,16 @@ import Custom404 from './404';
 import { Skeleton } from '@/components/ui/skeleton';
 import Finish from '@/features/user/components/checkout/Finish';
 import { useGetOrderQuery } from '@/features/user/hooks/useGetOrderQuery';
+import { Text } from '@/components/common/Text';
+import { Button } from '@/components/ui/button';
+import { useQueryClient } from '@tanstack/react-query';
 
+const step = {
+  pending: 'order',
+  accepted: 'payment',
+  confirmed: 'finish',
+  reject: 'finish',
+};
 export default function CheckoutPage() {
   const router = useRouter();
   const [stepName, setStepName] = React.useState<string | null>(null);
@@ -19,25 +27,34 @@ export default function CheckoutPage() {
 
   React.useEffect(() => {
     if (router.query && data) {
-      switch (data.order.status) {
-        case 'pending':
-          setStepName('order');
-          break;
-        case 'accepted':
-          setStepName('payment');
-          break;
-        case 'confirmed':
-          setStepName('finish');
-          break;
-        default:
-          break;
-      }
+      setStepName(step[data.order.status as keyof typeof step]);
     }
   }, [router.query, data]);
+  const queryClient = useQueryClient();
 
   if (!router.query) return <Custom404 />;
 
-  return stepName ? (
+  if (router.query.redirect)
+    return (
+      <div>
+        <Text variant='2xl/semibold/black' className='mb-8'>
+          Go back
+        </Text>
+        <Button
+          onClick={() => {
+            queryClient.invalidateQueries(['order', router.query.orderId as string]);
+            window.close();
+          }}
+          size='lg'
+          variant='default'
+          className='w-full uppercase tracking-widest'
+        >
+          Back
+        </Button>
+      </div>
+    );
+
+  return data && stepName === step[data.order.status as keyof typeof step] ? (
     <div className='w-full lg:w-11/12 mx-auto min-h-screen py-8 lg:px-8'>
       <Tabs defaultValue={stepName} className='w-full'>
         <ol className='flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base'>

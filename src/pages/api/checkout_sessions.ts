@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./auth/[...nextauth]"
 import { OrderSchema } from "./.types";
+import prisma from "@/lib/prisma";
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -46,9 +47,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
         },
         mode: 'payment',
-        success_url: `${process.env.NEXT_PUBLIC_SERVER}/checkout?step=finish&orderId=${req.body.id.toString()}&redirect=true`,
+        success_url: `${process.env.NEXT_PUBLIC_SERVER}/checkout?orderId=${req.body.id.toString()}&redirect=true`,
         cancel_url: `${process.env.NEXT_PUBLIC_SERVER}/account/cart`,
       });
+
+      await prisma.order.update({
+        where: {
+          id: req.body.id, //int
+        },
+        data: {
+          status: 'accepted',
+        },
+        include: {
+          orderItems: true,
+        }
+      });
+
       res.json( {session});
     } catch (err: any) {
       res.status(err.statusCode || 500).json(err.message);

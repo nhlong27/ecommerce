@@ -19,45 +19,110 @@ import axios from 'axios';
 import { useCancelOrderMutation } from '../../hooks/useCancelOrderMutation';
 import { useGetOrderQuery } from '../../hooks/useGetOrderQuery';
 import { useQueryClient } from '@tanstack/react-query';
+import { BellRing, Check } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
+import { ScrollArea } from '@/components/ui/scroll-area';
+
+const notifications = [
+  {
+    title: 'Your call has been confirmed.',
+    description: '1 hour ago',
+  },
+  {
+    title: 'You have a new message!',
+    description: '1 hour ago',
+  },
+  {
+    title: 'Your subscription is expiring soon!',
+    description: '2 hours ago',
+  },
+];
+
 const Finish = () => {
   const router = useRouter();
 
   const { data, error, isLoading } = useGetOrderQuery(router.query.orderId as string);
 
-  const queryClient = useQueryClient();
-
   return data ? (
     <TabsContent value='finish'>
-      <Text variant='2xl/semibold/black' className='mb-8'>
-        Go back
-      </Text>
-      <Button
-        onClick={() => {
-          queryClient.invalidateQueries(['order', router.query.orderId as string]);
-          // router.push({
-          //   pathname: '/checkout',
-          //   query: {
-          //     step: 'finish',
-          //     orderId: data.order.id,
-          //     redirect: 'false',
-          //   },
-          // });
-          window.close();
-        }}
-        size='lg'
-        variant='default'
-        className='w-full uppercase tracking-widest'
-      >
-        Back
-      </Button>
+      <div className='h-[40rem] w-full mx-auto flex justify-center items-start bg-white shadow-md dark:bg-black rounded-md overflow-hidden'>
+        <div className='flex overflow-hidden w-full h-[40rem]'>
+          <div className='h-full w-1/3 lg:w-1/2 hidden md:block relative'>
+            <Image
+              src={helper.images.commercial2}
+              alt='auth'
+              fill
+              className='h-full object-cover hover:brightness-110 transition-all duration-1000'
+              sizes={helper.images.size}
+              priority={true}
+            />
+          </div>
+          <div className='w-full h-[40rem] md:w-3/4 lg:w-1/2 flex justify-start items-center flex-col gap-3 py-8'>
+            <Card className='h-auto w-3/4'>
+              <CardHeader>
+                <CardTitle>Payment Completed!</CardTitle>
+                <CardDescription>You have purchased {data.order.total} products.</CardDescription>
+              </CardHeader>
+              <CardContent className='grid gap-4'>
+                <div className=' flex items-center space-x-4 rounded-md border p-4 flex-col sm:flex-row sm:gap-0 gap-3'>
+                  <BellRing />
+                  <div className='flex-1 space-y-1'>
+                    <p className='text-sm font-medium leading-none'>Send mail </p>
+                    <p className='text-sm text-muted-foreground'>Send invoice to my email.</p>
+                  </div>
+                  <Switch />
+                </div>
+                <ScrollArea className='h-[15rem] py-4'>
+                  {data.order.orderItems?.map((item, i) => (
+                    <div key={i} className='flex gap-4 border-b p-4 flex-col sm:flex-row'>
+                      <span className='flex h-2 w-2 translate-y-1 rounded-full bg-sky-500' />
+                      <div className='relative h-[5rem] w-[5rem]'>
+                        <Image
+                          src={`${process.env.NEXT_PUBLIC_DATA_SOURCE}${item.productImage}`}
+                          alt='auth'
+                          fill
+                          className='h-full w-full object-contain'
+                          sizes={helper.images.size}
+                          priority={true}
+                        />
+                      </div>
+
+                      <div
+                        key={i}
+                        className='mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0'
+                      >
+                        <div className='space-y-1'>
+                          <p className='text-sm font-medium leading-none'>{item.productTitle}</p>
+                          <p className='text-sm text-muted-foreground'>{item.productPrice}</p>
+                          <p className='text-sm text-muted-foreground'>{item.quantity}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </ScrollArea>
+              </CardContent>
+              <CardFooter>
+                <Button onClick={() => router.push('/account/cart')} className='w-full'>
+                  <Check className='mr-2 h-4 w-4' /> Go back to cart
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+        </div>
+      </div>
     </TabsContent>
-  ) : (
-    <TabsContent value='finish'>
-      <Text variant='2xl/semibold/black' className='mb-8'>
-        Payment Completed
-      </Text>
-    </TabsContent>
-  );
+  ) : null;
 };
 
 export default Finish;

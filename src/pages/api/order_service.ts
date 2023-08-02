@@ -60,6 +60,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       case 'reject':
 
+        req.body = {...req.body, id: parseInt(req.body.id)}
+        
         OrderSchema.parse(req.body);
 
         await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/stock_service`, req.body)        

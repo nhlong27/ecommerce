@@ -8,7 +8,7 @@ const OrderHistory = () => {
   const { data: session } = useSession();
   const { data, error, isLoading } = useGetOrdersQuery(session?.user.email as string);
   const router = useRouter();
-  console.log(data)
+  console.log(data);
   return data ? (
     <div>
       {data.orders.map((order) => {
@@ -31,7 +31,6 @@ const OrderHistory = () => {
                 router.push({
                   pathname: '/checkout',
                   query: {
-                    step: 'order',
                     orderId: order.id,
                   },
                 })

@@ -78,7 +78,7 @@ const CartSection = ({
           console.log(response);
 
           setIsSubmitting(false);
-          router.push({ pathname: '/checkout', query: { step: 'order', orderId: response.data.order.id } });
+          router.push({ pathname: '/checkout', query: {  orderId: response.data.order.id } });
         },
         onError: (error) => {
           console.log(error);

@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useCancelOrderMutation } from '../../hooks/useCancelOrderMutation';
 import { useGetOrderQuery } from '../../hooks/useGetOrderQuery';
+import { useQueryClient } from '@tanstack/react-query';
 const PaymentProcessing = () => {
   const router = useRouter();
 
@@ -78,26 +79,48 @@ const PaymentProcessing = () => {
           A Checkout Page has been opened in another tab. Please complete the payment there.
         </p>
         <p className='mb-8 mx-auto text-center'>
-          If the tab wasn't opened, please click
-          <Link
-            className='hover:underline text-blue-500 dark:text-blue-300'
-            target='_blank'
-            href={router.query.url as string}
-          >
-            {' '}
-            this link{' '}
-          </Link>
-          to open the Checkout Page.
+          If the tab wasn't opened, please click the link below again to open the Checkout Page.
         </p>
+        {data ? (
+          <form
+            // action='/api/checkout_sessions'
+            // method='POST'
+            // target='_blank'
+            onSubmit={(e) => {
+              e.preventDefault();
+              axios
+                .post('/api/checkout_sessions', {
+                  ...data.order,
+                  id: parseInt(data.order.id),
+                })
+                .then((response) => {
+                  window.open(response.data.session.url, '_blank');
+                });
+            }}
+          >
+            <section>
+              <Button
+                type='submit'
+                size='lg'
+                variant='ghost'
+                className='w-full mb-16 tracking-widest'
+              >
+                To Checkout Page
+              </Button>
+            </section>
+          </form>
+        ) : null}
         <Dialog>
-          <DialogTrigger className=' rounded-md h-10 px-4 py-2 bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80'>Cancel</DialogTrigger>
+          <DialogTrigger className=' rounded-md h-10 px-4 py-2 bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80'>
+            Cancel
+          </DialogTrigger>
           <DialogContent className='text-red-500 dark:text-red-300'>
             <DialogHeader>
               <DialogTitle>Delete your order</DialogTitle>
               <DialogDescription>
                 This action cannot be undone. Are you sure absolutely sure?
               </DialogDescription>
-              <Button variant='destructive' onClick={handleCancel} >
+              <Button variant='destructive' onClick={handleCancel}>
                 Delete
               </Button>
             </DialogHeader>
