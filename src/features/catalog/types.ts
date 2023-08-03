@@ -47,9 +47,19 @@ export const addToCartSchema = z.object({
   productQuantity: z.string(),
 });
 
+export const ReviewSchema = z.object({
+  id: z.string(),
+  userId: z.number(),
+  userEmail: z.string().email(),
+  productId: z.string(),
+  rating: z.number(),
+  description: z.string(),
+})
+
 export type ProductType = z.infer<typeof ProductSchema>;
 export type ProductsType = z.infer<typeof ProductsSchema>;
 export type CartItemType = z.infer<typeof CartItemSchema>;
 export type addToCartType = z.infer<typeof addToCartSchema>;
 export type CartItemsType = z.infer<typeof CartItemsSchema>;
+export type ReviewType = z.infer<typeof ReviewSchema>;
 

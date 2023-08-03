@@ -56,8 +56,8 @@ const Finish = () => {
 
   return data ? (
     <TabsContent value='finish'>
-      <div className='h-[40rem] w-full mx-auto flex justify-center items-start bg-white shadow-md dark:bg-black rounded-md overflow-hidden'>
-        <div className='flex overflow-hidden w-full h-[40rem]'>
+      <div className='sm:h-[40rem] h-auto w-full mx-auto flex justify-center items-start bg-white shadow-md dark:bg-black rounded-md overflow-hidden'>
+        <div className='flex overflow-hidden w-full sm:h-[40rem] h-auto'>
           <div className='h-full w-1/3 lg:w-1/2 hidden md:block relative'>
             <Image
               src={helper.images.commercial2}
@@ -68,8 +68,8 @@ const Finish = () => {
               priority={true}
             />
           </div>
-          <div className='w-full h-[40rem] md:w-3/4 lg:w-1/2 flex justify-start items-center flex-col gap-3 py-8'>
-            <Card className='h-auto w-3/4'>
+          <div className='w-full md:w-3/4 lg:w-1/2 flex justify-start items-center flex-col gap-3 py-8'>
+            <Card className='w-3/4'>
               <CardHeader>
                 <CardTitle>Payment Completed!</CardTitle>
                 <CardDescription>You have purchased {data.order.total} products.</CardDescription>
@@ -100,10 +100,10 @@ const Finish = () => {
 
                       <div
                         key={i}
-                        className='mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0'
+                        className='mb-4 grid grid-cols-[10rem_1fr] items-start pb-4 last:mb-0 last:pb-0'
                       >
                         <div className='space-y-1'>
-                          <p className='text-sm font-medium leading-none'>{item.productTitle}</p>
+                          <p className='text-sm font-medium leading-none truncate'>{item.productTitle}</p>
                           <p className='text-sm text-muted-foreground'>{item.productPrice}</p>
                           <p className='text-sm text-muted-foreground'>{item.quantity}</p>
                         </div>
@@ -114,7 +114,7 @@ const Finish = () => {
               </CardContent>
               <CardFooter>
                 <Button onClick={() => router.push('/account/cart')} className='w-full'>
-                  <Check className='mr-2 h-4 w-4' /> Go back to cart
+                  <Check className='hidden sm:block mr-2 h-4 w-4' /> Go back to cart
                 </Button>
               </CardFooter>
             </Card>

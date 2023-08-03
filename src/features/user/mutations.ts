@@ -4,11 +4,14 @@ import axios from 'axios';
 import { AddToOrderType, OrderType } from './types';
 
 const updateUser = gql`
-  mutation updateUser($email: String!, $name: String!) {
-    updateUser(email: $email, name: $name) {
+  mutation updateUser($email: String!, $name: String!, $password: String!) {
+    updateUser(email: $email, name: $name, password: $password) {
       id
       name
       email
+      emailVerified
+      image
+      role
     }
   }
 `;
@@ -26,8 +29,16 @@ const addUser = gql`
   }
 `;
 
-export const updateUserMutationFn = async ({ email, name }: { email: string; name: string }) => {
-  return request(`${GRAPHQL_API_URL}`, updateUser, { email, name });
+export const updateUserMutationFn = async ({
+  email,
+  name,
+  password,
+}: {
+  email: string;
+  name: string;
+  password: string;
+}) => {
+  return request(`${GRAPHQL_API_URL}`, updateUser, { email, name, password });
 };
 
 export const addUserMutationFn = async ({

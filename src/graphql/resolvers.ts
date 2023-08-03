@@ -11,13 +11,9 @@ import { isConstValueNode } from 'graphql';
 export const resolvers = {
   Query: {
     product: async (_: any, args: any) => {
-      const data = await getOrSetCache(args.sku, async () => {
-        await connectMongo();
-        const product = await ProductModel.findOne({ sku: args.sku }).lean();
-        return product;
-      });
-      if (!data) throw new Error('Unable to get resources');
-      return data;
+      await connectMongo();
+      const product = await ProductModel.findOne({ sku: args.sku }).lean();
+      return product;
     },
     products: async (_: any, args: any) => {
       const data = await getOrSetCache('products', async () => {
@@ -83,6 +79,37 @@ export const resolvers = {
       });
       return orders;
     },
+    user: async (_: any, args: any) => {
+      const user = await prisma.user.findFirst({
+        where: {
+          email: args.email,
+        },
+      });
+      if (!user) throw new Error('User with that email does not exist');
+      return { ...user };
+    },
+    paymentDetails: async (_: any, args: any) => {
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          email: args.email,
+        },
+      });
+      if (!existingUser) throw new Error('User with that email does not exist');
+      const paymentDetails = await prisma.paymentDetails.findMany({
+        where: {
+          userId: existingUser.id,
+        },
+      });
+      return paymentDetails;
+    },
+    reviews: async (_: any, args: any) => {
+      const reviews = await prisma.review.findMany({
+        where: {
+          productId: args.productId,
+        },
+      });
+      return reviews;
+    },
   },
   Mutation: {
     updateUser: async (_: any, args: any) => {
@@ -92,6 +119,7 @@ export const resolvers = {
         },
         data: {
           name: args.name,
+          password: args.password,
         },
       });
       return updateUser;
@@ -155,6 +183,54 @@ export const resolvers = {
         },
       });
       return newCartItem;
+    },
+    addReview: async (_: any, args: any) => {
+      const owner = await prisma.user.findFirst({
+        where: {
+          email: args.userEmail,
+        },
+      });
+      if (!owner) throw new Error('User with that email does not exist');
+      const newReview = await prisma.review.create({
+        data: {
+          userId: owner.id,
+          userEmail: args.userEmail,
+          productId: args.productId,
+          rating: args.rating,
+          description: args.description,
+        },
+      });
+      
+      const reviews = await prisma.review.findMany({
+        where: {
+          productId: args.productId,
+        },
+      });
+
+      let score = 0;
+      let n_o_reviews = 0;
+      reviews.forEach((review) => {
+        score += review.rating;
+        n_o_reviews += 1;
+      });
+      score = score / n_o_reviews;
+      score = Math.round(score * 100) / 100;
+      
+      await connectMongo();
+      
+      const product = await ProductModel.findOneAndUpdate(
+        { sku: args.productId },
+        {
+          score: score,
+          n_o_reviews: n_o_reviews,
+        },
+        { new: true },
+      );
+      return newReview;
+    },
+    updateProduct: async (_: any, args: any) => {
+      let product = 0 // do nothing
+      return product;
     },
   },
 };

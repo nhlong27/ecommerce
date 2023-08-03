@@ -40,7 +40,8 @@ const SignIn = () => {
       .then((response) => {
         if (response?.ok) {
           toast({ title: 'Sign in successfully'});
-          window.location.replace('/account');
+          // window.location.replace('/account');
+          window.history.back();
         } else {
           console.log(response);
           toast({ title: 'Sign in failed', description: 'No matching credentials', variant: 'destructive'});

@@ -29,7 +29,7 @@ const Hero = () => {
                 <SearchBar />
                 <Link className='  mt-5' href='/catalogue'>
                   <Text
-                    variant='base/normal/secondary'
+                    variant='sm/normal/secondary'
                     className='hover:underline dark:text-tertiary'
                   >
                     Or browse our <span className='text-primary dark:text-white'>catalogue</span>
@@ -118,7 +118,7 @@ const Hero = () => {
                         See what's new this week
                       </div>
                     </PopoverTrigger>
-                    <PopoverContent>
+                    <PopoverContent className='h-8 px-4 pt-1'>
                       Feature in development.
                     </PopoverContent>
                   </Popover>

@@ -169,13 +169,13 @@ export const authOptions: NextAuthOptions = {
   },
   // just to be sure, either set a NEXTAUTH_SECRET in .env or secret here
   secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: '/auth',
-    signOut: '/',
-    error: '/auth', // Error code passed in query string as ?error=
-    verifyRequest: '/auth', // (used for check email message)
-    newUser: '/auth', // New users will be directed here on first sign in (leave the property out if not of interest)
-  },
+  // pages: {
+  //   signIn: '/auth',
+  //   signOut: '/',
+  //   error: '/auth', // Error code passed in query string as ?error=
+  //   verifyRequest: '/auth', // (used for check email message)
+  //   newUser: '/auth', // New users will be directed here on first sign in (leave the property out if not of interest)
+  // },
   // cookies: cookies,
 };
 export default NextAuth(authOptions);

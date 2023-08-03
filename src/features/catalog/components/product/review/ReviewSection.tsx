@@ -4,10 +4,14 @@ import React from 'react';
 import Reviews from './Reviews';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import ReviewForm from './ReviewForm';
+import { ProductType } from '@/features/catalog/types';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
- 
+const ReviewSection = ({ product }: { product: ProductType }) => {
+  const { data: session } = useSession();
 
-const ReviewSection = () => {
   return (
     <div className='mx-auto mt-6 max-w-2xl sm:px-6 lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 flex flex-col justify-start items-start'>
       <Text variant='2xl/semibold/black'>Reviews</Text>
@@ -17,23 +21,32 @@ const ReviewSection = () => {
           <Text variant='base/normal/black'>
             If you've used this product, share your thoughts with other customers
           </Text>
-
-          <Collapsible>
-            <CollapsibleTrigger>
-              <Button
-                variant='secondary'
-                className='mt-4'
-              >
-                Write a review
+          {session ? (
+            <Collapsible>
+              <CollapsibleTrigger>
+                <Button variant='secondary' className='mt-4'>
+                  Write a review
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <ReviewForm product={product} session={session} />
+              </CollapsibleContent>
+            </Collapsible>
+          ) : (
+            <div className='flex flex-col justify-start items-start gap-4'>
+              <Text variant='base/normal/primary' className='dark:text-secondary'>
+                You must sign in to use this action
+              </Text>
+              <Button variant='secondary' className='mt-4 mx-auto'>
+                <Link href='/auth'>Sign in</Link>
               </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <ReviewForm />
-            </CollapsibleContent>
-          </Collapsible>
+            </div>
+          )}
         </div>
         <div className='order-2 lg:order-1 lg:w-1/2 w-full'>
-          <Reviews />
+          <ScrollArea className='h-[60vh]'>
+            <Reviews product={product} />
+          </ScrollArea>
         </div>
       </div>
     </div>

@@ -7,9 +7,18 @@ import Custom404 from './404';
 import { Skeleton } from '@/components/ui/skeleton';
 import Finish from '@/features/user/components/checkout/Finish';
 import { useGetOrderQuery } from '@/features/user/hooks/useGetOrderQuery';
-import { Text } from '@/components/common/Text';
 import { Button } from '@/components/ui/button';
 import { useQueryClient } from '@tanstack/react-query';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import Image from 'next/image';
+import helper from '@/constants/helper';
 
 const step = {
   pending: 'order',
@@ -36,21 +45,39 @@ export default function CheckoutPage() {
 
   if (router.query.redirect)
     return (
-      <div>
-        <Text variant='2xl/semibold/black' className='mb-8'>
-          Go back
-        </Text>
-        <Button
-          onClick={() => {
-            queryClient.invalidateQueries(['order', router.query.orderId as string]);
-            window.close();
-          }}
-          size='lg'
-          variant='default'
-          className='w-full uppercase tracking-widest'
-        >
-          Back
-        </Button>
+      <div className='w-full mx-auto h-[60vh] py-8 lg:px-8 flex justify-center items-center relative'>
+        <div className='h-full absolute w-full overflow-hidden -z-10'>
+            <Image
+              alt='image'
+              src={helper.images.commercial14}
+              priority
+              fill
+              sizes={'100vw'}
+              className='object-cover brightness-50'
+            />
+          </div>
+        <Card className='w-[380px]'>
+          <CardHeader>
+            <CardTitle className='text-green-500 dark:text-green-300'>Payment successful!</CardTitle>
+            <CardDescription>
+              Finish the checkout process at by clicking the link below.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='grid gap-4'></CardContent>
+          <CardFooter>
+            <Button
+              onClick={() => {
+                queryClient.invalidateQueries(['order', router.query.orderId as string]);
+                window.close();
+              }}
+              size='lg'
+              variant='default'
+              className='w-full uppercase tracking-widest'
+            >
+              Go back
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     );
 

@@ -7,17 +7,20 @@ import { useGetProductsQuery } from '../hooks/useGetProductsQuery';
 import ProductCard from './product/ProductCard';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 
 export default function ProductSwiper() {
   const { data, isLoading, error } = useGetProductsQuery();
   return (
     <div className='mx-auto w-3/4 lg:w-11/12 pb-8 pt-12 relative'>
-      <Link
-        href='/catalogue'
-        className='absolute right-0 top-4 text-sm text-slate-500 underline-offset-4 hover:underline dark:text-slate-50'
-      >
-        See more
-      </Link>
+        <Link
+          href='/catalogue'
+          className='absolute right-0 top-4 text-sm text-slate-500 underline-offset-4 hover:underline dark:text-slate-50'
+        >
+      <Badge variant='outline'>
+          See more
+      </Badge>
+        </Link>
       <Swiper
         slidesPerView={1}
         spaceBetween={10}

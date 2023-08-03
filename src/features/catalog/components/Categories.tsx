@@ -9,7 +9,7 @@ const Categories = () => {
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-16'>
           <Text variant='2xl/semibold/black' >Categories</Text>
-          <Text variant='base/normal/ghost' >Experience ultimate refreshment and hydration with our wide selection of drinks, designed to keep you energized and revitalized throughout the day</Text>
+          <Text variant='sm/normal/ghost' className='mt-3'>Experience ultimate refreshment and hydration with our wide selection of drinks, designed to keep you energized and revitalized throughout the day</Text>
 
           <div className='mt-6 space-y-12 lg:grid lg:grid-cols-5 lg:gap-x-6 lg:space-y-0'>
             <div className='group relative'>

@@ -56,6 +56,16 @@ export default async function webhookHandler(req: NextApiRequest, res: NextApiRe
           }
         });
 
+        const payment = await prisma.paymentDetails.create({
+          data: {
+            orderId: order.id,
+            userId: order.userId,
+            amount_total: event.data.object.amount_total,
+            currency: event.data.object.currency,
+            status: event.data.object.payment_status,
+          }
+        });
+        
         await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/stock_service`, order);
 
         

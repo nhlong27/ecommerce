@@ -96,6 +96,15 @@ export const typeDefs = gql`
     role: Role
   }
 
+  type Review {
+    id: ID!
+    userId: Int
+    userEmail: String
+    productId: String
+    rating: Int
+    description: String
+  }
+
   type Query {
     product(sku: String!): Product
     products: [Product]
@@ -109,12 +118,18 @@ export const typeDefs = gql`
     orders (
       email: String!
     ): [Order]
+    paymentDetails (
+      email: String!
+    ): [PaymentDetails]
+    user (email: String!): User
+    reviews (productId: String!): [Review]
   }
 
   type Mutation {
     updateUser(
       email: String!
       name: String!
+      password: String!
     ): User
     addUser(
       name: String!,
@@ -132,5 +147,16 @@ export const typeDefs = gql`
       productQuantity: String
       quantity: Int!
     ): CartItem
+    addReview(
+      productId: String!
+      userEmail: String!
+      rating: Int!
+      description: String!
+    ): Review
+    updateProduct (
+      productId: String!
+      score: Float!
+      n_o_reviews: Int!
+    ) : Product
   }
 `;

@@ -66,8 +66,6 @@ const ProductList = () => {
     }
   }, [sort]);
 
-  console.log(brandSet);
-
   React.useEffect(() => {
     if (data) {
       if (categorySet.size > 0) {
@@ -110,7 +108,6 @@ const ProductList = () => {
     }
   }, [brands]);
 
-  console.log(data);
 
   if (filteredProducts && filteredProducts.length > 0) {
     const endOffset = itemOffset + itemsPerPage;
@@ -125,9 +122,11 @@ const ProductList = () => {
       setItemOffset(newOffset);
     };
     return (
-      <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-16 lg:max-w-7xl lg:px-8'>
+      <div className='mx-auto max-w-2xl px-4 pb-16 pt-8 sm:px-6 lg:max-w-7xl lg:px-8'>
+        <Text variant='2xl/semibold/black' className='mb-8 text-blue-500 dark:text-blue-300'>Page: {(itemOffset+20)/20}</Text>
         <Items currentItems={currentItems} />
         <Pagination
+          itemOffSet={itemOffset}
           pageCount={pageCount}
           dataLength={filteredProducts.length}
           handlePageClick={handlePageClick}

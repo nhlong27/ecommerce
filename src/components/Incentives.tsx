@@ -13,7 +13,7 @@ const Incentives = () => {
             <Text variant='3xl/semibold/black'>
               We built our business on great customer service
             </Text>
-            <p className='mt-2 text-lg leading-8 text-gray-600 dark:text-gray-200'>
+            <p className='mt-6 text-lg leading-8 text-gray-600 dark:text-gray-200'>
               We emphasize our commitment to prioritize customer satisfaction by establishing a
               strong reputation for going above and beyond to meet the needs and expectations of our
               customers.
@@ -32,7 +32,7 @@ const Incentives = () => {
         <div className='mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t-2 border-gray-200 pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3 '>
           <article className='flex max-w-xl flex-col items-start justify-between'>
             <div className='flex items-center gap-x-4 text-xs'>
-              <Badge variant='outline' className='bg-white dark:bg-gray-600 text-sm'>
+              <Badge variant='outline' className='bg-white dark:bg-gray-600 text-base'>
                 Free shipping
               </Badge>
             </div>
@@ -45,7 +45,7 @@ const Incentives = () => {
           </article>
           <article className='flex max-w-xl flex-col items-start justify-between'>
             <div className='flex items-center gap-x-4 text-base'>
-              <Badge variant='outline' className='bg-white dark:bg-gray-600 text-sm'>
+              <Badge variant='outline' className='bg-white dark:bg-gray-600 text-base'>
                 10-year warranty
               </Badge>
             </div>
@@ -58,7 +58,7 @@ const Incentives = () => {
           </article>
           <article className='flex max-w-xl flex-col items-start justify-between'>
             <div className='flex items-center gap-x-4 text-xs'>
-              <Badge variant='outline' className='bg-white dark:bg-gray-600 text-sm'>
+              <Badge variant='outline' className='bg-white dark:bg-gray-600 text-base'>
                 Exchanges
               </Badge>
             </div>

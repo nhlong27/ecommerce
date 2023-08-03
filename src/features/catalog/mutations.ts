@@ -35,7 +35,17 @@ const addProduct = gql`
 `;
 
 const addToCart = gql`
-  mutation addToCart($productId: String!, $quantity: Int!, $productImage: String, $email: String!, $productTitle: String, $productPrice: Float, $productCategory: String, $productSize: String, $productQuantity: String) {
+  mutation addToCart(
+    $productId: String!
+    $quantity: Int!
+    $productImage: String
+    $email: String!
+    $productTitle: String
+    $productPrice: Float
+    $productCategory: String
+    $productSize: String
+    $productQuantity: String
+  ) {
     addToCart(
       productId: $productId
       quantity: $quantity
@@ -61,6 +71,55 @@ const addToCart = gql`
   }
 `;
 
+const addReview = gql`
+  mutation addReview(
+    $productId: String!
+    $userEmail: String!
+    $rating: Int!
+    $description: String!
+  ) {
+    addReview(
+      productId: $productId
+      userEmail: $userEmail
+      rating: $rating
+      description: $description
+    ) {
+      id
+      userId
+      userEmail
+      productId
+      rating
+      description
+    }
+  }
+`;
+
+const updateProduct = gql`
+  mutation updateProduct (
+    $productId: String!
+    $score: Float!
+    $n_o_reviews: Int!
+  ) {
+    updateProduct(
+      productId: $productId
+      score: $score
+      n_o_reviews: $n_o_reviews
+    ) {
+      id
+      title
+      size
+      quantity
+      sku
+      image
+      category
+      price
+      score
+      n_o_reviews
+      instock_reserved
+      instock_available
+    }
+  }
+`;
 
 export const addProductMutationFn = async (product: any) => {
   return request(`${GRAPHQL_API_URL}`, addProduct, { ...product });
@@ -68,4 +127,12 @@ export const addProductMutationFn = async (product: any) => {
 
 export const addToCartMutationFn = async (cartItem: addToCartType) => {
   return request(`${GRAPHQL_API_URL}`, addToCart, { ...cartItem });
+};
+
+export const addReviewMutationFn = async (review: any) => {
+  return request(`${GRAPHQL_API_URL}`, addReview, { ...review });
+};
+
+export const updateProductMutationFn = async (product: any) => {
+  return request(`${GRAPHQL_API_URL}`, updateProduct, { ...product });
 }

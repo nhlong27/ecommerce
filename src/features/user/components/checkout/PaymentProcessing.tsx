@@ -18,7 +18,13 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useCancelOrderMutation } from '../../hooks/useCancelOrderMutation';
 import { useGetOrderQuery } from '../../hooks/useGetOrderQuery';
-import { useQueryClient } from '@tanstack/react-query';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+
 const PaymentProcessing = () => {
   const router = useRouter();
 
@@ -60,14 +66,14 @@ const PaymentProcessing = () => {
       <Text variant='2xl/semibold/black' className='mb-8'>
         Processing Payment
       </Text>
-      <div className='w-full min-h-screen bg-white rounded-lg dark:bg-black flex justify-start py-8 px-16 flex-col items-center'>
-        <div className='px-16 py-4 rounded-lg bg-gray-100 mb-8 border dark:bg-slate-900'>
-          <p className='text-xl mx-auto text-center'>
+      <div className='w-full h-auto bg-white rounded-lg dark:bg-black flex justify-start py-8 px-16 flex-col items-center'>
+        <div className='px-16 py-4 rounded-lg bg-gray-100 mb-4 border dark:bg-slate-900'>
+          <p className='text-lg mx-auto text-center'>
             Payment processing may take a while during peak hours. You can always check the status
             of this order later.
           </p>
         </div>
-        <div className='w-[10rem] h-[10rem] min-w-[150px] relative rounded-xl overflow-hidden flex justify-center items-center mb-8'>
+        <div className='w-[10rem] h-[10rem] min-w-[150px] relative rounded-xl overflow-hidden flex justify-center items-center'>
           <Image
             alt='placeholder'
             className='h-full w-full object-contain dark:bg-white p-8'
@@ -75,57 +81,71 @@ const PaymentProcessing = () => {
             src={helper.images.cash_payment}
           />
         </div>
-        <p className='text-xl text-center mb-8 mx-auto'>
-          A Checkout Page has been opened in another tab. Please complete the payment there.
-        </p>
-        <p className='mb-8 mx-auto text-center'>
-          If the tab wasn't opened, please click the link below again to open the Checkout Page.
-        </p>
-        {data ? (
-          <form
-            // action='/api/checkout_sessions'
-            // method='POST'
-            // target='_blank'
-            onSubmit={(e) => {
-              e.preventDefault();
-              axios
-                .post('/api/checkout_sessions', {
-                  ...data.order,
-                  id: parseInt(data.order.id),
-                })
-                .then((response) => {
-                  window.open(response.data.session.url, '_blank');
-                });
-            }}
-          >
-            <section>
-              <Button
-                type='submit'
-                size='lg'
-                variant='ghost'
-                className='w-full mb-16 tracking-widest'
-              >
-                To Checkout Page
-              </Button>
-            </section>
-          </form>
-        ) : null}
-        <Dialog>
-          <DialogTrigger className=' rounded-md h-10 px-4 py-2 bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80'>
-            Cancel
-          </DialogTrigger>
-          <DialogContent className='text-red-500 dark:text-red-300'>
-            <DialogHeader>
-              <DialogTitle>Delete your order</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. Are you sure absolutely sure?
-              </DialogDescription>
-              <Button variant='destructive' onClick={handleCancel}>
-                Delete
-              </Button>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <Accordion type='single' collapsible className='w-full'>
+          <AccordionItem value='item-1'>
+            <AccordionTrigger>Has A Checkout Page been opened in another tab?</AccordionTrigger>
+            <AccordionContent className='flex gap-4 items-center'>
+              If not. Please click the link below again to open the Checkout Page.
+              {data ? (
+                <form
+                  // action='/api/checkout_sessions'
+                  // method='POST'
+                  // target='_blank'
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    axios
+                      .post('/api/checkout_sessions', {
+                        ...data.order,
+                        id: parseInt(data.order.id),
+                      })
+                      .then((response) => {
+                        window.open(response.data.session.url, '_blank');
+                      });
+                  }}
+                >
+                  <section>
+                    <Button
+                      type='submit'
+                      size='lg'
+                      variant='ghost'
+                      className='w-full tracking-widest'
+                    >
+                      To Checkout Page
+                    </Button>
+                  </section>
+                </form>
+              ) : null}
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value='item-2'>
+            <AccordionTrigger>Want to cancel order?</AccordionTrigger>
+            <AccordionContent className='flex gap-4 items-center'>
+              Click this {' '}{' '} 
+              <Dialog>
+                <DialogTrigger className=' rounded-md h-10 px-4 py-2 bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80'>
+                  Cancel
+                </DialogTrigger>
+                <DialogContent className='text-red-500 dark:text-red-300'>
+                  <DialogHeader>
+                    <DialogTitle>Delete your order</DialogTitle>
+                    <DialogDescription>
+                      This action cannot be undone. Are you sure absolutely sure?
+                    </DialogDescription>
+                    <Button variant='destructive' onClick={handleCancel}>
+                      Delete
+                    </Button>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value='item-3'>
+            <AccordionTrigger>Payment is done. What's next?</AccordionTrigger>
+            <AccordionContent>
+              You should be redirect to the finish step of the checkout process very soon. If not, please refresh the page.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     </TabsContent>
   );

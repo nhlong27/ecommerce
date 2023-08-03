@@ -26,9 +26,15 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
 import Link from 'next/link';
+import { useAddReviewMutation } from '@/features/catalog/hooks/useAddReviewMutation';
+import { useSession } from 'next-auth/react';
+import { ProductType } from '@/features/catalog/types';
+import { Session } from 'next-auth';
+import { useQueryClient } from '@tanstack/react-query';
+import { useUpdateProductMutation } from '@/features/catalog/hooks/useUpdateProductMutation';
 
 const FormSchema = z.object({
-  rating: z.number().min(1).max(5),
+  rating: z.string(),
   review: z
     .string()
     .min(3, {
@@ -39,7 +45,16 @@ const FormSchema = z.object({
     }),
 });
 
-export default function ReviewForm() {
+export default function ReviewForm({
+  product,
+  session,
+}: {
+  product: ProductType;
+  session: Session;
+}) {
+  const addReviewMutation = useAddReviewMutation();
+  const updateProductMutation = useUpdateProductMutation();
+  const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -53,6 +68,55 @@ export default function ReviewForm() {
         </pre>
       ),
     });
+
+    addReviewMutation.mutate(
+      {
+        productId: product.sku,
+        userEmail: session.user.email,
+        rating: parseInt(data.rating),
+        description: data.review,
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Add review successfully',
+            description: "Product's ratings have been updated",
+          });
+          queryClient.invalidateQueries(['reviews', product.sku]);
+          queryClient.invalidateQueries(['product', product.sku]);
+        },
+        onError: (error) => {
+          console.log(error);
+          toast({
+            title: 'Command failed',
+            description: 'Check console for error message',
+            variant: 'destructive',
+          });
+        },
+      },
+    );
+    // updateProductMutation.mutate(
+    //   {
+    //     productId: product.sku,
+    //     score: product.score + parseInt(data.rating) / (product.n_o_reviews + 1),
+    //     n_o_reviews: product.n_o_reviews + 1,
+    //   },
+    //   {
+    //     onSuccess: (data) => {
+    //       console.log(data);
+    //       toast({ title: 'Updated product', description: JSON.stringify(data) });
+    //       queryClient.invalidateQueries(['product', product.sku]);
+    //     },
+    //     onError: (error) => {
+    //       console.log(error);
+    //       toast({
+    //         title: 'Command failed',
+    //         description: 'Check console for error message',
+    //         variant: 'destructive',
+    //       });
+    //     },
+    //   },
+    // );
   }
 
   return (

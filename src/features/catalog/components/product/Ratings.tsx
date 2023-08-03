@@ -2,6 +2,7 @@ import { Text } from '@/components/common/Text';
 import React from 'react';
 
 const Ratings = ({ rating, reviews }: { rating: number; reviews: number }) => {
+  console.log({reviews, rating})
   return (
     <div className='mt-3'>
       <h3 className='sr-only'>Reviews</h3>
@@ -19,7 +20,7 @@ const Ratings = ({ rating, reviews }: { rating: number; reviews: number }) => {
               <svg
                 key={i}
                 className={`h-5 w-5 flex-shrink-0 ${
-                  Math.round(3) >= i + 1 ? 'text-yellow-500' : 'text-gray-200 dark:text-gray-500'
+                  Math.round(rating) >= i + 1 ? 'text-yellow-500' : 'text-gray-200 dark:text-gray-500'
                 }`}
                 viewBox='0 0 20 20'
                 fill='currentColor'

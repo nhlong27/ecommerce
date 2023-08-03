@@ -5,19 +5,27 @@ import ReactPaginate from 'react-paginate';
 type PaginationProps = {
   dataLength: number;
   pageCount: number;
+  itemOffSet: number;
   handlePageClick: (event: any) => void;
 };
 
-const Pagination: React.FC<PaginationProps> = ({ dataLength, pageCount, handlePageClick }) => {
-  
+const Pagination: React.FC<PaginationProps> = ({
+  dataLength,
+  pageCount,
+  handlePageClick,
+  itemOffSet,
+}) => {
+
   return (
     <div className='flex items-center justify-between border-t border-gray-200 dark:border-gray-500 mt-5 px-4 py-3 sm:px-6'>
       <div className='w-full flex items-center'>
         <div className='hidden lg:block'>
           <p className='text-sm '>
-            Showing <span className='font-medium'>1</span> to{' '}
-            <span className='font-medium'>10</span> of{' '}
-            <span className='font-medium'>{dataLength}</span> results{' '}
+            Showing <span className='font-medium'>{itemOffSet + 1}</span> to{' '}
+            <span className='font-medium'>
+              {itemOffSet + 20 > dataLength ? dataLength : itemOffSet + 20}
+            </span>{' '}
+            of <span className='font-medium'>{dataLength}</span> results{' '}
           </p>
         </div>
         <ReactPaginate
@@ -27,9 +35,7 @@ const Pagination: React.FC<PaginationProps> = ({ dataLength, pageCount, handlePa
             </span>
           }
           nextLabel={
-            <div
-              className='relative inline-flex items-center rounded-r-md px-2 py-2 ring-1 ring-inset ring-gray-300 dark:ring-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0'
-            >
+            <div className='relative inline-flex items-center rounded-r-md px-2 py-2 ring-1 ring-inset ring-gray-300 dark:ring-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0'>
               <svg className='h-5 w-5' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
                 <path
                   fillRule='evenodd'
@@ -47,9 +53,7 @@ const Pagination: React.FC<PaginationProps> = ({ dataLength, pageCount, handlePa
           marginPagesDisplayed={2}
           pageCount={pageCount}
           previousLabel={
-            <div
-              className='relative inline-flex items-center rounded-l-md px-2 py-2 ring-1 ring-inset ring-gray-300 dark:ring-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0'
-            >
+            <div className='relative inline-flex items-center rounded-l-md px-2 py-2 ring-1 ring-inset ring-gray-300 dark:ring-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0'>
               <svg className='h-5 w-5' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
                 <path
                   fillRule='evenodd'

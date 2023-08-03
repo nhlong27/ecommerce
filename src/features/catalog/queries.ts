@@ -1,8 +1,7 @@
 import { request, gql } from 'graphql-request';
 import { GRAPHQL_API_URL } from '@/constants/urls';
-import axios from 'axios';
-import { CartItemsSchema, ProductSchema, ProductsSchema } from './types';
-import { ProductDocument } from '../../../mongoose/models/product.model';
+import { CartItemsSchema, ProductSchema, ProductsSchema, ReviewSchema } from './types';
+import {z} from 'zod'
 
 const products = gql`
   {
@@ -57,6 +56,19 @@ const cartItems = gql`
   }
 `;
 
+const reviews = gql`
+  query reviews($productId: String!) {
+    reviews (productId: $productId) {
+      id
+      userId
+      userEmail
+      productId
+      rating
+      description
+    }
+  }
+`;
+
 
 export const getProductsQuery = () => {
   return {
@@ -90,6 +102,19 @@ export const getCartItemsQuery = (email: string) => {
     queryFn: async () => {
       const response = await request(`${GRAPHQL_API_URL}`, cartItems, { email });
       return CartItemsSchema.parse(response);
+    },
+    refetchOnReconnect: true,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+  };
+}
+
+export const getReviewsQuery = (productId: string) => {
+  return {
+    queryKey: ['reviews', productId],
+    queryFn: async () => {
+      const response = await request(`${GRAPHQL_API_URL}`, reviews, { productId });
+      return z.object({reviews: z.array(ReviewSchema)}).parse(response);
     },
     refetchOnReconnect: true,
     refetchOnMount: true,

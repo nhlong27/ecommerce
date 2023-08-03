@@ -26,6 +26,7 @@ model User {
   cartItems CartItem[]
   orders Order[]
   paymentDetails PaymentDetails[]
+  reviews Review[]
 
   role UserRole @default(USER)
 
@@ -95,4 +96,15 @@ model PaymentDetails {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  userEmail String
+  productId String
+
+  rating Int
+  description String
 }

@@ -3,6 +3,7 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 import Image from 'next/image';
 import helper from '@/constants/helper';
 import { Text } from '@/components/common/Text';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
 const Footer = () => {
   return (
@@ -20,7 +21,7 @@ const Footer = () => {
                 />
               </AspectRatio>
             </div>
-            <Text variant='lg/semibold/primary' className='dark:text-secondary'>
+            <Text variant='2xl/semibold/primary' className='dark:text-secondary'>
               Epicola
             </Text>
           </div>
@@ -30,12 +31,22 @@ const Footer = () => {
             through our social media.
           </p>
           <div className='mt-10 flex gap-3'>
-            <a href='https://www.instagram.com' target='_blank'>
-              {helper.icon.instagram}
-            </a>
-            <a href='https://twitter.com' target='_blank'>
-              {helper.icon.twitter}
-            </a>
+            <Popover>
+              <PopoverTrigger>
+                <p>{helper.icon.instagram}</p>
+              </PopoverTrigger>
+              <PopoverContent className='px-4 pt-1 w-auto'>
+                Checkout Github or Linkedin links instead.
+              </PopoverContent>
+            </Popover>
+            <Popover>
+              <PopoverTrigger>
+                <p>{helper.icon.twitter}</p>
+              </PopoverTrigger>
+              <PopoverContent className='px-4 pt-1 w-auto'>
+                Checkout Github or Linkedin links instead.
+              </PopoverContent>
+            </Popover>
             <a href='https://www.linkedin.com/in/long-nguyen-95517b250/' target='_blank'>
               {helper.icon.linkedin}
             </a>
@@ -46,82 +57,102 @@ const Footer = () => {
         </div>
 
         <div className='flex gap-6'>
-          <div className='mx-5 mt-10'>
-            <p className='font-medium text-gray-500'>FEATURES</p>
-            <ul className='text-sm leading-8'>
-              <li>
-                <a href='#'>Marketing</a>
-              </li>
-              <li>
-                <a href='#'>Commerce</a>
-              </li>
-              <li>
-                <a href='#'>Analytics</a>
-              </li>
-              <li>
-                <a href='#'>Merchendise</a>
-              </li>
-            </ul>
-          </div>
+          <Popover>
+            <PopoverTrigger>
+              <div className='mx-5 mt-10'>
+                <p className='font-medium text-gray-500'>FEATURES</p>
+                <ul className='text-sm leading-8'>
+                  <li>
+                    <p>Marketing</p>
+                  </li>
+                  <li>
+                    <p>Commerce</p>
+                  </li>
+                  <li>
+                    <p>Analytics</p>
+                  </li>
+                  <li>
+                    <p>Merchendise</p>
+                  </li>
+                </ul>
+              </div>
+            </PopoverTrigger>
+            <PopoverContent className='h-8 px-4 pt-1'>Feature in development.</PopoverContent>
+          </Popover>
 
-          <div className='mx-5 mt-10'>
-            <p className='font-medium text-gray-500'>SUPPORT</p>
-            <ul className='text-sm leading-8'>
-              <li>
-                <a href='#'>Pricing</a>
-              </li>
-              <li>
-                <a href='#'>Docs</a>
-              </li>
-              <li>
-                <a href='#'>Audition</a>
-              </li>
-              <li>
-                <a href='#'>Art Status</a>
-              </li>
-            </ul>
-          </div>
+          <Popover>
+            <PopoverTrigger>
+              <div className='mx-5 mt-10'>
+                <p className='font-medium text-gray-500'>SUPPORT</p>
+                <ul className='text-sm leading-8'>
+                  <li>
+                    <p>Pricing</p>
+                  </li>
+                  <li>
+                    <p>Docs</p>
+                  </li>
+                  <li>
+                    <p>Audition</p>
+                  </li>
+                  <li>
+                    <p>Art Status</p>
+                  </li>
+                </ul>
+              </div>
+            </PopoverTrigger>
+            <PopoverContent className='h-8 px-4 pt-1'>Feature in development.</PopoverContent>
+          </Popover>
 
-          <div className='mx-5 mt-10'>
-            <p className='font-medium text-gray-500'>DOCUMENTS</p>
-            <ul className='text-sm leading-8'>
-              <li>
-                <a href='#'>Terms</a>
-              </li>
-              <li>
-                <a href='#'>Conditions</a>
-              </li>
-              <li>
-                <a href='#'>Privacy</a>
-              </li>
-              <li>
-                <a href='#'>License</a>
-              </li>
-            </ul>
-          </div>
+          <Popover>
+            <PopoverTrigger>
+              <div className='mx-5 mt-10'>
+                <p className='font-medium text-gray-500'>DOCUMENTS</p>
+                <ul className='text-sm leading-8'>
+                  <li>
+                    <p>Terms</p>
+                  </li>
+                  <li>
+                    <p>Conditions</p>
+                  </li>
+                  <li>
+                    <p>Privacy</p>
+                  </li>
+                  <li>
+                    <p>License</p>
+                  </li>
+                </ul>
+              </div>
+            </PopoverTrigger>
+            <PopoverContent className='h-8 px-4 pt-1'>Feature in development.</PopoverContent>
+          </Popover>
 
-          <div className='mx-5 mt-10'>
-            <p className='font-medium text-gray-500'>DELIVERY</p>
-            <ul className='text-sm leading-8'>
-              <li>
-                <a href='#'>List of countries</a>
-              </li>
-              <li>
-                <a href='#'>Special information</a>
-              </li>
-              <li>
-                <a href='#'>Restrictions</a>
-              </li>
-              <li>
-                <a href='#'>Payment</a>
-              </li>
-            </ul>
-          </div>
+          <Popover>
+            <PopoverTrigger>
+              <div className='mx-5 mt-10'>
+                <p className='font-medium text-gray-500'>DELIVERY</p>
+                <ul className='text-sm leading-8'>
+                  <li>
+                    <p>List of countries</p>
+                  </li>
+                  <li>
+                    <p>Special information</p>
+                  </li>
+                  <li>
+                    <p>Restrictions</p>
+                  </li>
+                  <li>
+                    <p>Payment</p>
+                  </li>
+                </ul>
+              </div>
+            </PopoverTrigger>
+            <PopoverContent className='h-8 px-4 pt-1'>Feature in development.</PopoverContent>
+          </Popover>
         </div>
       </footer>
       <footer className='flex w-full justify-center pb-10 md:hidden'>
         <div className='flex-col flex justify-between w-11/12 mx-auto items-start ml-8'>
-          <div className='flex items-center mt-2 gap-24'>
+          <div className='flex items-center mt-2 gap-4'>
             <div className='w-[50px]'>
               <AspectRatio ratio={1 / 1}>
                 <Image
@@ -143,12 +174,22 @@ const Footer = () => {
               through our social media.
             </p>
             <div className='mt-2 flex gap-3'>
-              <a href='https://www.instagram.com' target='_blank'>
-                {helper.icon.instagram}
-              </a>
-              <a href='https://twitter.com' target='_blank'>
-                {helper.icon.twitter}
-              </a>
+              <Popover>
+                <PopoverTrigger>
+                  <p>{helper.icon.instagram}</p>
+                </PopoverTrigger>
+                <PopoverContent className='h-auto px-4 pt-1'>
+                  Checkout Github or Linkedin links instead.
+                </PopoverContent>
+              </Popover>
+              <Popover>
+                <PopoverTrigger>
+                  <p>{helper.icon.twitter}</p>
+                </PopoverTrigger>
+                <PopoverContent className='h-auto px-4 pt-1'>
+                  Checkout Github or Linkedin links instead.
+                </PopoverContent>
+              </Popover>
               <a href='https://www.linkedin.com/in/long-nguyen-95517b250/' target='_blank'>
                 {helper.icon.linkedin}
               </a>
@@ -160,9 +201,9 @@ const Footer = () => {
         </div>
       </footer>
       <span className='w-11/12 mx-auto border-b border-gray-200 dark:border-gray-500'></span>
-      <section className='h-11'>
+      <section className='h-12'>
         <div className='mx-auto flex max-w-[1200px] items-center justify-between px-4 pt-2'>
-          <Text variant='sm/light/black'>&copy; 2023 NHLong. All rights reserved.</Text>
+          <Text variant='sm/light/black' >&copy; 2023 NHLong. All rights reserved.</Text>
           <div className='flex items-center space-x-3'>
             <img
               className='h-8'

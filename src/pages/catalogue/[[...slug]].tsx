@@ -10,6 +10,17 @@ import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { getProductsQuery } from '@/features/catalog/queries';
 import { atom, useAtom } from 'jotai';
 import { ProductType } from '@/features/catalog/types';
+import dynamic from 'next/dynamic';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const ProductSwiper = dynamic(() => import('@/features/catalog/components/ProductSwiper'), {
+  loading: () => (
+    <div className='mx-auto w-3/4 lg:w-11/12 pb-8 pt-12 relative h-[20rem]'>
+      <Skeleton className='h-full w-full  rounded-e-lg' />
+    </div>
+  ),
+  ssr: false,
+});
 
 export const categoryFilterAtom = atom<Set<string>>(
   new Set(['coffee_tea', 'energy_drink', 'juice_shake', 'sport_drink', 'water']),
@@ -100,6 +111,7 @@ const CataloguePage = () => {
           </>
         )}
       </div>
+      <ProductSwiper />
     </div>
   );
 };
