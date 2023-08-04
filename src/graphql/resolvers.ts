@@ -6,7 +6,6 @@ import { ProductModel } from '../../mongoose/models/product.model';
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 import bcrypt from 'bcrypt';
-import { isConstValueNode } from 'graphql';
 
 export const resolvers = {
   Query: {

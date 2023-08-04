@@ -111,7 +111,7 @@ const CataloguePage = () => {
           </>
         )}
       </div>
-      <ProductSwiper />
+      {router.query.slug?.[1] ? <ProductSwiper /> : null }
     </div>
   );
 };
