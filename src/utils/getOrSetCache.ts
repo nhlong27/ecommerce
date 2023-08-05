@@ -1,6 +1,6 @@
 import { redis } from "@/lib/redis"
 
-export async function getOrSetCache (key: string, cb: Function) {
+export async function getOrSetCache (key: string, cb: ()=> Promise<any>) {
   await redis.connect()
   const cache = await redis
     .get(key)
