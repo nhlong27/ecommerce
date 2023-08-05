@@ -3,8 +3,11 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "./auth/[...nextauth]"
 import { OrderSchema } from "./.types";
 import prisma from "@/lib/prisma";
+import Stripe from 'stripe';
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+  apiVersion: '2022-11-15',
+});
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions)
@@ -25,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               currency: 'usd',
               product_data: {
                 name: item.productTitle,
-                description: item.orderId,
+                description: item.orderId?.toString(),
                 images: [`${process.env.NEXT_PUBLIC_DATA_SOURCE}${item.productImage}`],
               },
             },

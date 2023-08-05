@@ -3,8 +3,9 @@ import prisma from '@/lib/prisma';
 import connectMongo from '@/lib/mongodb';
 import { getOrSetCache } from '@/utils/getOrSetCache';
 import { ProductModel } from '../../mongoose/models/product.model';
+import Stripe from 'stripe';
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, { apiVersion: '2022-11-15' });
 import bcrypt from 'bcrypt';
 
 export const resolvers = {
@@ -199,7 +200,7 @@ export const resolvers = {
           description: args.description,
         },
       });
-      
+
       const reviews = await prisma.review.findMany({
         where: {
           productId: args.productId,
@@ -214,9 +215,9 @@ export const resolvers = {
       });
       score = score / n_o_reviews;
       score = Math.round(score * 100) / 100;
-      
+
       await connectMongo();
-      
+
       const product = await ProductModel.findOneAndUpdate(
         { sku: args.productId },
         {
@@ -228,7 +229,7 @@ export const resolvers = {
       return newReview;
     },
     updateProduct: async (_: any, args: any) => {
-      let product = 0 // do nothing
+      let product = 0; // do nothing
       return product;
     },
   },

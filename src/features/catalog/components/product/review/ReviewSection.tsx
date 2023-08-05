@@ -19,7 +19,7 @@ const ReviewSection = ({ product }: { product: ProductType }) => {
         <div className='order-1 lg:order-2 w-full lg:w-1/2 my-8'>
           <Text variant='lg/semibold/black'>Share your thoughts</Text>
           <Text variant='base/normal/black'>
-            If you've used this product, share your thoughts with other customers
+            If you&apos;ve used this product, share your thoughts with other customers
           </Text>
           {session ? (
             <Collapsible>

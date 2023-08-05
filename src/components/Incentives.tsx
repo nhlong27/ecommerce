@@ -38,8 +38,8 @@ const Incentives = () => {
             </div>
             <div className='group relative'>
               <p className='mt-5 line-clamp-3 text-sm leading-6 text-gray-600 dark:text-gray-200'>
-                It's not actually free we just price it into the products. Someone's paying for it,
-                and it's not us.
+                It&apos;s not actually free we just price it into the products. Someone&apos;s paying for it,
+                and it&apos;s not us.
               </p>
             </div>
           </article>
@@ -51,7 +51,7 @@ const Incentives = () => {
             </div>
             <div className='group relative'>
               <p className='mt-5 line-clamp-3 text-sm leading-6 text-gray-600 dark:text-gray-200'>
-                If it breaks in the first 10 years we'll replace it. After that you're on your own
+                If it breaks in the first 10 years we&apos;ll replace it. After that you&apos;re on your own
                 though.
               </p>
             </div>
@@ -64,7 +64,7 @@ const Incentives = () => {
             </div>
             <div className='group relative'>
               <p className='mt-5 line-clamp-3 text-sm leading-6 text-gray-600 dark:text-gray-200'>
-                If you don't like it, trade it to one of your friends for something of theirs. Don't
+                If you don&apos;t like it, trade it to one of your friends for something of theirs. Don&apos;t
                 send it here though.
               </p>
             </div>

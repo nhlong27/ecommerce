@@ -11,5 +11,7 @@
     "no-explicit-any": "off",
     "ban-ts-comment": "off",
     "no-non-null-assertion": "off",
+    "no-empty-interface": "off",
+    "no-var-required": "off"
   }
 }

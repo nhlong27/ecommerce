@@ -1,11 +1,16 @@
 import prisma from '@/lib/prisma';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
+import Stripe from 'stripe';
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-const stripe = require('stripe')(stripeSecretKey);
+
+const stripe = new Stripe(stripeSecretKey as string, {
+  apiVersion: '2022-11-15',
+});
+
 
 export const config = {
   api: {
@@ -31,7 +36,7 @@ export default async function webhookHandler(req: NextApiRequest, res: NextApiRe
 
     try {
       // Verify the stripe event using the webhook secret
-      event = stripe.webhooks.constructEvent(buf.toString(), sig, stripeWebhookSecret);
+      event = stripe.webhooks.constructEvent(buf.toString(), sig as any, stripeWebhookSecret as string) as any;
     } catch (err: any) {
       console.log(`Webhook error: ${err.message}`);
       return res.status(400).send(`Webhook Error: ${err.message}`);

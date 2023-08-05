@@ -140,7 +140,7 @@ const PaymentProcessing = () => {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value='item-3'>
-            <AccordionTrigger>Payment is done. What's next?</AccordionTrigger>
+            <AccordionTrigger>Payment is done. What&apos;s next?</AccordionTrigger>
             <AccordionContent>
               You should be redirect to the finish step of the checkout process very soon. If not, please refresh the page.
             </AccordionContent>

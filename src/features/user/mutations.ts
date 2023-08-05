@@ -48,7 +48,7 @@ export const addUserMutationFn = async ({
 }: {
   name: string;
   email: string;
-  password: String;
+  password: string;
 }) => {
   return request(`${GRAPHQL_API_URL}`, addUser, { name, email, password });
 };

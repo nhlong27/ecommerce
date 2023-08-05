@@ -115,7 +115,7 @@ const Hero = () => {
                   <Popover>
                     <PopoverTrigger>
                       <div className='border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 px-4 py-1'>
-                        See what's new this week
+                        See what&apos;s new this week
                       </div>
                     </PopoverTrigger>
                     <PopoverContent className='h-8 px-4 pt-1'>
