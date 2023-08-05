@@ -3,12 +3,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import React from 'react';
 import { useGetUserQuery } from '../hooks/useGetUsersQuery';
-import { useSession } from 'next-auth/react';
 import { Session } from 'next-auth';
 import { Button } from '@/components/ui/button';
 import { useUpdateUserMutation } from '../hooks/useUpdateUserMutation';
 import { toast } from '@/components/ui/use-toast';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import AlertError from '@/features/catalog/components/AlertError';
 import Image from 'next/image';
@@ -22,16 +21,6 @@ const Profile = ({ session }: { session: Session }) => {
   const [password, setPassword] = React.useState<string>('');
   const [editDisabled, setEditDisabled] = React.useState(true);
   const [shouldPasswordDisplay, setShouldPasswordDisplay] = React.useState(false);
-
-  // const { data: imageData } = useQuery({
-  //   queryKey: ['image', session.user.email],
-  //   queryFn: async () => {
-  //     let image = (await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/api/image`)).data;
-  //     image = URL.createObjectURL(image);
-  //     console.log(image)
-  //     return image
-  //   },
-  // });
 
   const updateUserMutation = useUpdateUserMutation();
   const queryClient = useQueryClient();
@@ -55,16 +44,23 @@ const Profile = ({ session }: { session: Session }) => {
         },
       );
       if (image) {
-        await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/image`, image, {
+        let formData = new FormData();
+        formData.append("image", image, image.name);
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/image`, formData, {
           headers: {
-            'Content-Type': 'image/jpeg',
+            'Content-Type': 'multipart/form-data',
           },
         });
+        if (response.status === 200) {
+          toast({ title: 'Image uploaded successfully' });
+          queryClient.invalidateQueries(['user', session.user.email]);
+        } else {
+          toast({ title: 'Failed to upload image' });
+        }
       }
-
     }
   };
-  
+
 
   return data ? (
     <div className='w-full'>
@@ -73,10 +69,14 @@ const Profile = ({ session }: { session: Session }) => {
           Account Information
         </Text>
         <div className='flex flex-col lg:flex-row gap-8'>
-          <div className='order-2 p-4 flex w-full max-w-sm items-center space-x-6 flex-col gap-4'>
+          <div className='order-1 lg:order-2 p-4 flex w-full max-w-sm items-center space-x-6 flex-col gap-4'>
             <div className='flex relative justify-center items-center w-[1/3] min-w-[10rem] h-[10rem] rounded-full overflow-hidden shadow-inner'>
               <Image
-                src={helper.images.commercial3}
+                src={
+                  data.user.image
+                    ? `${process.env.NEXT_PUBLIC_S3_BUCKET}/${data.user.image}`
+                    : helper.images.commercial3
+                }
                 alt='hero'
                 sizes={helper.images.size}
                 className='object-contain'
@@ -88,6 +88,8 @@ const Profile = ({ session }: { session: Session }) => {
               <Input
                 id='picture'
                 type='file'
+                accept='image/*'
+                disabled={!editDisabled}
                 value={''}
                 onChange={(e) => {
                   setImage(e?.currentTarget?.files?.[0] ?? null);
@@ -96,7 +98,7 @@ const Profile = ({ session }: { session: Session }) => {
               />
             </div>
           </div>
-          <div>
+          <div className='order-2 lg:order-1'>
             <div className='p-4 flex w-full max-w-sm items-center space-x-6'>
               <Label htmlFor='email'>Email</Label>
               <Input id='email' value={data.user.email} disabled={true} />

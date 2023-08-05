@@ -13,7 +13,7 @@ const Filters = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <div className='w-full lg:p-6 py-3 sticky z-20 bg-white dark:bg-slate-800 rounded-md top-12 md:top-16 flex gap-8 shadow-md items-center'>
+    <div className='w-full lg:p-3 py-3 sticky z-20 bg-white dark:bg-slate-800 rounded-md top-12 md:top-16 flex gap-8 shadow-md items-center'>
       <svg
         width='20'
         height='20'

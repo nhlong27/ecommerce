@@ -31,6 +31,7 @@ export const brandsAtom = atom<Array<string>>([]);
 export const priceRangeAtom = atom<number[]>([5]);
 
 export const filteredProductsAtom = atom<ProductType[] | null>(null);
+export const queryAtom = atom<string>('');
 
 export const categoryRegistry = {
   coffee_tea: {

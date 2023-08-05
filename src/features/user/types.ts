@@ -35,7 +35,7 @@ export const UserSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   emailVerified: z.boolean(),
-  image: z.string(),
+  image: z.string().nullable().optional(),
   role: z.string(),
   cartItems: z.array(CartItemSchema).optional(),
   orders: z.array(OrderSchema).optional(),

@@ -38,9 +38,11 @@ import { Skeleton } from '../ui/skeleton';
 import SearchBar from '../common/SearchBar';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { Button } from '../ui/button';
+import { useGetUserQuery } from '@/features/user/hooks/useGetUsersQuery';
 
 const Nav = () => {
   const { data: session } = useSession();
+  const { data } = useGetUserQuery(session?.user?.email as string);
   return (
     <>
       <nav className='hidden md:flex w-11/12 h-full mx-auto'>
@@ -136,7 +138,11 @@ const Nav = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar className='w-8 h-8'>
-                    <AvatarImage src={session ? 'https://github.com/shadcn.png' : ''} />
+                    <AvatarImage
+                      src={
+                        session ? `${process.env.NEXT_PUBLIC_S3_BUCKET}/${data?.user.image}` : ''
+                      }
+                    />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -338,7 +344,11 @@ const Nav = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar className='w-6 h-6'>
-                    <AvatarImage src={session ? 'https://github.com/shadcn.png' : ''} />
+                    <AvatarImage
+                      src={
+                        session ? `${process.env.NEXT_PUBLIC_S3_BUCKET}/${data?.user.image}` : ''
+                      }
+                    />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>

@@ -10,11 +10,11 @@ const Review = ({ review }: { review: ReviewType }) => {
     <div className='flex flex-col w-full h-auto py-8'>
       <div className='flex justify-start items-center w-full py-4'>
         <Avatar className='w-12 h-12'>
-          <AvatarImage src={data.user.image ?? `https://github.com/shadcn.png`} />
+          <AvatarImage src={`${process.env.NEXT_PUBLIC_S3_BUCKET}/${data?.user.image}` ?? ``} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className='flex flex-col items-start ml-4 gap-2'>
-          <Text variant='base/semibold/black'>{data.user.name}</Text>
+          <Text variant='base/semibold/black'>{data.user.name==='' ? 'Anonymous User' : data.user.name}</Text>
           <div className='flex items-center'>
             {Array(5)
               .fill(1)

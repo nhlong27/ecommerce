@@ -12,13 +12,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'fakestoreapi.com',
+        hostname: 'www.pepsicopartners.com',
         port: '',
-        pathname: '/img/**',
+        pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'www.pepsicopartners.com',
+        hostname: 'nhlong27-ecommerce-pepsico.s3.ap-southeast-2.amazonaws.com',
         port: '',
         pathname: '/**',
       },

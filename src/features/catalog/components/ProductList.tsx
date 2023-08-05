@@ -12,6 +12,7 @@ import {
   categoryRegistry,
   filteredProductsAtom,
   priceRangeAtom,
+  queryAtom,
   sortAtom,
 } from '@/pages/catalogue/[[...slug]]';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -26,7 +27,8 @@ function Items({ currentItems }: { currentItems: ProductType[] }) {
 }
 
 const ProductList = () => {
-  const { data, isLoading, error } = useGetProductsQuery();
+  const { data, error } = useGetProductsQuery();
+  const [query] = useAtom(queryAtom);
 
   const [itemOffset, setItemOffset] = React.useState(0);
 
@@ -107,6 +109,20 @@ const ProductList = () => {
       setBrandSet(new Set(brands));
     }
   }, [brands]);
+
+  React.useEffect(()=>{
+    if (data) {
+      if (query) {
+        const products = data.products.filter((product) =>
+          product.title.toLowerCase().includes(query.toLowerCase()),
+        );
+        setFilteredProducts(products);
+      } else {
+        setFilteredProducts(null);
+      }
+      setItemOffset(0);
+    }
+  },[query])
 
 
   if (filteredProducts && filteredProducts.length > 0) {
