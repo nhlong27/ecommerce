@@ -8,7 +8,7 @@ const Categories = () => {
     <div className='bg-secondary/10'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-16'>
-          <Text variant='2xl/semibold/black' >Categories</Text>
+          <Text variant='2xl/semibold/black'>Categories</Text>
           <Text variant='sm/normal/ghost' className='mt-3'>Experience ultimate refreshment and hydration with our wide selection of drinks, designed to keep you energized and revitalized throughout the day</Text>
 
           <div className='mt-6 space-y-12 lg:grid lg:grid-cols-5 lg:gap-x-6 lg:space-y-0'>
@@ -37,10 +37,10 @@ const Categories = () => {
                 />
               </div>
               <h3 className='mt-6 text-sm '>
-                <a href='#'>
+                <Link href='/catalogue/energy_drink'>
                   <span className='absolute inset-0'></span>
                   Energy drinks
-                </a>
+                </Link>
               </h3>
               <p className='text-base font-semibold '>Refreshing, powerful flavors</p>
             </div>
@@ -53,10 +53,10 @@ const Categories = () => {
                 />
               </div>
               <h3 className='mt-6 text-sm '>
-                <a href='#'>
+                <Link href='/catalogue/juice_shake'>
                   <span className='absolute inset-0'></span>
                   Juice Shakes
-                </a>
+                </Link>
               </h3>
               <p className='text-base font-semibold '>Natural, refreshing ingredients</p>
             </div>
@@ -69,10 +69,10 @@ const Categories = () => {
                 />
               </div>
               <h3 className='mt-6 text-sm '>
-                <a href='#'>
+                <Link href='/catalogue/sport_drink'>
                   <span className='absolute inset-0'></span>
                   Sport drinks
-                </a>
+                </Link>
               </h3>
               <p className='text-base font-semibold '>Stay hydrated, fuel performance</p>
             </div>
@@ -85,10 +85,10 @@ const Categories = () => {
                 />
               </div>
               <h3 className='mt-6 text-sm '>
-                <a href='#'>
+                <Link href='/catalogue/water'>
                   <span className='absolute inset-0'></span>
                   Pure water
-                </a>
+                </Link>
               </h3>
               <p className='text-base font-semibold '>Embrace the simplicity and purity</p>
             </div>

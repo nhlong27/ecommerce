@@ -4,9 +4,11 @@ import { Button } from '../ui/button';
 import { queryAtom } from '@/pages/catalogue/[[...slug]]';
 import { useAtom } from 'jotai';
 import { toast } from '../ui/use-toast';
+import { useRouter } from 'next/router';
 
 const SearchBar = () => {
   const [query, setQuery] = useAtom(queryAtom);
+  const router = useRouter()
   return (
     <form
       onSubmit={(e) => {
