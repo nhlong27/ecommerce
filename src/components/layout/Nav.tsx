@@ -40,7 +40,7 @@ import { Button } from '../ui/button';
 import { useGetUserQuery } from '@/features/user/hooks/useGetUsersQuery';
 
 const Nav = () => {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(false);
   const { data: session } = useSession();
   const { data } = useGetUserQuery(session?.user?.email as string);
   return (
@@ -230,25 +230,30 @@ const Nav = () => {
                 <SheetContent className='flex flex-col'>
                   <SheetHeader>
                     <SheetTitle>
-                      <Link onClick={()=>setIsOpen(false)} href='/account/profile' className='text-xl font-semibold'>
+                      <Link
+                        onClick={() => setIsOpen(false)}
+                        href='/account/profile'
+                        className='text-xl font-semibold'
+                      >
                         Your Cart
                       </Link>
                     </SheetTitle>
                     <SheetDescription className='text-sm'>
-
-                        Your Ultimate Cart: Where Shopping Dreams Come True!
-
+                      Your Ultimate Cart: Where Shopping Dreams Come True!
                     </SheetDescription>
                   </SheetHeader>
                   {session ? (
-                    <CartSection style='sheet' session={session}
-                    setIsOpen={setIsOpen} />
+                    <CartSection style='sheet' session={session} setIsOpen={setIsOpen} />
                   ) : (
                     <div className='flex flex-col justify-start items-start gap-4'>
                       <Text variant='base/normal/primary' className='dark:text-secondary'>
                         You must sign in to view this section
                       </Text>
-                      <Button variant='secondary' className='mt-4 mx-auto' onClick={()=>setIsOpen(false)}>
+                      <Button
+                        variant='secondary'
+                        className='mt-4 mx-auto'
+                        onClick={() => setIsOpen(false)}
+                      >
                         <Link href='/auth'>Sign in</Link>
                       </Button>
                     </div>
@@ -271,16 +276,15 @@ const Nav = () => {
                 <SheetContent side='left' className='md:w-1/2 w-5/6'>
                   <SheetHeader>
                     <SheetTitle className='flex items-center gap-2 border-b border-gray-200 dark:border-gray-500 w-[40px]'>
-
-                        <AspectRatio ratio={1 / 1}>
-                          <Image
-                            src={helper.icon.logo}
-                            alt='Image'
-                            sizes={helper.images.size}
-                            fill
-                            className='object-cover bg-white h-full w-full'
-                          />
-                        </AspectRatio>
+                      <AspectRatio ratio={1 / 1}>
+                        <Image
+                          src={helper.icon.logo}
+                          alt='Image'
+                          sizes={helper.images.size}
+                          fill
+                          className='object-cover bg-white h-full w-full'
+                        />
+                      </AspectRatio>
                       Epicola
                     </SheetTitle>
                   </SheetHeader>
@@ -297,7 +301,9 @@ const Nav = () => {
                         <NavigationMenuItem>
                           <ul className='flex gap-3 py-6 w-full flex-col'>
                             <li className='flex flex-col justify-center items-center gap-6 bg-gradient-to-bl from-gray-100 dark:from-gray-800 dark:via-transparent dark:to-transparent via-white to-white rounded-md'>
-                              <SearchBar />
+                              <Link href='/catalogue?category=coffee_tea&page=1'>
+                                <SearchBar />
+                              </Link>
                               <NavigationMenuLink asChild>
                                 <Link
                                   className='flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted no-underline outline-none focus:shadow-md pl-3'
