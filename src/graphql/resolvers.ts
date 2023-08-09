@@ -3,9 +3,6 @@ import prisma from '@/lib/prisma';
 import connectMongo from '@/lib/mongodb';
 import { getOrSetCache } from '@/utils/getOrSetCache';
 import { ProductModel } from '../../mongoose/models/product.model';
-import Stripe from 'stripe';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, { apiVersion: '2022-11-15' });
 import bcrypt from 'bcrypt';
 
 export const resolvers = {
@@ -16,27 +13,55 @@ export const resolvers = {
       return product;
     },
     products: async (_: any, args: any) => {
-      const data = await getOrSetCache('products', async () => {
-        await connectMongo();
+      // const data = await getOrSetCache(`products-${args.category}-${args.brand ?? 'all'}-${args.price ?? 'all'}-${args.sortBy ?? 'none'}`, async () => {
+      await connectMongo();
+
+      const filterCriteria: Record<string, any> = {};
+      let sortOptions: Record<string, any> = {};
+      if (args.category) {
+        filterCriteria.category = args.category;
+      }
+      if (args.brand) {
+        filterCriteria.title = { $regex: args.brand, $options: 'i' };
+      }
+      if (args.price) {
+        filterCriteria.price = { $lte: args.price };
+      }
+
+      if (args.sortBy && args.sortBy === 'best_rating') {
+        sortOptions.score = 1;
+      }
+      if (args.sortBy && args.sortBy === 'most_reviewed') {
+        sortOptions.n_o_reviews = 1;
+      }
+
+      const itemsPerPage = 10;
+      const skipCount = (args.pageIndex - 1) * itemsPerPage;
+
+      if (args.keyword) {
         const products = await ProductModel.find({
-          category: ['coffee_tea', 'energy_drink', 'juice_shake', 'sport_drink', 'water'],
+          category: args.category,
+          title: { $regex: args.keyword, $options: 'i' },
         })
-          .limit(100)
+          .skip(skipCount)
+          .limit(itemsPerPage)
+          .sort(sortOptions)
           .lean();
-        return products;
-      });
-      if (!data) throw new Error('Unable to get resources');
-      return data;
-    },
-    stripe_secret: async (_: any, args: any) => {
-      const intent = await stripe.paymentIntents.create({
-        amount: 1099,
-        currency: 'usd',
-        automatic_payment_methods: {
-          enabled: true,
-        },
-      });
-      return intent.client_secret;
+        return { products: products, count: products.length };
+      } else {
+        const count = await ProductModel.countDocuments(filterCriteria);
+        const products = await ProductModel.find(filterCriteria)
+          .skip(skipCount)
+          .limit(itemsPerPage)
+          .sort(sortOptions)
+          .lean();
+
+        return { products: products, count: count };
+      }
+
+      // });
+      // if (!data) throw new Error('Unable to get resources');
+      // return data;
     },
     cartItems: async (_: any, args: any) => {
       const existingUser = await prisma.user.findFirst({
@@ -231,6 +256,14 @@ export const resolvers = {
     updateProduct: async (_: any, args: any) => {
       let product = 0; // do nothing
       return product;
+    },
+    deleteCartItem: async (_: any, args: any) => {
+      const deletedCartItem = await prisma.cartItem.delete({
+        where: {
+          id: Number(args.id),
+        },
+      });
+      return deletedCartItem;
     },
   },
 };

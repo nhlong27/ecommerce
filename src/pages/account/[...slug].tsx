@@ -2,7 +2,6 @@ import { AccountMenu, CartSection } from '@/features/user';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 import { atom, useAtom } from 'jotai';
-import LoadingPage from '../loading';
 import { useRouter } from 'next/router';
 import { Text } from '@/components/common/Text';
 import { Button } from '@/components/ui/button';

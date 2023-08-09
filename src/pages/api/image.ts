@@ -6,8 +6,8 @@ import prisma from '@/lib/prisma';
 import multer from 'multer';
 import fs from 'fs';
 AWS.config.update({
-  accessKeyId: 'AKIAU473WFTPOXDFCN4H',
-  secretAccessKey: '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',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
 // Configure multer for handling file uploads

@@ -5,7 +5,9 @@ import { OrderSchema } from "./.types";
 import prisma from "@/lib/prisma";
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+
+const stripe = new Stripe(stripeSecretKey as string, {
   apiVersion: '2022-11-15',
 });
 

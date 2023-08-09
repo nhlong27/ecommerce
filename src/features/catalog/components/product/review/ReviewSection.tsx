@@ -24,9 +24,9 @@ const ReviewSection = ({ product }: { product: ProductType }) => {
           {session ? (
             <Collapsible>
               <CollapsibleTrigger>
-                <Button variant='secondary' className='mt-4'>
+                <p className=' inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 mt-4 bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80 h-10 px-4 py-2'>
                   Write a review
-                </Button>
+                </p>
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <ReviewForm product={product} session={session} />

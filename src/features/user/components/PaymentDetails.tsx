@@ -29,12 +29,14 @@ const PaymentDetails = ({ session }: { session: Session }) => {
           </TableRow>
         </TableHeader>
         <TableBody className='bg-gray-100 dark:bg-slate-900'>
-          {data.paymentDetails.map((payment) => {
+          {data.paymentDetails.reverse().map((payment) => {
             return (
               <TableRow key={payment.id}>
                 <TableCell className='font-medium text-right'>{payment.id}</TableCell>
                 <TableCell className='text-right'>{payment.orderId}</TableCell>
-                <TableCell className='capitalize text-right'>{payment.amount_total}</TableCell>
+                <TableCell className='capitalize text-right'>
+                  {payment.amount_total / 100}
+                </TableCell>
                 <TableCell className='capitalize text-right'>{payment.currency}</TableCell>
                 <TableCell className='capitalize text-right'>{payment.status}</TableCell>
                 <TableCell className='text-right'></TableCell>

@@ -34,13 +34,13 @@ import {
 import { Text } from '../common/Text';
 import { signOut, useSession } from 'next-auth/react';
 import { CartSection } from '@/features/user';
-import { Skeleton } from '../ui/skeleton';
 import SearchBar from '../common/SearchBar';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { Button } from '../ui/button';
 import { useGetUserQuery } from '@/features/user/hooks/useGetUsersQuery';
 
 const Nav = () => {
+  const [isOpen, setIsOpen] = React.useState(false)
   const { data: session } = useSession();
   const { data } = useGetUserQuery(session?.user?.email as string);
   return (
@@ -80,7 +80,7 @@ const Nav = () => {
                     <NavigationMenuLink asChild>
                       <Link
                         className='flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted no-underline outline-none focus:shadow-md pl-3'
-                        href='/catalogue'
+                        href='/catalogue?category=coffee_tea&page=1'
                       >
                         <div className='mb-2 mt-4 text-lg font-medium'>Explore our catalogue</div>
                         <p className='text-sm leading-tight text-muted-foreground'>
@@ -90,35 +90,35 @@ const Nav = () => {
                     </NavigationMenuLink>
                   </li>
                   <NavigationMenuLink
-                    href='/catalogue/coffee_tea'
+                    href='/catalogue?category=coffee_tea&page=1'
                     className='col-span-1 h-20 bg-gradient-to-bl from-gray-100 to-white hover:to-gray-100 dark:from-slate-800 dark:to-black dark:hover:to-slate-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Coffees / Teas.
                     <span className='absolute top-1 right-1'>{helper.icon.menu}</span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
-                    href='/catalogue/energy_drink'
+                    href='/catalogue?category=energy_drink&page=1'
                     className='col-span-1 h-20 bg-gradient-to-bl from-gray-100 to-white hover:to-gray-100 dark:from-slate-800 dark:to-black dark:hover:to-slate-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Energy drinks.
                     <span className='absolute top-1 right-1'>{helper.icon.menu}</span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
-                    href='/catalogue/juice_shake'
+                    href='/catalogue?category=juice_shake&page=1'
                     className='col-span-1 h-20 bg-gradient-to-bl from-gray-100 to-white hover:to-gray-100 dark:from-slate-800 dark:to-black dark:hover:to-slate-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Juice Shakes.
                     <span className='absolute top-1 right-1'>{helper.icon.menu}</span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
-                    href='/catalogue/sport_drink'
+                    href='/catalogue?category=sport_drink&page=1'
                     className='col-span-1 h-20 bg-gradient-to-bl from-gray-100 to-white hover:to-gray-100 dark:from-slate-800 dark:to-black dark:hover:to-slate-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Sport drinks.
                     <span className='absolute top-1 right-1'>{helper.icon.menu}</span>
                   </NavigationMenuLink>
                   <NavigationMenuLink
-                    href='/catalogue/water'
+                    href='/catalogue?category=water&page=1'
                     className='col-span-1 h-20 bg-gradient-to-bl from-gray-100 to-white hover:to-gray-100 dark:from-slate-800 dark:to-black dark:hover:to-slate-800 p-3 rounded-md transition-colors duration-100 relative'
                   >
                     Water.
@@ -223,31 +223,32 @@ const Nav = () => {
               </DropdownMenu>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Sheet>
+              <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 px-4 py-2'>
                   <helper.icon.shop className='h-5 w-5' />
                 </SheetTrigger>
                 <SheetContent className='flex flex-col'>
                   <SheetHeader>
                     <SheetTitle>
-                      <Link href='/account/profile' className='text-xl font-semibold'>
+                      <Link onClick={()=>setIsOpen(false)} href='/account/profile' className='text-xl font-semibold'>
                         Your Cart
                       </Link>
                     </SheetTitle>
-                    <SheetDescription>
-                      <Text variant='sm/normal/ghost'>
+                    <SheetDescription className='text-sm'>
+
                         Your Ultimate Cart: Where Shopping Dreams Come True!
-                      </Text>
+
                     </SheetDescription>
                   </SheetHeader>
                   {session ? (
-                    <CartSection style='sheet' session={session} />
+                    <CartSection style='sheet' session={session}
+                    setIsOpen={setIsOpen} />
                   ) : (
                     <div className='flex flex-col justify-start items-start gap-4'>
                       <Text variant='base/normal/primary' className='dark:text-secondary'>
                         You must sign in to view this section
                       </Text>
-                      <Button variant='secondary' className='mt-4 mx-auto'>
+                      <Button variant='secondary' className='mt-4 mx-auto' onClick={()=>setIsOpen(false)}>
                         <Link href='/auth'>Sign in</Link>
                       </Button>
                     </div>
@@ -269,8 +270,8 @@ const Nav = () => {
 
                 <SheetContent side='left' className='md:w-1/2 w-5/6'>
                   <SheetHeader>
-                    <SheetTitle className='flex items-center gap-2 border-b border-gray-200 dark:border-gray-500'>
-                      <div className='w-[40px]'>
+                    <SheetTitle className='flex items-center gap-2 border-b border-gray-200 dark:border-gray-500 w-[40px]'>
+
                         <AspectRatio ratio={1 / 1}>
                           <Image
                             src={helper.icon.logo}
@@ -280,7 +281,6 @@ const Nav = () => {
                             className='object-cover bg-white h-full w-full'
                           />
                         </AspectRatio>
-                      </div>
                       Epicola
                     </SheetTitle>
                   </SheetHeader>
@@ -301,7 +301,7 @@ const Nav = () => {
                               <NavigationMenuLink asChild>
                                 <Link
                                   className='flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted no-underline outline-none focus:shadow-md pl-3'
-                                  href='/catalogue'
+                                  href='/catalogue?category=coffee_tea&page=1'
                                 >
                                   <div className='mb-2 mt-4 text-lg font-medium'>
                                     Explore our catalogue

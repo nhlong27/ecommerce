@@ -15,7 +15,10 @@ export const ProductSchema = z.object({
 });
 
 export const ProductsSchema = z.object({
-  products: z.array(ProductSchema),
+  products: z.object({
+    products: z.array(ProductSchema),
+    count: z.number(),
+  }),
 });
 
 export const CartItemSchema = z.object({
@@ -54,7 +57,7 @@ export const ReviewSchema = z.object({
   productId: z.string(),
   rating: z.number(),
   description: z.string(),
-})
+});
 
 export type ProductType = z.infer<typeof ProductSchema>;
 export type ProductsType = z.infer<typeof ProductsSchema>;
@@ -62,4 +65,3 @@ export type CartItemType = z.infer<typeof CartItemSchema>;
 export type addToCartType = z.infer<typeof addToCartSchema>;
 export type CartItemsType = z.infer<typeof CartItemsSchema>;
 export type ReviewType = z.infer<typeof ReviewSchema>;
-

@@ -9,18 +9,16 @@ import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 
-export default function ProductSwiper() {
-  const { data, isLoading, error } = useGetProductsQuery();
+export default function ProductSwiper({category}:{category?:string}) {
+  const { data, error } = useGetProductsQuery(1, category ?? 'coffee_tea');
   return (
     <div className='mx-auto w-3/4 lg:w-11/12 pb-8 pt-12 relative'>
-        <Link
-          href='/catalogue'
-          className='absolute right-0 top-4 text-sm text-slate-500 underline-offset-4 hover:underline dark:text-slate-50'
-        >
-      <Badge variant='outline'>
-          See more
-      </Badge>
-        </Link>
+      <Link
+        href={`/catalogue?category=${category ?? 'coffee_tea'}&page=1`}
+        className='absolute right-0 top-4 text-sm text-slate-500 underline-offset-4 hover:underline dark:text-slate-50'
+      >
+        <Badge variant='outline'>See more</Badge>
+      </Link>
       <Swiper
         slidesPerView={1}
         spaceBetween={10}
@@ -49,7 +47,7 @@ export default function ProductSwiper() {
         className='w-full h-auto'
       >
         {data
-          ? data.products.slice(0, 10).map((product, index) => (
+          ? data.products.products.map((product, index) => (
               <SwiperSlide className='h-full relative mb-8' key={index}>
                 <ProductCard product={product} />
               </SwiperSlide>

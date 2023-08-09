@@ -3,12 +3,11 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { useAtom } from 'jotai';
 import { useGetOrderQuery } from '../../hooks/useGetOrderQuery';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useQueryClient } from '@tanstack/react-query';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string);
 
 const Payment = () => {
   const router = useRouter();

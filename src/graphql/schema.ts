@@ -105,10 +105,14 @@ export const typeDefs = gql`
     description: String
   }
 
+  type ReturnedProduct {
+    products: [Product]
+    count: Int
+  }
+
   type Query {
     product(sku: String!): Product
-    products: [Product]
-    stripe_secret: String
+    products (category: String!, brand: String, price: Float, sortBy: String, pageIndex: Int!, keyword: String): ReturnedProduct
     cartItems (
       email: String!
     ): [CartItem]
@@ -158,5 +162,8 @@ export const typeDefs = gql`
       score: Float!
       n_o_reviews: Int!
     ) : Product
+    deleteCartItem (
+      id: String!
+    ) : CartItem
   }
 `;

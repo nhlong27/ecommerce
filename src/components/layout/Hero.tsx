@@ -26,7 +26,7 @@ const Hero = () => {
                 A Taste Sensation Delivered To Your Doorstep!
               </Text>
               <div className='w-11/12 mx-auto flex mt-16 flex-col items-center'>
-                <Link href='/catalogue'>
+                <Link href='/catalogue?category=coffee_tea&page=1'>
                   <SearchBar />
                 </Link>
                 <Link className='  mt-5' href='/catalogue'>

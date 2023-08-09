@@ -4,14 +4,7 @@ import helper from '@/constants/helper';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ProductType, addToCartSchema } from '../../types';
 import { useAddToCartMutation } from '../../hooks/useAddToCartMutation';
@@ -26,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { useQueryClient } from '@tanstack/react-query';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
@@ -115,7 +109,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 />
               </AspectRatio>
             </div>
-            <h1 className='text-base font-semibold mt-2 truncate'>{product.title}</h1>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <h1 className='text-base font-semibold mt-2 truncate'>{product.title}</h1>
+              </HoverCardTrigger>
+              <HoverCardContent className='w-80'>{product.title}</HoverCardContent>
+            </HoverCard>
+
             <div className='flex justify-between w-full'>
               <Text
                 variant='sm/normal/black'
@@ -144,7 +144,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <CardFooter className='flex justify-between -mt-4'>
           <Dialog>
             <DialogTrigger asChild>
-              <p className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80 h-9 px-3'>
+              <p className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80 h-9 px-3 cursor-pointer hover:bg-gray-200'>
                 Add to cart
               </p>
             </DialogTrigger>
@@ -156,7 +156,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 </DialogDescription>
               </DialogHeader>
               {session ? (
-                <div className='sm:p-8 rounded-md bg-slate-900 flex flex-col sm:flex-row gap-8'>
+                <div className='sm:p-8 rounded-md bg-white  dark:bg-slate-900 flex flex-col sm:flex-row gap-8'>
                   <div>
                     <div className='relative w-[10rem] h-[10rem]  rounded-lg overflow-hidden bg-white py-4 mx-auto'>
                       <AspectRatio ratio={1 / 1}>
@@ -243,7 +243,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </Dialog>
           <Popover>
             <PopoverTrigger>
-              <Button variant='ghost' size='sm'>
+              <p className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-9 rounded-md px-3'>
                 <svg
                   width='15'
                   height='15'
@@ -259,7 +259,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   ></path>
                 </svg>
                 <span className='ml-2'>Fav</span>
-              </Button>
+              </p>
             </PopoverTrigger>
             <PopoverContent className='px-4 pt-1 w-auto'>Feature in development.</PopoverContent>
           </Popover>

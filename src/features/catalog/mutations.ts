@@ -95,16 +95,8 @@ const addReview = gql`
 `;
 
 const updateProduct = gql`
-  mutation updateProduct (
-    $productId: String!
-    $score: Float!
-    $n_o_reviews: Int!
-  ) {
-    updateProduct(
-      productId: $productId
-      score: $score
-      n_o_reviews: $n_o_reviews
-    ) {
+  mutation updateProduct($productId: String!, $score: Float!, $n_o_reviews: Int!) {
+    updateProduct(productId: $productId, score: $score, n_o_reviews: $n_o_reviews) {
       id
       title
       size
@@ -117,6 +109,23 @@ const updateProduct = gql`
       n_o_reviews
       instock_reserved
       instock_available
+    }
+  }
+`;
+
+const deleteCartItem = gql`
+  mutation deleteCartItem($id: String!) {
+    deleteCartItem(id: $id) {
+      id
+      userId
+      productId
+      productTitle
+      productPrice
+      productCategory
+      productSize
+      productImage
+      productQuantity
+      quantity
     }
   }
 `;
@@ -135,4 +144,8 @@ export const addReviewMutationFn = async (review: any) => {
 
 export const updateProductMutationFn = async (product: any) => {
   return request(`${GRAPHQL_API_URL}`, updateProduct, { ...product });
-}
+};
+
+export const deleteCartItemMutationFn = async ({ id }: { id: string }) => {
+  return request(`${GRAPHQL_API_URL}`, deleteCartItem, { id });
+};

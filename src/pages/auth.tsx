@@ -14,12 +14,12 @@ const AuthPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div className='min-h-dynamic-screen w-full mx-auto flex justify-center items-start bg-blue-100 dark:bg-gray-900'>
-      <div className='flex overflow-hidden w-full h-[120vh]'>
+      <div className='flex overflow-hidden w-full h-auto lg:h-[120vh]'>
         <div className='h-full w-1/2 hidden md:block relative'>
           <Image src={helper.images.commercial1} alt='auth' fill className='h-full object-cover hover:brightness-110 transition-all duration-1000'
           sizes={helper.images.size} priority={true} />
         </div>
-        <div className='w-full md:w-1/2 h-[120vh] flex justify-start items-center  flex-col gap-3 py-16'>
+        <div className='w-full md:w-1/2 h-auto flex justify-start items-center  flex-col gap-3 my-auto py-4'>
           <div>
             <SignInWithProviders providers={providers} csrfToken={csrfToken} />
           </div>

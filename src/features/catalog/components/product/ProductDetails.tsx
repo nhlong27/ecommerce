@@ -11,6 +11,7 @@ import { useGetProductQuery } from '../../hooks/useGetProductQuery';
 import { Text } from '@/components/common/Text';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { categoryRegistry } from '@/pages/catalogue/[[...slug]]';
 
 const imageCategories = {
   coffee_tea: helper.images.commercial10,
@@ -39,7 +40,7 @@ const ProductDetails = ({ sku }: { sku: string }) => {
             />
             <div className='absolute flex justify-center items-center h-full w-full '>
               <Text variant='3xl/semibold/white' className='font-serif italic text-white'>
-                {data.category}
+                {categoryRegistry[data.category as keyof typeof categoryRegistry].title}
               </Text>
             </div>
           </div>

@@ -32,7 +32,7 @@ const OrderHistory = ({ session }: { session: Session }) => {
           </TableRow>
         </TableHeader>
         <TableBody className='bg-gray-100 dark:bg-slate-900'>
-          {data.orders.map((order) => {
+          {data.orders.reverse().map((order) => {
             return (
               <TableRow key={order.id}>
                 <TableCell className='font-medium text-right'>{order.id}</TableCell>

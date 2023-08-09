@@ -8,7 +8,6 @@ import GitHubProvider from 'next-auth/providers/github';
 import FacebookProvider from 'next-auth/providers/facebook';
 import { signJWT, verifyJWT } from '@/utils/jwt';
 import prisma from '@/lib/prisma';
-import helper from '@/constants/helper';
 
 export const authOptions: NextAuthOptions = {
   session: {

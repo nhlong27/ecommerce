@@ -8,10 +8,9 @@ import helper from '@/constants/helper';
 import SearchBar from '@/components/common/SearchBar';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { getProductsQuery } from '@/features/catalog/queries';
-import { atom, useAtom } from 'jotai';
-import { ProductType } from '@/features/catalog/types';
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 
 const ProductSwiper = dynamic(() => import('@/features/catalog/components/ProductSwiper'), {
   loading: () => (
@@ -21,17 +20,6 @@ const ProductSwiper = dynamic(() => import('@/features/catalog/components/Produc
   ),
   ssr: false,
 });
-
-export const categoryFilterAtom = atom<Set<string>>(
-  new Set(['coffee_tea', 'energy_drink', 'juice_shake', 'sport_drink', 'water']),
-);
-export const brandFilterAtom = atom<Set<any>>(new Set());
-export const sortAtom = atom<string>('');
-export const brandsAtom = atom<Array<string>>([]);
-export const priceRangeAtom = atom<number[]>([5]);
-
-export const filteredProductsAtom = atom<ProductType[] | null>(null);
-export const queryAtom = atom<string>('');
 
 export const categoryRegistry = {
   coffee_tea: {
@@ -63,13 +51,6 @@ export const categoryRegistry = {
 
 const CataloguePage = () => {
   const router = useRouter();
-  const [categoryFilter, setCategoryFilter] = useAtom(categoryFilterAtom);
-
-  React.useEffect(() => {
-    if (router.query.slug) {
-      setCategoryFilter(new Set([router.query.slug[0]]));
-    }
-  }, [router.query.slug]);
 
   return (
     <div className='w-full min-h-screen flex flex-col relative'>
@@ -80,6 +61,18 @@ const CataloguePage = () => {
               Have a name in mind?
             </Text>
             <SearchBar />
+            <Button
+              variant='destructive'
+              onClick={() => {
+                const { keyword, ...rest } = router.query;
+                router.push({
+                  pathname: router.pathname,
+                  query: { ...rest },
+                });
+              }}
+            >
+              Reset
+            </Button>
           </div>
           <div className='h-[30rem] absolute w-full overflow-hidden -z-10'>
             <Image
@@ -95,12 +88,7 @@ const CataloguePage = () => {
       )}
       <div className='w-11/12 mx-auto min-h-screen p-8 rounded-lg z-10 bg-white dark:bg-stone-950'>
         <Text variant='3xl/semibold/black'>
-          {router.query.slug?.[1]
-            ? 'Product (SKU): ' + router.query.slug?.[1]
-            : router.query.slug?.[0]
-            ? categoryRegistry[router.query.slug?.[0] as keyof typeof categoryRegistry].title +
-              (categoryFilter.size > 1 ? ' > ... ' : '')
-            : 'Catalogue'}
+          {router.query.slug?.[1] ? 'Product (SKU): ' + router.query.slug?.[1] : 'Catalogue - ' + categoryRegistry[router.query.category as keyof typeof categoryRegistry].title}
         </Text>
         <BreadCrumbs routerQueries={['catalogue', ...(router.query.slug || [])]} />
         {router.query.slug?.[1] ? (
@@ -112,7 +100,7 @@ const CataloguePage = () => {
           </>
         )}
       </div>
-      {router.query.slug?.[1] ? <ProductSwiper /> : null }
+      {router.query.slug?.[1] ? <ProductSwiper category={router.query.slug?.[0]} /> : null}
     </div>
   );
 };
@@ -122,7 +110,10 @@ export default CataloguePage;
 export async function getServerSideProps() {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(['products'], getProductsQuery().queryFn);
+  await queryClient.prefetchQuery(
+    ['products', `1coffee_tea10`],
+    getProductsQuery(1, 'coffee_tea').queryFn,
+  );
 
   return {
     props: {

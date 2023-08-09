@@ -21,7 +21,7 @@ const Categories = () => {
                 />
               </div>
               <h3 className='mt-6 text-sm '>
-                <Link href='/catalogue/coffee_tea'>
+                <Link href='/catalogue?category=coffee_tea&page=1'>
                   <span className='absolute inset-0'></span>
                   Coffees / Teas
                 </Link>
@@ -37,7 +37,7 @@ const Categories = () => {
                 />
               </div>
               <h3 className='mt-6 text-sm '>
-                <Link href='/catalogue/energy_drink'>
+                <Link href='/catalogue?category=energy_drink&page=1'>
                   <span className='absolute inset-0'></span>
                   Energy drinks
                 </Link>
@@ -53,7 +53,7 @@ const Categories = () => {
                 />
               </div>
               <h3 className='mt-6 text-sm '>
-                <Link href='/catalogue/juice_shake'>
+                <Link href='/catalogue?category=juice_shake&page=1'>
                   <span className='absolute inset-0'></span>
                   Juice Shakes
                 </Link>
@@ -69,7 +69,7 @@ const Categories = () => {
                 />
               </div>
               <h3 className='mt-6 text-sm '>
-                <Link href='/catalogue/sport_drink'>
+                <Link href='/catalogue?category=sport_drink&page=1'>
                   <span className='absolute inset-0'></span>
                   Sport drinks
                 </Link>
@@ -85,7 +85,7 @@ const Categories = () => {
                 />
               </div>
               <h3 className='mt-6 text-sm '>
-                <Link href='/catalogue/water'>
+                <Link href='/catalogue?category=water&page=1'>
                   <span className='absolute inset-0'></span>
                   Pure water
                 </Link>

@@ -13,5 +13,6 @@
     "no-non-null-assertion": "off",
     "no-empty-interface": "off",
     "no-var-required": "off"
-  }
+  },
+  "ignorePatterns": ["**/*.css","**/*.scss"]
 }

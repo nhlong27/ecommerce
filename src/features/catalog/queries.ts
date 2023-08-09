@@ -4,19 +4,22 @@ import { CartItemsSchema, ProductSchema, ProductsSchema, ReviewSchema } from './
 import {z} from 'zod'
 
 const products = gql`
-  {
-    products {
-      sku
-      title
-      quantity
-      size
-      image
-      category
-      price
-      score
-      n_o_reviews
-      instock_reserved
-      instock_available
+  query products($category: String!, $brand: String, $price: Float, $sortBy: String, $pageIndex: Int!, $keyword: String) {
+    products (category: $category, brand: $brand, price: $price, sortBy: $sortBy, pageIndex: $pageIndex, keyword: $keyword) {
+      products {
+        sku
+        title
+        quantity
+        size
+        image
+        category
+        price
+        score
+        n_o_reviews
+        instock_reserved
+        instock_available
+      }
+      count
     }
   }
 `;
@@ -70,11 +73,11 @@ const reviews = gql`
 `;
 
 
-export const getProductsQuery = () => {
+export const getProductsQuery = (pageIndex: number, category: string, brand?: string, price?:number, sortBy?: string, keyword?: string) => {
   return {
-    queryKey: ['products'],
+    queryKey: ['products', `${pageIndex+category+brand+price+sortBy+keyword}`],
     queryFn: async () => {
-      const response = await request(`${GRAPHQL_API_URL}`, products);
+      const response = await request(`${GRAPHQL_API_URL}`, products, { category, brand, price, sortBy, pageIndex, keyword });
       return ProductsSchema.parse(response);
     },
     refetchOnReconnect: false,

@@ -36,9 +36,11 @@ const CartFormSchema = z.object({
 const CartSection = ({
   session,
   style = 'profile',
+  setIsOpen
 }: {
   session: Session;
   style?: 'profile' | 'sheet';
+  setIsOpen?: any
 }) => {
   const { data, error } = useGetCartItemsQuery(session.user.email);
   const addToOrderServiceMutation = useAddToOrderServiceMutation();
@@ -111,6 +113,7 @@ const CartSection = ({
             </div>
             <div className='mt-3'>
               <Link
+                onClick={()=>setIsOpen(false)}
                 href='/account/cart'
                 className='flex items-center justify-center rounded-md border border-transparent bg-primary dark:bg-secondary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary/70 dark:hover:bg-secondary/70'
               >
@@ -228,7 +231,7 @@ const CartSection = ({
       <div className='mt-6 flex justify-center text-center text-sm'>
         <p>
           or{' '}
-          <Link href='/catalogue' className='font-medium text-primary dark:text-secondary'>
+          <Link href='/catalogue?category=coffee_tea&page=1' className='font-medium text-primary dark:text-secondary'>
             Continue Shopping
             <span aria-hidden='true'> &rarr;</span>
           </Link>

@@ -1,77 +1,88 @@
 import React from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { Text } from '@/components/common/Text';
-import { CheckedState } from '@radix-ui/react-checkbox';
-import { useAtom } from 'jotai';
-
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@/components/ui/command';
 import helper from '@/constants/helper';
-import { categoryFilterAtom, categoryRegistry } from '@/pages/catalogue/[[...slug]]';
+import { categoryRegistry } from '@/pages/catalogue/[[...slug]]';
+import { Check } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useRouter } from 'next/router';
 
 const CategoryFilter = () => {
-  const [categorySet, setCategorySet] = useAtom(categoryFilterAtom);
-  const [isAllChecked, setIsAllChecked] = React.useState<CheckedState>(
-    categorySet.size < 5 ? false : true,
-  );
+  const [open, setOpen] = React.useState(false);
+  const router  = useRouter();
 
-  const handleCheckChange = (category: string) => {
-    if (categorySet.has(category)) {
-      categorySet.delete(category);
-      setCategorySet(new Set(categorySet));
-    } else {
-      categorySet.add(category);
-      setCategorySet(new Set(categorySet));
-    }
-    if (categorySet.size === Object.keys(categoryRegistry).length) {
-      setIsAllChecked(true);
-    } else {
-      setIsAllChecked(false);
-    }
-  };
-  const handleAllChecked = () => {
-    if (isAllChecked) {
-      setIsAllChecked(false);
-      setCategorySet(new Set());
-    } else {
-      setIsAllChecked(true);
-      setCategorySet(new Set(Object.keys(categoryRegistry)));
-    }
-  };
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger className='flex gap-2 items-center'>
-        Categories
+        {router.query.category
+          ? categoryRegistry[router.query.category as keyof typeof categoryRegistry].title
+          : 'Select category...'}
         <span>{helper.icon.chevron_up}</span>
       </PopoverTrigger>
       <PopoverContent>
         <div className='flex flex-col gap-4'>
-          <Text variant='sm/semibold/black'>Select one or many</Text>
-          <div className='flex gap-4'>
-            <Checkbox checked={isAllChecked} onCheckedChange={handleAllChecked} id='all' />
-            <label
-              htmlFor='all'
-              className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 '
-            >
-              All
-            </label>
-          </div>
+          <Text variant='sm/semibold/black'>Select a category</Text>
           <Separator />
-          {Object.keys(categoryRegistry).map((category) => (
-            <div key={category} className='flex gap-4'>
-              <Checkbox
-                checked={categorySet.has(category)}
-                onCheckedChange={() => handleCheckChange(category)}
-                id={category}
-              />
-              <label
-                htmlFor={category}
-                className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 '
-              >
-                {categoryRegistry[category as keyof typeof categoryRegistry].title}
-              </label>
-            </div>
-          ))}
+          <Command>
+            <CommandInput placeholder='Search category...' />
+            <CommandEmpty>No category found.</CommandEmpty>
+            <CommandGroup>
+              {Object.keys(categoryRegistry).map((category, i) => (
+                <CommandItem
+                  key={i}
+                  onSelect={(currentValue) => {
+                    const {brand, keyword, ...rest} = router.query;
+                    switch (currentValue) {
+                      case 'coffee / tea':
+                        router.push({
+                          pathname: router.pathname,
+                          query: {...rest, category: 'coffee_tea'}
+                        })
+                        break;
+                      case 'energy drink':
+                        router.push({
+                          pathname: router.pathname,
+                          query: {...rest, category: 'energy_drink'}
+                        })
+                        break;
+                      case 'sport drink':
+                        router.push({
+                          pathname: router.pathname,
+                          query: {...rest, category: 'sport_drink'}
+                        })
+                        break;
+                      case 'juice shake':
+                        router.push({
+                          pathname: router.pathname,
+                          query: {...rest, category: 'juice_shake'}
+                        })
+                        break;
+                      default:
+                        router.push({
+                          pathname: router.pathname,
+                          query: {...rest, category: 'water'}
+                        })
+                        break;
+                    }
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn('mr-2 h-4 w-4', router.query.category === category ? 'opacity-100' : 'opacity-0')}
+                  />
+                  {categoryRegistry[category as keyof typeof categoryRegistry].title}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </Command>
         </div>
       </PopoverContent>
     </Popover>

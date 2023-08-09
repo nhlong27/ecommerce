@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useRouter } from 'next/router';
 import OrderSummary from '@/features/user/components/checkout/OrderSummary';
 import PaymentProcessing from '@/features/user/components/checkout/PaymentProcessing';
