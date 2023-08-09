@@ -76,7 +76,9 @@ const Nav = () => {
               <NavigationMenuContent>
                 <ul className='grid gap-8 p-6 w-[700px] grid-cols-5'>
                   <li className='col-span-5 flex justify-center items-center gap-6 bg-gradient-to-bl from-gray-100 dark:from-gray-800 dark:via-transparent dark:to-transparent via-white to-white rounded-md'>
-                    <SearchBar />
+                    <Link href='/catalogue?category=coffee_tea&page=1'>
+                      <SearchBar />
+                    </Link>
                     <NavigationMenuLink asChild>
                       <Link
                         className='flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted no-underline outline-none focus:shadow-md pl-3'
