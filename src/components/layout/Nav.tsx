@@ -76,7 +76,7 @@ const Nav = () => {
               <NavigationMenuContent>
                 <ul className='grid gap-8 p-6 w-[700px] grid-cols-5'>
                   <li className='col-span-5 flex justify-center items-center gap-6 bg-gradient-to-bl from-gray-100 dark:from-gray-800 dark:via-transparent dark:to-transparent via-white to-white rounded-md'>
-                    <Link href='/catalogue?category=coffee_tea&page=1'>
+                    <Link href='/catalogue?category=coffee_tea&page=1' className='flex w-full max-w-sm items-center space-x-2'>
                       <SearchBar />
                     </Link>
                     <NavigationMenuLink asChild>
@@ -303,7 +303,7 @@ const Nav = () => {
                         <NavigationMenuItem>
                           <ul className='flex gap-3 py-6 w-full flex-col'>
                             <li className='flex flex-col justify-center items-center gap-6 bg-gradient-to-bl from-gray-100 dark:from-gray-800 dark:via-transparent dark:to-transparent via-white to-white rounded-md'>
-                              <Link href='/catalogue?category=coffee_tea&page=1'>
+                              <Link href='/catalogue?category=coffee_tea&page=1' className='flex w-full max-w-sm items-center space-x-2'>
                                 <SearchBar />
                               </Link>
                               <NavigationMenuLink asChild>
