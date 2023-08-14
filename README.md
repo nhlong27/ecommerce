@@ -16,7 +16,7 @@
     <img src="./public/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">THIRSTORE</h3>
+  <h3 align="center">Epicola</h3>
 
   <p align="center">
     An e-commerce website for beverages
@@ -46,8 +46,8 @@ Official website: <a href="https://ecommerce-nhlong.vercel.app/" target='_blank'
       <a href="#about">About The Project</a>
       <ul>
         <li><a href="#duration">Duration</a></li>
-        <li><a href="#challenges">Application flow</a></li>
-        <li><a href="#solutions">Technologies</a></li>
+        <li><a href="#application-flow">Application flow</a></li>
+        <li><a href="#technologies">Technologies</a></li>
       </ul>
     </li>
     <li>

@@ -23,8 +23,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   return (
     <>
       <Head>
-        <title>Ecommerce Store</title>
-        <meta property='og:title' content='Ecommerce Store' key='title' />
+        <title>Epicola</title>
+        <meta property='og:title' content='Epicola' key='title' />
         <link rel='shortcut icon' href='/images/logo.png' />
       </Head>
       <ThemeProvider attribute='class'>
