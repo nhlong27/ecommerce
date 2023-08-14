@@ -114,7 +114,7 @@ June - July 2023
    ```
 2. Install NPM packages
    ```sh
-   cd ./client && npm install *** (cd ./server && npm i)
+   npm i
    ```
 3. Add env variables. Point MONGO_URL to your own MongoDB data source. As for Stripe webhook integration, consider reading https://stripe.com/docs/webhooks
     ```js
