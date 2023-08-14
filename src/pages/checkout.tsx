@@ -30,7 +30,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [stepName, setStepName] = React.useState<string | null>(null);
 
-  const { data, error, isLoading } = useGetOrderQuery(router.query.orderId as string);
+  const { data } = useGetOrderQuery(router.query.orderId as string);
 
   console.log(data, stepName);
 

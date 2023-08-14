@@ -1,27 +1,11 @@
 import React from 'react';
-import Link from 'next/link';
-import { Text } from '@/components/common/Text';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import helper from '@/constants/helper';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { TabsContent } from '@/components/ui/tabs';
-import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/router';
-import axios from 'axios';
-import { useCancelOrderMutation } from '../../hooks/useCancelOrderMutation';
 import { useGetOrderQuery } from '../../hooks/useGetOrderQuery';
-import { useQueryClient } from '@tanstack/react-query';
 import { BellRing, Check } from 'lucide-react';
-
-import { cn } from '@/lib/utils';
 import {
   Card,
   CardContent,
@@ -30,29 +14,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
-const notifications = [
-  {
-    title: 'Your call has been confirmed.',
-    description: '1 hour ago',
-  },
-  {
-    title: 'You have a new message!',
-    description: '1 hour ago',
-  },
-  {
-    title: 'Your subscription is expiring soon!',
-    description: '2 hours ago',
-  },
-];
 
 const Finish = () => {
   const router = useRouter();
 
-  const { data, error, isLoading } = useGetOrderQuery(router.query.orderId as string);
+  const { data } = useGetOrderQuery(router.query.orderId as string);
 
   return data ? (
     <TabsContent value='finish'>

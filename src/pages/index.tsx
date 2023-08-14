@@ -5,11 +5,8 @@ import Hero from '@/components/layout/Hero';
 import Promo from '@/components/Promo';
 import Categories from '@/features/catalog/components/Categories';
 import Incentives from '@/components/Incentives';
-
-import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
 
 const inter = Inter({ subsets: ['latin'] });
 import { Separator } from '@/components/ui/separator';

@@ -13,6 +13,7 @@ import AlertError from '@/features/catalog/components/AlertError';
 import Image from 'next/image';
 import helper from '@/constants/helper';
 import axios from 'axios';
+import { RotatingLines } from 'react-loader-spinner';
 
 const Profile = ({ session }: { session: Session }) => {
   const { data, error } = useGetUserQuery(session.user.email);
@@ -26,26 +27,45 @@ const Profile = ({ session }: { session: Session }) => {
   const queryClient = useQueryClient();
   const handleUpdate = async () => {
     if (data) {
-      updateUserMutation.mutate(
-        {
-          email: data.user.email,
-          name: name,
-          password: password,
-        },
-        {
-          onSuccess: () => {
-            toast({ title: 'User updated successfully' });
-            queryClient.invalidateQueries(['user', session.user.email]);
+      if (password !== '') {
+        updateUserMutation.mutate(
+          {
+            email: data.user.email,
+            name: name !== '' ? name : data.user.name,
+            password: password,
           },
-          onError: (error) => {
-            console.log(error);
-            toast({ title: 'Failed to save changes' });
+          {
+            onSuccess: () => {
+              toast({ title: 'User updated successfully' });
+              queryClient.invalidateQueries(['user', session.user.email]);
+            },
+            onError: (error) => {
+              console.log(error);
+              toast({ title: 'Failed to save changes' });
+            },
           },
-        },
-      );
+        );
+      } else {
+        updateUserMutation.mutate(
+          {
+            email: data.user.email,
+            name: name !== '' ? name : data.user.name,
+          },
+          {
+            onSuccess: () => {
+              toast({ title: 'User updated successfully' });
+              queryClient.invalidateQueries(['user', session.user.email]);
+            },
+            onError: (error) => {
+              console.log(error);
+              toast({ title: 'Failed to save changes' });
+            },
+          },
+        );
+      }
       if (image) {
         let formData = new FormData();
-        formData.append("image", image, image.name);
+        formData.append('image', image, image.name);
         const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/api/image`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -58,9 +78,9 @@ const Profile = ({ session }: { session: Session }) => {
           toast({ title: 'Failed to upload image' });
         }
       }
+      setEditDisabled(true);
     }
   };
-
 
   return data ? (
     <div className='w-full'>
@@ -194,8 +214,15 @@ const Profile = ({ session }: { session: Session }) => {
         </div>
         {!editDisabled ? (
           <div className='flex gap-6 h-12 max-w-sm ml-auto'>
-            <Button variant='default' onClick={handleUpdate}>
-              Save changes
+            <Button
+              variant='default'
+              onClick={handleUpdate}
+              disabled={updateUserMutation.isLoading}
+            >
+              Save changes{' '}
+              {updateUserMutation.isLoading && (
+                <RotatingLines strokeColor='#C8E7F2' strokeWidth='5' width='20' />
+              )}
             </Button>
             <Button
               variant='secondary'

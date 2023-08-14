@@ -6,7 +6,6 @@ import Options from './Options';
 import Ratings from './Ratings';
 import Gallery from './Gallery';
 import ReviewSection from './review/ReviewSection';
-import ProductSwiper from '../ProductSwiper';
 import { useGetProductQuery } from '../../hooks/useGetProductQuery';
 import { Text } from '@/components/common/Text';
 import { Badge } from '@/components/ui/badge';
@@ -22,7 +21,7 @@ const imageCategories = {
 };
 
 const ProductDetails = ({ sku }: { sku: string }) => {
-  const { data, error } = useGetProductQuery(sku);
+  const { data } = useGetProductQuery(sku);
 
   return data ? (
       <div className='pt-6 w-full border-t border-gray-200 dark:border-gray-500'>

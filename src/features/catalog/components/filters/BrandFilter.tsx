@@ -36,7 +36,7 @@ const BrandFilter = () => {
             <CommandInput placeholder='Search category...' />
             <CommandEmpty>No category found.</CommandEmpty>
             <CommandGroup>
-              {categoryRegistry[router.query.category as keyof typeof categoryRegistry].brands.map((brand, i) => (
+              {categoryRegistry[router.query.category as keyof typeof categoryRegistry]?.brands.map((brand, i) => (
                 <CommandItem
                   key={i}
                   onSelect={(currentValue) => {

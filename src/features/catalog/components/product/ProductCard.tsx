@@ -22,6 +22,7 @@ import {
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { useQueryClient } from '@tanstack/react-query';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { RotatingLines } from 'react-loader-spinner';
 
 interface ProductCardProps {
   product: ProductType;
@@ -234,8 +235,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               )}
               {session && (
                 <DialogFooter>
-                  <Button onClick={handleAdd} type='submit'>
-                    Add
+                  <Button disabled={addToCartMutation.isLoading} onClick={handleAdd} type='submit'>
+                    Add{' '}
+                    {addToCartMutation.isLoading && (
+                      <RotatingLines strokeColor='#C8E7F2' strokeWidth='5' width='20' />
+                    )}
                   </Button>
                 </DialogFooter>
               )}
@@ -243,7 +247,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </Dialog>
           <Popover>
             <PopoverTrigger>
-              <p className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-9 rounded-md px-3'>
+              <p className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-9 px-3'>
                 <svg
                   width='15'
                   height='15'

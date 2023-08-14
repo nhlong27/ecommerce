@@ -42,9 +42,9 @@ export default function ServerPagination({ dataLength }: ServerPaginationProps) 
       <div className='hidden sm:flex sm:flex-1 sm:items-center sm:justify-between'>
         <div>
           <p className='text-sm'>
-            Showing <span className='font-medium'>{1+ (Number(page)-1)*10}</span> to{' '}
+            Showing <span className='font-medium'>{1+ (Number(page)-1)*12}</span> to{' '}
             <span className='font-medium'>
-              {Number(page) * 10 > dataLength ? dataLength : Number(page) * 10}
+              {Number(page) * 12 > dataLength ? dataLength : Number(page) * 12}
             </span>{' '}
             of <span className='font-medium'>{dataLength}</span> results
           </p>
@@ -72,7 +72,7 @@ export default function ServerPagination({ dataLength }: ServerPaginationProps) 
                 />
               </svg>
             </Button>
-            {Array(Math.ceil(dataLength / 10))
+            {Array(Math.ceil(dataLength / 12))
               .fill(0)
               .map((_, i) => (
                 <Button

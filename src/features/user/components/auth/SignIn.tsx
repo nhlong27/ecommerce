@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/form';
 import { toast } from '@/components/ui/use-toast';
 import * as auth from 'next-auth/react';
+import { RotatingLines } from 'react-loader-spinner';
 
 const SignInFormSchema = z.object({
   email: z.string().email({ message: 'Invalid email.' }),
@@ -31,10 +32,14 @@ const SignInFormSchema = z.object({
 });
 
 const SignIn = () => {
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  
   const form = useForm<z.infer<typeof SignInFormSchema>>({
     resolver: zodResolver(SignInFormSchema),
   });
+
   function onSubmit(data: z.infer<typeof SignInFormSchema>) {
+    setIsSubmitting(true);
     auth
       .signIn('credentials', { email: data.email, password: data.password, redirect: false })
       .then((response) => {
@@ -46,6 +51,7 @@ const SignIn = () => {
           console.log(response);
           toast({ title: 'Sign in failed', description: 'No matching credentials', variant: 'destructive'});
         }
+        setIsSubmitting(false);
       });
   }
   return (
@@ -64,7 +70,7 @@ const SignIn = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder='long@mail.com' {...field} />
+                    <Input placeholder='user1@mail.com' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -77,7 +83,7 @@ const SignIn = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type='password' />
+                    <Input {...field} type='password' placeholder='user1' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,7 +91,9 @@ const SignIn = () => {
             />
           </CardContent>
           <CardFooter>
-            <Button type='submit'>Sign in</Button>
+            <Button disabled={isSubmitting} type='submit'>Sign in {isSubmitting && (
+                <RotatingLines strokeColor='#C8E7F2' strokeWidth='5' width='20' />
+              )}</Button>
           </CardFooter>
         </form>
       </Form>

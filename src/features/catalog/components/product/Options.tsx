@@ -6,16 +6,16 @@ import { ProductType, addToCartSchema } from '../../types';
 import { useAddToCartMutation } from '../../hooks/useAddToCartMutation';
 import { toast } from '@/components/ui/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
-
+import { RotatingLines } from 'react-loader-spinner';
 
 type OptionsProps = {
   product: ProductType;
 };
-const Options: React.FC<OptionsProps> = ({product}) => {
+const Options: React.FC<OptionsProps> = ({ product }) => {
   const [amount, setAmount] = React.useState(1);
-  const {data: session} = useSession();
+  const { data: session } = useSession();
   const addToCartMutation = useAddToCartMutation();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,39 +30,49 @@ const Options: React.FC<OptionsProps> = ({product}) => {
         productCategory: product.category,
         productSize: product.size,
         productQuantity: product.quantity,
-      }
+      };
       try {
         addToCartSchema.parse(toCart);
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error);
-        toast({ title: 'Command failed', description: 'Check console for error message', variant: 'destructive'});
+        toast({
+          title: 'Command failed',
+          description: 'Check console for error message',
+          variant: 'destructive',
+        });
         return;
-      };
+      }
 
-      addToCartMutation.mutate({
-        productId: product.sku,
-        quantity: amount,
-        email: session.user.email,
-        productTitle: product.title,
-        productPrice: product.price,
-        productImage: product.image,
-        productCategory: product.category,
-        productSize: product.size,
-        productQuantity: product.quantity,
-      }, {
-        onSuccess: () => {
-          setAmount(1);
-          toast({ title: 'Add to cart successfully'});
-          queryClient.invalidateQueries(['cartItems'])
+      addToCartMutation.mutate(
+        {
+          productId: product.sku,
+          quantity: amount,
+          email: session.user.email,
+          productTitle: product.title,
+          productPrice: product.price,
+          productImage: product.image,
+          productCategory: product.category,
+          productSize: product.size,
+          productQuantity: product.quantity,
         },
-        onError: (error) => {
-          console.log(error);
-          toast({ title: 'Command failed', description: 'Check console for error message', variant: 'destructive'});
-        }
-      })  
+        {
+          onSuccess: () => {
+            setAmount(1);
+            toast({ title: 'Add to cart successfully' });
+            queryClient.invalidateQueries(['cartItems']);
+          },
+          onError: (error) => {
+            console.log(error);
+            toast({
+              title: 'Command failed',
+              description: 'Check console for error message',
+              variant: 'destructive',
+            });
+          },
+        },
+      );
     }
-  }
+  };
   return (
     <form className='mt-10' onSubmit={handleSubmit}>
       <div className='flex items-center justify-start'>
@@ -124,10 +134,14 @@ const Options: React.FC<OptionsProps> = ({product}) => {
       <Button
         type='submit'
         variant='default'
+        disabled={addToCartMutation.isLoading}
         size='lg'
         className='mt-10 flex w-full items-center justify-center rounded-md border border-transparent2 text-base font-medium text-white bg-primary hover:bg-primary/70 dark:bg-secondary dark:hover:bg-secondary/70 dark:border-transparent'
       >
-        Add to cart
+        Add to cart{' '}
+        {addToCartMutation.isLoading && (
+          <RotatingLines strokeColor='#C8E7F2' strokeWidth='5' width='20' />
+        )}
       </Button>
     </form>
   );

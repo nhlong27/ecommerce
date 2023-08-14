@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           ({
             //https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items-price_data
             price_data: {
-              unit_amount: item.productPrice*100 + 50,
+              unit_amount: item.productPrice*100 + 100,
               currency: 'usd',
               product_data: {
                 name: item.productTitle,

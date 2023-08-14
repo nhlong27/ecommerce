@@ -6,15 +6,6 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import helper from '@/constants/helper';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import Payment from '@/features/user/components/checkout/Payment';
 import { TabsContent } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
@@ -22,18 +13,16 @@ import { useRouter } from 'next/router';
 import { useGetOrderQuery } from '../../hooks/useGetOrderQuery';
 import { useCancelOrderMutation } from '../../hooks/useCancelOrderMutation';
 import { Skeleton } from '@/components/ui/skeleton';
+import { RotatingLines } from 'react-loader-spinner';
 
 const OrderSummary = () => {
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-
   const cancelOrderMutation = useCancelOrderMutation();
   const router = useRouter();
 
-  const { data, error, isLoading } = useGetOrderQuery(router.query.orderId as string);
+  const { data } = useGetOrderQuery(router.query.orderId as string);
 
   const handleCancel = () => {
     if (data) {
-      setIsSubmitting(true);
       cancelOrderMutation.mutate(
         { cancelOrder: { ...data.order, status: 'reject' } },
         {
@@ -42,7 +31,6 @@ const OrderSummary = () => {
               title: 'Order canceled',
               description: 'Redirected back to cart page',
             });
-            setIsSubmitting(false);
             router.push('/account/cart');
           },
           onError: (error) => {
@@ -52,7 +40,6 @@ const OrderSummary = () => {
               description: 'Check console for error message',
               variant: 'destructive',
             });
-            setIsSubmitting(false);
           },
         },
       );
@@ -137,14 +124,12 @@ const OrderSummary = () => {
                 <p>
                   ${' '}
                   {data.order.orderItems
-                    ?.reduce((acc, curr) => acc + curr.productPrice, 0)
+                    ?.reduce((acc, curr) => acc + curr.productPrice * curr.quantity, 0)
                     .toFixed(2)}
                   <span className='text-green-500 dark:text-green-300'>
                     {' '}
-                    + {parseFloat(
-                      ((data.order.orderItems?.length as number) * 0.5).toFixed(2),
-                    )}{' '}
-                    (PSP fees)
+                    + {parseFloat(((data.order.orderItems?.length as number) * 1).toFixed(2))} (PSP
+                    fees)
                   </span>
                 </p>
               </div>
@@ -152,14 +137,22 @@ const OrderSummary = () => {
               <div className='w-5/6 flex gap-8 flex-col sm:flex-row'>
                 <Payment />
                 <Button
-                  disabled={isSubmitting}
+                  disabled={cancelOrderMutation.isLoading}
                   onClick={handleCancel}
                   size='lg'
                   variant='secondary'
                   className=''
                 >
-                  Cancel
+                  Cancel{' '}
+                  {cancelOrderMutation.isLoading && (
+                    <RotatingLines strokeColor='#C8E7F2' strokeWidth='5' width='20' />
+                  )}
                 </Button>
+                <Link href='/account/cart'>
+                  <Button variant='link' className=''>
+                    Pay later
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

@@ -1,7 +1,6 @@
 import { AccountMenu, CartSection } from '@/features/user';
 import { useSession } from 'next-auth/react';
 import React from 'react';
-import { atom, useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { Text } from '@/components/common/Text';
 import { Button } from '@/components/ui/button';
@@ -10,17 +9,20 @@ import OrderHistory from '@/features/user/components/OrderHistory';
 import PaymentDetails from '@/features/user/components/PaymentDetails';
 import Profile from '@/features/user/components/Profile';
 import { Skeleton } from '@/components/ui/skeleton';
-
-export const accountSectionAtom = atom<string | null>(null);
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import { setAccountSection } from '@/store/slices/accountSectionSlice';
 
 const AccountPage = () => {
   const { data: session, status } = useSession();
-  const [accountSection, setAccountSection] = useAtom(accountSectionAtom);
+  const accountSection = useSelector((state: RootState)=>state.accountSectionReducer.accountSection)
+  const dispatch = useDispatch()
+
   const router = useRouter();
 
   React.useEffect(() => {
     if (router.query.slug) {
-      setAccountSection(router.query.slug[0]);
+      dispatch(setAccountSection(router.query.slug[0]));
     }
   }, [router.query.slug?.[0]]);
 

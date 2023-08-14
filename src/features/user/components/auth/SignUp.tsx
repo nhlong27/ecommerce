@@ -24,6 +24,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useRouter } from 'next/router';
+import { RotatingLines } from 'react-loader-spinner';
 
 const SignUpFormSchema = z
   .object({
@@ -56,7 +57,7 @@ const SignUp = () => {
   const form = useForm<z.infer<typeof SignUpFormSchema>>({
     resolver: zodResolver(SignUpFormSchema),
   });
-  const router = useRouter()
+  const router = useRouter();
 
   function onSubmit(data: z.infer<typeof SignUpFormSchema>) {
     addUserMutation.mutate(data, {
@@ -64,13 +65,14 @@ const SignUp = () => {
         toast({
           title: 'User successfully created',
         });
-        router.push('/auth')
+        router.push('/auth');
       },
       onError: (error: any) => {
         console.log(error);
         toast({
           title: 'User creation failed',
-          description: error.response.errors[0].message, variant: 'destructive'
+          description: error.response.errors[0].message,
+          variant: 'destructive',
         });
       },
     });
@@ -91,7 +93,7 @@ const SignUp = () => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder='Longnguyen' {...field} />
+                    <Input placeholder='User <number>' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,7 +106,7 @@ const SignUp = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder='long@mail.com' {...field} />
+                    <Input placeholder='user<number>@mail.com' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -117,7 +119,7 @@ const SignUp = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type='password' />
+                    <Input {...field} type='password' placeholder='user<number>' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -130,7 +132,7 @@ const SignUp = () => {
                 <FormItem>
                   <FormLabel>Confirm password</FormLabel>
                   <FormControl>
-                    <Input {...field} type='password' />
+                    <Input {...field} type='password' placeholder='user<number>' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,7 +140,12 @@ const SignUp = () => {
             />
           </CardContent>
           <CardFooter>
-            <Button type='submit'>Register</Button>
+            <Button disabled={addUserMutation.isLoading} type='submit'>
+              Register
+              {addUserMutation.isLoading && (
+                <RotatingLines strokeColor='#C8E7F2' strokeWidth='5' width='20' />
+              )}
+            </Button>
           </CardFooter>
         </form>
       </Form>

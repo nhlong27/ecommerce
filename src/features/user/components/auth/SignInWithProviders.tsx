@@ -20,7 +20,7 @@ export default function SignInWithProviders({
               return (
                 <div key={provider.name}>
                   <Button
-                    variant='secondary'
+                    variant='default'
                     onClick={() => {
                       signIn(provider.id);
                     }}

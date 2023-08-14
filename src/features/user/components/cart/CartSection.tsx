@@ -26,25 +26,23 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { CartItemSchema } from '@/features/catalog/types';
 import { useAddToOrderServiceMutation } from '../../hooks/useAddToOrderServiceMutation';
 import { useRouter } from 'next/router';
+import { RotatingLines } from 'react-loader-spinner';
 
 const CartFormSchema = z.object({
-  cartItems: z.array(
-    CartItemSchema,
-  ),
+  cartItems: z.array(CartItemSchema),
 });
 
 const CartSection = ({
   session,
   style = 'profile',
-  setIsOpen
+  setIsOpen,
 }: {
   session: Session;
   style?: 'profile' | 'sheet';
-  setIsOpen?: any
+  setIsOpen?: any;
 }) => {
   const { data, error } = useGetCartItemsQuery(session.user.email);
   const addToOrderServiceMutation = useAddToOrderServiceMutation();
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof CartFormSchema>>({
@@ -55,13 +53,12 @@ const CartSection = ({
   });
 
   function onSubmit(result: z.infer<typeof CartFormSchema>) {
-    setIsSubmitting(true);
     const addToOrder = {
       status: 'pending',
       userId: data?.cartItems[0].userId as number,
       cartItems: result.cartItems.map((item) => {
         let { userId, id, ...rest } = item;
-        return { ...rest};
+        return { ...rest };
       }),
     };
     addToOrderServiceMutation.mutate(
@@ -79,8 +76,7 @@ const CartSection = ({
 
           console.log(response);
 
-          setIsSubmitting(false);
-          router.push({ pathname: '/checkout', query: {  orderId: response.data.order.id } });
+          router.push({ pathname: '/checkout', query: { orderId: response.data.order.id } });
         },
         onError: (error) => {
           console.log(error);
@@ -89,17 +85,16 @@ const CartSection = ({
             description: 'Check console for error message',
             variant: 'destructive',
           });
-          setIsSubmitting(false);
         },
       },
     );
   }
 
   return data ? (
-    <div className='flex flex-col h-full w-full'>
+    <div className='flex flex-col h-full w-full grow overflow-hidden'>
       {style === 'sheet' ? (
         <>
-          <ScrollArea className='h-[25rem] pr-4'>
+          <ScrollArea className='pr-4'>
             <ul role='list' className=' divide-y divide-gray-200 dark:divide-gray-500'>
               {data.cartItems.map((item, i) => (
                 <CartItem key={i} style={style} item={item} />
@@ -113,7 +108,7 @@ const CartSection = ({
             </div>
             <div className='mt-3'>
               <Link
-                onClick={()=>setIsOpen(false)}
+                onClick={() => setIsOpen(false)}
                 href='/account/cart'
                 className='flex items-center justify-center rounded-md border border-transparent bg-primary dark:bg-secondary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary/70 dark:hover:bg-secondary/70'
               >
@@ -217,10 +212,15 @@ const CartSection = ({
               <div className='mt-6 w-full'>
                 <Button
                   type='submit'
-                  disabled={isSubmitting || form.getValues().cartItems.length === 0}
+                  disabled={
+                    addToOrderServiceMutation.isLoading || form.getValues().cartItems.length === 0
+                  }
                   className='flex w-full items-center justify-center rounded-md border border-transparent bg-primary dark:bg-secondary px-6 py-6 text-base tracking-wider font-medium text-white shadow-sm hover:bg-primary/70 dark:hover:bg-secondary/70'
                 >
-                  Checkout
+                  Checkout{' '}
+                  {addToOrderServiceMutation.isLoading && (
+                    <RotatingLines strokeColor='#C8E7F2' strokeWidth='5' width='20' />
+                  )}
                 </Button>
               </div>
             </div>
@@ -231,7 +231,10 @@ const CartSection = ({
       <div className='mt-6 flex justify-center text-center text-sm'>
         <p>
           or{' '}
-          <Link href='/catalogue?category=coffee_tea&page=1' className='font-medium text-primary dark:text-secondary'>
+          <Link
+            href='/catalogue?category=coffee_tea&page=1'
+            className='font-medium text-primary dark:text-secondary'
+          >
             Continue Shopping
             <span aria-hidden='true'> &rarr;</span>
           </Link>

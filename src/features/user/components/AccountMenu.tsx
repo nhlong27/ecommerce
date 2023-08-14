@@ -5,9 +5,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -15,11 +13,12 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TabsContent } from '@radix-ui/react-tabs';
 import { Text } from '@/components/common/Text';
 import { BreadCrumbs } from '@/features/catalog';
-import { useAtom } from 'jotai';
-import { accountSectionAtom } from '@/pages/account/[...slug]';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import { setAccountSection } from '@/store/slices/accountSectionSlice';
 
 const sections = [
   {
@@ -42,8 +41,9 @@ const sections = [
 
 const AccountMenu = () => {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = useAtom(accountSectionAtom);
-  const router = useRouter()
+  const value = useSelector((state: RootState) => state.accountSectionReducer.accountSection);
+  const dispatch = useDispatch();
+  const router = useRouter();
   return value && value === router.query.slug?.[0] ? (
     <>
       <div className='hidden lg:block lg:basis-1/4 min-h-screen px-4'>
@@ -63,35 +63,22 @@ const AccountMenu = () => {
           <BreadCrumbs routerQueries={['account', value]} />
           <TabsList className='w-full flex flex-col h-auto'>
             <Link href='/account/profile' className='w-full'>
-            <TabsTrigger
-              
-              value='profile'
-              className='w-full justify-start'
-              >
-              Profile
-            </TabsTrigger>
+              <TabsTrigger value='profile' className='w-full justify-start'>
+                Profile
+              </TabsTrigger>
             </Link>
             <Link href='/account/cart' className='w-full'>
-              <TabsTrigger
-                value='cart'
-                className='w-full justify-start'
-              >
+              <TabsTrigger value='cart' className='w-full justify-start'>
                 Cart
               </TabsTrigger>
             </Link>
             <Link href='/account/history' className='w-full'>
-              <TabsTrigger
-                value='history'
-                className='w-full justify-start'
-              >
+              <TabsTrigger value='history' className='w-full justify-start'>
                 Order History
               </TabsTrigger>
             </Link>
             <Link href='/account/payment' className='w-full'>
-              <TabsTrigger
-                value='payment'
-                className='w-full justify-start'
-              >
+              <TabsTrigger value='payment' className='w-full justify-start'>
                 Payment Details
               </TabsTrigger>
             </Link>
@@ -133,7 +120,7 @@ const AccountMenu = () => {
                     <CommandItem
                       key={section.value}
                       onSelect={(currentValue) => {
-                        setValue(currentValue === value ? '' : currentValue);
+                        dispatch(setAccountSection(currentValue === value ? '' : currentValue));
                         setOpen(false);
                       }}
                     >

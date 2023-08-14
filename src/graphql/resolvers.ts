@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma';
 import connectMongo from '@/lib/mongodb';
 import { getOrSetCache } from '@/utils/getOrSetCache';
 import { ProductModel } from '../../mongoose/models/product.model';
-import bcrypt from 'bcrypt';
+import { SHA256 } from 'crypto-js';
 
 export const resolvers = {
   Query: {
@@ -13,55 +13,58 @@ export const resolvers = {
       return product;
     },
     products: async (_: any, args: any) => {
-      // const data = await getOrSetCache(`products-${args.category}-${args.brand ?? 'all'}-${args.price ?? 'all'}-${args.sortBy ?? 'none'}`, async () => {
-      await connectMongo();
+      const data = await getOrSetCache(
+        `products-${args.category}-${args.brand ?? 'all'}-${args.price ?? 'all'}-${
+          args.sortBy ?? 'none'
+        }`,
+        async () => {
+          await connectMongo();
+          const filterCriteria: Record<string, any> = {};
+          let sortOptions: Record<string, any> = {};
+          if (args.category) {
+            filterCriteria.category = args.category;
+          }
+          if (args.brand) {
+            filterCriteria.title = { $regex: args.brand, $options: 'i' };
+          }
+          if (args.price) {
+            filterCriteria.price = { $lte: args.price };
+          }
 
-      const filterCriteria: Record<string, any> = {};
-      let sortOptions: Record<string, any> = {};
-      if (args.category) {
-        filterCriteria.category = args.category;
-      }
-      if (args.brand) {
-        filterCriteria.title = { $regex: args.brand, $options: 'i' };
-      }
-      if (args.price) {
-        filterCriteria.price = { $lte: args.price };
-      }
+          if (args.sortBy && args.sortBy === 'best_rating') {
+            sortOptions.score = 1;
+          }
+          if (args.sortBy && args.sortBy === 'most_reviewed') {
+            sortOptions.n_o_reviews = 1;
+          }
 
-      if (args.sortBy && args.sortBy === 'best_rating') {
-        sortOptions.score = 1;
-      }
-      if (args.sortBy && args.sortBy === 'most_reviewed') {
-        sortOptions.n_o_reviews = 1;
-      }
+          const itemsPerPage = 12;
+          const skipCount = (args.pageIndex - 1) * itemsPerPage;
 
-      const itemsPerPage = 10;
-      const skipCount = (args.pageIndex - 1) * itemsPerPage;
+          if (args.keyword) {
+            const products = await ProductModel.find({
+              category: args.category,
+              title: { $regex: args.keyword, $options: 'i' },
+            })
+              .skip(skipCount)
+              .limit(itemsPerPage)
+              .sort(sortOptions)
+              .lean();
+            return { products: products, count: products.length };
+          } else {
+            const count = await ProductModel.countDocuments(filterCriteria);
+            const products = await ProductModel.find(filterCriteria)
+              .skip(skipCount)
+              .limit(itemsPerPage)
+              .sort(sortOptions)
+              .lean();
 
-      if (args.keyword) {
-        const products = await ProductModel.find({
-          category: args.category,
-          title: { $regex: args.keyword, $options: 'i' },
-        })
-          .skip(skipCount)
-          .limit(itemsPerPage)
-          .sort(sortOptions)
-          .lean();
-        return { products: products, count: products.length };
-      } else {
-        const count = await ProductModel.countDocuments(filterCriteria);
-        const products = await ProductModel.find(filterCriteria)
-          .skip(skipCount)
-          .limit(itemsPerPage)
-          .sort(sortOptions)
-          .lean();
-
-        return { products: products, count: count };
-      }
-
-      // });
-      // if (!data) throw new Error('Unable to get resources');
-      // return data;
+            return { products: products, count: count };
+          }
+        },
+      );
+      if (!data) throw new Error('Unable to get resources');
+      return data;
     },
     cartItems: async (_: any, args: any) => {
       const existingUser = await prisma.user.findFirst({
@@ -138,15 +141,29 @@ export const resolvers = {
   },
   Mutation: {
     updateUser: async (_: any, args: any) => {
-      const updateUser = await prisma.user.update({
-        where: {
-          email: args.email,
-        },
-        data: {
-          name: args.name,
-          password: args.password,
-        },
-      });
+      let updateUser;
+      if (args.password) {
+        const newPassword = SHA256(args.password).toString();
+
+        updateUser = await prisma.user.update({
+          where: {
+            email: args.email,
+          },
+          data: {
+            name: args.name,
+            password: newPassword,
+          },
+        });
+      } else {
+        updateUser = await prisma.user.update({
+          where: {
+            email: args.email,
+          },
+          data: {
+            name: args.name,
+          },
+        });
+      }
       return updateUser;
     },
     addUser: async (_: any, args: any) => {
@@ -156,14 +173,13 @@ export const resolvers = {
         },
       });
       if (existingUser) throw new Error('User with that email already exists');
-      const salt = await bcrypt.genSalt(10);
-      const hash = await bcrypt.hashSync(args.password, salt);
+      const newPassword = SHA256(args.password).toString();
       const newUser = await prisma.user.create({
         data: {
           name: args.name,
           email: args.email,
           emailVerified: false,
-          password: hash,
+          password: newPassword,
         },
       });
       const { password, ...newUserWithoutPassword } = newUser;

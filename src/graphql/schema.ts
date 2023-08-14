@@ -132,8 +132,8 @@ export const typeDefs = gql`
   type Mutation {
     updateUser(
       email: String!
-      name: String!
-      password: String!
+      name: String
+      password: String
     ): User
     addUser(
       name: String!,

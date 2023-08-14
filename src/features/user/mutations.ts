@@ -4,7 +4,7 @@ import axios from 'axios';
 import { AddToOrderType, OrderType } from './types';
 
 const updateUser = gql`
-  mutation updateUser($email: String!, $name: String!, $password: String!) {
+  mutation updateUser($email: String!, $name: String, $password: String) {
     updateUser(email: $email, name: $name, password: $password) {
       id
       name
@@ -35,8 +35,8 @@ export const updateUserMutationFn = async ({
   password,
 }: {
   email: string;
-  name: string;
-  password: string;
+  name?: string;
+  password?: string;
 }) => {
   return request(`${GRAPHQL_API_URL}`, updateUser, { email, name, password });
 };
