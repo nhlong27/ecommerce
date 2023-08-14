@@ -110,7 +110,7 @@ June - July 2023
 0. Find data source to populate the Product collection in MongoDB
 1. Clone the repo.
    ```sh
-   git clone https://github.com/nhlong27/movieSite
+   git clone https://github.com/nhlong27/ecommerce
    ```
 2. Install NPM packages
    ```sh
