@@ -64,11 +64,11 @@ Official website: <a href="https://ecommerce-nhlong.vercel.app/" target='_blank'
 
 [![Product Preview][product-preview]](...url)
 
-I'm intrigued by the intricacies of ecommerce site architecture, particularly when implemented with a headless CMS approach. My focus lies in crafting personalized solutions, such as building dedicated order and stock management services. I aim to create a self-sustaining ecosystem where payment processing relies on trusted Saas solutions like Stripe's checkout and webhook integration.
+I'm captivated by the intricacies of e-commerce site architecture, especially when executed through a headless CMS approach. My primary focus is on crafting personalized solutions, which includes the development of dedicated order and stock management services. My goal is to establish a self-sustaining ecosystem where reliable Saas solutions like Stripe's checkout and webhook integration handle payment processing.
 
-Regarding data management, my strategy involves web scraping from websites, a method I find effective, especially for dynamic data sources like those associated with companies like PepsiCo. However, given the volatility of this data, I'm keen on establishing a scheduled cron job that fetches new information and efficiently pushes it into Kafka topics.
+In terms of data management, my strategy involves web scraping from websites, a method I find particularly effective, especially for dynamic data sources linked to companies like PepsiCo. However, due to the data's volatility, I'm committed to setting up a scheduled cron job that fetches new information and efficiently channels it into Kafka topics.
 
-To maintain data consistency and provide real-time updates, I intend to employ a separate service that consumes the data from Kafka and seamlessly updates the MongoDB database. This way, the backend remains robust and always reflects the latest information, ensuring a smooth experience for users and streamlined operations for the ecommerce platform.
+To ensure data consistency and provide real-time updates, I plan to employ a separate service that consumes data from Kafka and seamlessly updates the MongoDB database. This approach keeps the backend robust and consistently up-to-date, resulting in a seamless experience for users and streamlined operations for the e-commerce platform.
 
 <a id='duration'></a>
 ## Duration
