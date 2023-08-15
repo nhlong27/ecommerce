@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { useDeleteCartItemMutation } from '@/features/catalog/hooks/useDeleteCartItemMutation';
 import { toast } from '@/components/ui/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
+import { RotatingLines } from 'react-loader-spinner';
 
 type CartItemProps = {
   item: CartItemType;
@@ -73,10 +74,10 @@ const CartItem: React.FC<CartItemProps> = ({ item, style = 'profile' }) => {
 
           <Button
             variant='ghost'
+            disabled={deleteCartItemMutation.isLoading}
             size='sm'
             className='text-red-400 hover:text-red-500 dark:hover:text-red-500 flex place-self-end'
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               deleteCartItemMutation.mutate(
                 { id: item.id },
                 {
@@ -96,7 +97,10 @@ const CartItem: React.FC<CartItemProps> = ({ item, style = 'profile' }) => {
               );
             }}
           >
-            Remove
+            Remove{' '}
+            {deleteCartItemMutation.isLoading && (
+              <RotatingLines strokeColor='#C8E7F2' strokeWidth='5' width='20' />
+            )}
           </Button>
         </div>
       </div>
