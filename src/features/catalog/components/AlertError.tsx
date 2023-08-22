@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertCircle, FileWarning, Terminal } from 'lucide-react';
+import { AlertCircle } from '@/components/lucide-react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 

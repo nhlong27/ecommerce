@@ -2,7 +2,7 @@ import React from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import helper from '@/constants/helper';
 import { Command, CommandGroup, CommandItem } from '@/components/ui/command';
-import { Check } from 'lucide-react';
+import { Check } from '@/components/lucide-react';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/router';
 

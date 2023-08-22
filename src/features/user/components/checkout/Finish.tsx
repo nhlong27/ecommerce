@@ -5,7 +5,7 @@ import helper from '@/constants/helper';
 import { TabsContent } from '@/components/ui/tabs';
 import { useRouter } from 'next/router';
 import { useGetOrderQuery } from '../../hooks/useGetOrderQuery';
-import { BellRing, Check } from 'lucide-react';
+import { BellRing, Check } from '@/components/lucide-react';
 import {
   Card,
   CardContent,

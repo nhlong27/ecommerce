@@ -13,7 +13,7 @@ import helper from '@/constants/helper';
 import { categoryRegistry } from '@/pages/catalogue/[[...slug]]';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useRouter } from 'next/router';
-import { Check } from 'lucide-react';
+import { Check } from '@/components/lucide-react';
 import { cn } from '@/lib/utils';
 
 const BrandFilter = () => {

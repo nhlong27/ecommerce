@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/command';
 import helper from '@/constants/helper';
 import { categoryRegistry } from '@/pages/catalogue/[[...slug]]';
-import { Check } from 'lucide-react';
+import { Check } from '@/components/lucide-react';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/router';
 

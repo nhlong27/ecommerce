@@ -1,9 +1,7 @@
 import React from 'react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronsUpDown, Plus, X } from 'lucide-react';
+import { ChevronsUpDown } from '@/components/lucide-react';
 import { Button } from '@/components/ui/button';
-import { Text } from '@/components/common/Text';
-
 import CategoryFilter from './CategoryFilter';
 import BrandFilter from './BrandFilter';
 import PriceRange from './PriceRange';
