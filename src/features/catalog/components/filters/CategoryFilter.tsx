@@ -39,7 +39,7 @@ const CategoryFilter = () => {
                 <CommandItem
                   key={i}
                   onSelect={(currentValue) => {
-                    const {brand, keyword, ...rest} = router.query;
+                    const {brand, keyword, price, sortBy, ...rest} = router.query;
                     switch (currentValue) {
                       case 'coffee / tea':
                         router.push({

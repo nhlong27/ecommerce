@@ -38,18 +38,20 @@ import SearchBar from '../common/SearchBar';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { Button } from '../ui/button';
 import { useGetUserQuery } from '@/features/user/hooks/useGetUsersQuery';
+import { useGetCartItemsQuery } from '@/features/catalog/hooks/useGetCartItemsQuery';
 
 const Nav = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const { data: session } = useSession();
   const { data } = useGetUserQuery(session?.user?.email as string);
+  const { data: cartItems } = useGetCartItemsQuery(session?.user?.email as string);
   return (
     <>
       <nav className='hidden md:flex w-11/12 h-full mx-auto'>
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem className='flex gap-2 items-center mr-8'>
-              <div className='w-[50px]'>
+              <Link href='/' className='w-[50px]'>
                 <AspectRatio ratio={1 / 1}>
                   <Image
                     src={helper.icon.logo}
@@ -59,10 +61,12 @@ const Nav = () => {
                     className='object-cover bg-white h-full w-full'
                   />
                 </AspectRatio>
-              </div>
-              <Text variant='xl/semibold/primary' className='dark:text-secondary'>
-                Epicola
-              </Text>
+              </Link>
+              <Link href='/'>
+                <Text variant='xl/semibold/primary' className='dark:text-secondary'>
+                  Epicola
+                </Text>
+              </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link href='/' legacyBehavior passHref>
@@ -76,7 +80,10 @@ const Nav = () => {
               <NavigationMenuContent>
                 <ul className='grid gap-8 p-6 w-[700px] grid-cols-5'>
                   <li className='col-span-5 flex justify-center items-center gap-6 bg-gradient-to-bl from-gray-100 dark:from-gray-800 dark:via-transparent dark:to-transparent via-white to-white rounded-md'>
-                    <Link href='/catalogue?category=coffee_tea&page=1' className='flex w-full max-w-sm items-center space-x-2'>
+                    <Link
+                      href='/catalogue?category=coffee_tea&page=1'
+                      className='flex w-full max-w-sm items-center space-x-2'
+                    >
                       <SearchBar />
                     </Link>
                     <NavigationMenuLink asChild>
@@ -138,8 +145,8 @@ const Nav = () => {
           <NavigationMenuList>
             <NavigationMenuItem>
               <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Avatar className='w-8 h-8'>
+                <DropdownMenuTrigger className='flex justify-center items-center'>
+                  <Avatar className='w-6 h-6'>
                     <AvatarImage
                       src={
                         session ? `${process.env.NEXT_PUBLIC_S3_BUCKET}/${data?.user.image}` : ''
@@ -227,7 +234,12 @@ const Nav = () => {
             <NavigationMenuItem>
               <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 px-4 py-2'>
-                  <helper.icon.shop className='h-5 w-5' />
+                  <div className='flex gap-2 items-center'>
+                    <helper.icon.shop className='h-5 w-5' />
+                    <div className='rounded-full w-auto px-2 h-6 bg-blue-500 dark:bg-blue-300 text-white font-medium flex justify-center items-center text-xs dark:text-blue-900'>
+                      {cartItems?.cartItems.length ? cartItems?.cartItems.length : 0}
+                    </div>
+                  </div>
                 </SheetTrigger>
                 <SheetContent className='flex flex-col'>
                   <SheetHeader>
@@ -277,7 +289,7 @@ const Nav = () => {
 
                 <SheetContent side='left' className='md:w-1/2 w-5/6'>
                   <SheetHeader>
-                    <SheetTitle className='flex items-center gap-2 border-b border-gray-200 dark:border-gray-500 w-[40px]'>
+                    <Link href='/' className='w-[40px]'>
                       <AspectRatio ratio={1 / 1}>
                         <Image
                           src={helper.icon.logo}
@@ -287,7 +299,13 @@ const Nav = () => {
                           className='object-cover bg-white h-full w-full'
                         />
                       </AspectRatio>
-                      Epicola
+                    </Link>
+                    <SheetTitle className='flex items-center gap-2 border-b border-gray-200 dark:border-gray-500 w-[40px]'>
+                      <Link href='/'>
+                        <Text variant='xl/semibold/primary' className='dark:text-secondary'>
+                          Epicola
+                        </Text>
+                      </Link>
                     </SheetTitle>
                   </SheetHeader>
                   <ScrollArea className='min-h-screen w-full'>
@@ -303,7 +321,10 @@ const Nav = () => {
                         <NavigationMenuItem>
                           <ul className='flex gap-3 py-6 w-full flex-col'>
                             <li className='flex flex-col justify-center items-center gap-6 bg-gradient-to-bl from-gray-100 dark:from-gray-800 dark:via-transparent dark:to-transparent via-white to-white rounded-md'>
-                              <Link href='/catalogue?category=coffee_tea&page=1' className='flex w-full max-w-sm items-center space-x-2'>
+                              <Link
+                                href='/catalogue?category=coffee_tea&page=1'
+                                className='flex w-full max-w-sm items-center space-x-2'
+                              >
                                 <SearchBar />
                               </Link>
                               <NavigationMenuLink asChild>
@@ -331,8 +352,8 @@ const Nav = () => {
                 </SheetContent>
               </Sheet>
             </NavigationMenuItem>
-            <NavigationMenuItem>
-              <div className='w-[40px]'>
+            <NavigationMenuItem className='flex items-center gap-1'>
+              <Link href='/' className='w-[40px]'>
                 <AspectRatio ratio={1 / 1}>
                   <Image
                     src={helper.icon.logo}
@@ -342,7 +363,12 @@ const Nav = () => {
                     className='object-cover bg-white h-full w-full'
                   />
                 </AspectRatio>
-              </div>
+              </Link>
+              <Link href='/'>
+                <Text variant='base/semibold/primary' className='dark:text-secondary'>
+                  Epicola
+                </Text>
+              </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
@@ -350,7 +376,7 @@ const Nav = () => {
           <NavigationMenuList>
             <NavigationMenuItem>
               <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger className='flex justify-center items-center'>
                   <Avatar className='w-6 h-6'>
                     <AvatarImage
                       src={
@@ -442,7 +468,12 @@ const Nav = () => {
                 href='/account/cart'
                 className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 px-4 py-2'
               >
-                <helper.icon.shop className='h-4 w-4' />
+                <div className='flex gap-2 items-center'>
+                  <helper.icon.shop className='h-5 w-5' />
+                  <div className='rounded-full w-auto px-2 h-6 bg-blue-500 dark:bg-blue-300 text-white font-medium flex justify-center items-center text-xs dark:text-blue-900'>
+                    {cartItems?.cartItems.length ? cartItems?.cartItems.length : 0}
+                  </div>
+                </div>
               </Link>
             </NavigationMenuItem>
           </NavigationMenuList>

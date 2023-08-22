@@ -9,10 +9,10 @@ import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 
-export default function ProductSwiper({category}:{category?:string}) {
-  const { data, error } = useGetProductsQuery(1, category ?? 'coffee_tea');
+export default function ProductSwiper({ category }: { category?: string }) {
+  const { data } = useGetProductsQuery(1, category ?? 'coffee_tea');
   return (
-    <div className='mx-auto w-3/4 lg:w-11/12 pb-8 pt-12 relative'>
+    <div className='mx-auto w-3/4 lg:w-11/12 pb-8 pt-12 relative px-4'>
       <Link
         href={`/catalogue?category=${category ?? 'coffee_tea'}&page=1`}
         className='absolute right-0 top-4 text-sm text-slate-500 underline-offset-4 hover:underline dark:text-slate-50'
@@ -20,6 +20,15 @@ export default function ProductSwiper({category}:{category?:string}) {
         <Badge variant='outline'>See more</Badge>
       </Link>
       <Swiper
+        style={
+          {
+            '--swiper-pagination-bullet-inactive-color': '#999999',
+            '--swiper-pagination-bullet-inactive-opacity': '1',
+            '--swiper-pagination-bullet-size': '12px',
+            '--swiper-pagination-bullet-width': '10px',
+            '--swiper-pagination-bullet-height': '10px',
+          } as React.CSSProperties
+        }
         slidesPerView={1}
         spaceBetween={10}
         pagination={{
@@ -44,11 +53,11 @@ export default function ProductSwiper({category}:{category?:string}) {
           },
         }}
         modules={[Pagination]}
-        className='w-full h-auto'
+        className='w-full h-auto overflow-visible relative'
       >
         {data
           ? data.products.products.map((product, index) => (
-              <SwiperSlide className='h-full relative mb-8' key={index}>
+              <SwiperSlide className='h-full relative mb-16 overflow-visible' key={index}>
                 <ProductCard product={product} />
               </SwiperSlide>
             ))

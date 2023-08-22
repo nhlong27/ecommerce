@@ -16,7 +16,7 @@ export const resolvers = {
       const data = await getOrSetCache(
         `products-${args.category}-${args.brand ?? 'all'}-${args.price ?? 'all'}-${
           args.sortBy ?? 'none'
-        }`,
+        }-${args.pageIndex ?? 1}}`,
         async () => {
           await connectMongo();
           const filterCriteria: Record<string, any> = {};
@@ -50,6 +50,7 @@ export const resolvers = {
               .limit(itemsPerPage)
               .sort(sortOptions)
               .lean();
+            console.log(skipCount, products)
             return { products: products, count: products.length };
           } else {
             const count = await ProductModel.countDocuments(filterCriteria);

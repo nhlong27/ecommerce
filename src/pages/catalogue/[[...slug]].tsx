@@ -89,7 +89,10 @@ const CataloguePage = () => {
       )}
       <div className='w-11/12 mx-auto min-h-screen p-8 rounded-lg z-10 bg-white dark:bg-stone-950'>
         <Text variant='3xl/semibold/black'>
-          {router.query.slug?.[1] ? 'Product (SKU): ' + router.query.slug?.[1] : 'Catalogue - ' + categoryRegistry[router.query.category as keyof typeof categoryRegistry]?.title}
+          {router.query.slug?.[1]
+            ? 'Product (SKU): ' + router.query.slug?.[1]
+            : 'Catalogue - ' +
+              categoryRegistry[router.query.category as keyof typeof categoryRegistry]?.title}
         </Text>
         <BreadCrumbs routerQueries={['catalogue', ...(router.query.slug || [])]} />
         {router.query.slug?.[1] ? (

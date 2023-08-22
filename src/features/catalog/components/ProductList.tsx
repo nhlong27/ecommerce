@@ -34,8 +34,7 @@ const ProductList = () => {
     keyword,
   );
 
-  if (data && data.products.count > 0) {
-    console.log(data);
+  if (data && data.products.count && data.products.products.length > 0) {
     return (
       <div className='mx-auto max-w-2xl px-4 pb-16 pt-8 sm:px-6 lg:max-w-7xl lg:px-8 flex flex-col gap-4'>
         <Button variant='secondary' size='lg' className='text-lg mr-auto'>

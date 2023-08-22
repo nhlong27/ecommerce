@@ -4,6 +4,7 @@ import Image from 'next/image';
 import helper from '@/constants/helper';
 import { Text } from '@/components/common/Text';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -11,7 +12,7 @@ const Footer = () => {
       <footer className='hidden w-11/12 mx-auto justify-between pb-10 md:flex relative'>
         <div className='ml-5 mt-5'>
           <div className='flex gap-2 items-center'>
-            <div className='w-[50px]'>
+            <Link href='/' className='w-[50px]'>
               <AspectRatio ratio={1 / 1}>
                 <Image
                   src={helper.icon.logo}
@@ -20,10 +21,12 @@ const Footer = () => {
                   className='object-cover bg-white h-full w-full'
                 />
               </AspectRatio>
-            </div>
-            <Text variant='2xl/semibold/primary' className='dark:text-secondary'>
-              Epicola
-            </Text>
+            </Link>
+            <Link href='/'>
+              <Text variant='2xl/semibold/primary' className='dark:text-secondary'>
+                Epicola
+              </Text>
+            </Link>
           </div>
           <p className='pl-0'>
             Stay up to date with the latest discounts
@@ -153,7 +156,7 @@ const Footer = () => {
       <footer className='flex w-full justify-center pb-10 md:hidden'>
         <div className='flex-col flex justify-between w-11/12 mx-auto items-start ml-8'>
           <div className='flex items-center mt-2 gap-4'>
-            <div className='w-[50px]'>
+            <Link href='/' className='w-[50px]'>
               <AspectRatio ratio={1 / 1}>
                 <Image
                   src={helper.icon.logo}
@@ -162,10 +165,12 @@ const Footer = () => {
                   className='object-cover bg-white h-full w-full'
                 />
               </AspectRatio>
-            </div>
-            <Text variant='lg/semibold/primary' className='dark:text-secondary'>
-              Epicola
-            </Text>
+            </Link>
+            <Link href='/'>
+              <Text variant='lg/semibold/primary' className='dark:text-secondary'>
+                Epicola
+              </Text>
+            </Link>
           </div>
           <div className='flex flex-col items-start mt-4'>
             <p className='pl-0'>
@@ -203,22 +208,27 @@ const Footer = () => {
       <span className='w-11/12 mx-auto border-b border-gray-200 dark:border-gray-500'></span>
       <section className='h-12'>
         <div className='mx-auto flex max-w-[1200px] items-center justify-between px-4 pt-2'>
-          <Text variant='sm/light/black' >&copy; 2023 NHLong. All rights reserved.</Text>
+          <Text variant='sm/light/black'>&copy; 2023 NHLong. All rights reserved.</Text>
           <div className='flex items-center space-x-3'>
-            <img
-              className='h-8'
+            <Image
               src='https://cdn-icons-png.flaticon.com/512/5968/5968299.png'
               alt='Visa icon'
+              width={32}
+              height={8}
             />
-            <img
+            <Image
               className='h-8'
               src='https://cdn-icons-png.flaticon.com/512/349/349228.png'
               alt='AE icon'
+              width={32}
+              height={8}
             />
-            <img
+            <Image
               className='h-8'
               src='https://cdn-icons-png.flaticon.com/512/5968/5968144.png'
               alt='Apple pay icon'
+              width={32}
+              height={8}
             />
           </div>
         </div>

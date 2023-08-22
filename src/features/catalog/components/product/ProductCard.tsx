@@ -23,6 +23,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import { useQueryClient } from '@tanstack/react-query';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { RotatingLines } from 'react-loader-spinner';
+import { DialogClose } from '@radix-ui/react-dialog';
 
 interface ProductCardProps {
   product: ProductType;
@@ -33,6 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { data: session } = useSession();
   const [amount, setAmount] = React.useState(1);
   const queryClient = useQueryClient();
+  const [shouldModalOpen, setShouldModalOpen] = React.useState(false);
 
   const handleAdd = () => {
     if (session) {
@@ -76,6 +78,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             setAmount(1);
             toast({ title: 'Add to cart successfully' });
             queryClient.invalidateQueries(['cartItems']);
+            setShouldModalOpen(false);
           },
           onError: (error) => {
             console.log(error);
@@ -91,13 +94,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
   return (
     <>
-      <Card>
+      <Card className='w-[15rem]'>
         <Link
           href={`/catalogue/${product.category}/${product.sku}`}
           className='group overflow-hidden rounded-lg flex flex-col justify-start w-[15rem]'
         >
-          <CardContent>
-            <div className='xl:aspect-h-8 xl:aspect-w-7 relative rounded-lg overflow-hidden bg-white py-4'>
+          <CardContent className='py-3 w-[15rem]'>
+            <div className='relative rounded-lg overflow-hidden bg-white py-4'>
               <AspectRatio ratio={1 / 1}>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_DATA_SOURCE}${product.image}`}
@@ -142,14 +145,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </div>
           </CardContent>
         </Link>
-        <CardFooter className='flex justify-between -mt-4'>
-          <Dialog>
-            <DialogTrigger asChild>
+        <CardFooter className='flex justify-between -mt-0 w-[15rem]'>
+          <Dialog open={shouldModalOpen} onOpenChange={setShouldModalOpen}>
+            <DialogTrigger asChild onClick={() => setShouldModalOpen(true)}>
               <p className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-800 bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80 h-9 px-3 cursor-pointer hover:bg-gray-200'>
                 Add to cart
               </p>
             </DialogTrigger>
-            <DialogContent className='w-full min-w-[250px] sm:max-w-[600px]'>
+            <DialogContent className='w-[330px] sm:w-[500px]'>
               <DialogHeader>
                 <DialogTitle>Add to cart</DialogTitle>
                 <DialogDescription>
@@ -157,9 +160,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 </DialogDescription>
               </DialogHeader>
               {session ? (
-                <div className='sm:p-8 rounded-md bg-white  dark:bg-slate-900 flex flex-col sm:flex-row gap-8'>
-                  <div>
-                    <div className='relative w-[10rem] h-[10rem]  rounded-lg overflow-hidden bg-white py-4 mx-auto'>
+                <div className='sm:p-4 rounded-md bg-white dark:bg-slate-900 flex flex-col sm:flex-row gap-4'>
+                  <div className='grow'>
+                    <div className='relative w-[10rem] h-[12rem] rounded-lg overflow-hidden bg-white py-4 mx-auto'>
                       <AspectRatio ratio={1 / 1}>
                         <Image
                           src={`${process.env.NEXT_PUBLIC_DATA_SOURCE}${product.image}`}
@@ -199,7 +202,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                       </div>
                     </div>
                   </div>
-                  <div>
+                  <div className='w-32'>
                     <Text variant='base/semibold/black' className=''>
                       Set amount
                     </Text>
