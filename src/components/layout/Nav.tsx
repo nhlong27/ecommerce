@@ -39,9 +39,11 @@ import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { Button } from '../ui/button';
 import { useGetUserQuery } from '@/features/user/hooks/useGetUsersQuery';
 import { useGetCartItemsQuery } from '@/features/catalog/hooks/useGetCartItemsQuery';
+import { useRouter } from 'next/router';
 
 const Nav = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const router = useRouter();
   const { data: session } = useSession();
   const { data } = useGetUserQuery(session?.user?.email as string);
   const { data: cartItems } = useGetCartItemsQuery(session?.user?.email as string);
@@ -145,7 +147,7 @@ const Nav = () => {
           <NavigationMenuList>
             <NavigationMenuItem>
               <DropdownMenu>
-                <DropdownMenuTrigger className='flex justify-center items-center'>
+                <DropdownMenuTrigger className='flex justify-center items-center' asChild>
                   <Avatar className='w-6 h-6'>
                     <AvatarImage
                       src={
@@ -161,7 +163,14 @@ const Nav = () => {
                   {session ? (
                     <>
                       <DropdownMenuItem>
-                        <Link href='/account/profile' className='flex gap-3 items-center'>
+                        <Button
+                          variant='ghost'
+                          size='sm'
+                          onClick={() => {
+                            router.push('/account/profile');
+                          }}
+                          className='flex gap-3 items-center'
+                        >
                           <svg
                             width='15'
                             height='15'
@@ -177,11 +186,12 @@ const Nav = () => {
                             ></path>
                           </svg>
                           Profile
-                        </Link>
+                        </Button>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
-                        <Link
-                          href='#'
+                        <Button
+                          variant='ghost'
+                          size='sm'
                           onClick={() =>
                             signOut({
                               callbackUrl: `${process.env.NEXT_PUBLIC_SERVER}${window.location.pathname}`,
@@ -204,12 +214,19 @@ const Nav = () => {
                             ></path>
                           </svg>
                           Sign out
-                        </Link>
+                        </Button>
                       </DropdownMenuItem>
                     </>
                   ) : (
                     <DropdownMenuItem>
-                      <Link href='/auth' className='flex gap-3 items-center'>
+                      <Button
+                        variant='ghost'
+                        size='sm'
+                        onClick={() => {
+                          router.push('/auth');
+                        }}
+                        className='flex gap-3 items-center'
+                      >
                         <svg
                           width='15'
                           height='15'
@@ -225,7 +242,7 @@ const Nav = () => {
                           ></path>
                         </svg>
                         Sign in
-                      </Link>
+                      </Button>
                     </DropdownMenuItem>
                   )}
                 </DropdownMenuContent>
@@ -376,7 +393,7 @@ const Nav = () => {
           <NavigationMenuList>
             <NavigationMenuItem>
               <DropdownMenu>
-                <DropdownMenuTrigger className='flex justify-center items-center'>
+                <DropdownMenuTrigger asChild className='flex justify-center items-center'>
                   <Avatar className='w-6 h-6'>
                     <AvatarImage
                       src={
@@ -392,7 +409,14 @@ const Nav = () => {
                   {session ? (
                     <>
                       <DropdownMenuItem>
-                        <Link href='/account/profile' className='flex gap-2 items-center'>
+                        <Button
+                          variant='ghost'
+                          size='sm'
+                          onClick={() => {
+                            router.push('/account/profile');
+                          }}
+                          className='flex gap-2 items-center'
+                        >
                           <svg
                             width='15'
                             height='15'
@@ -408,11 +432,12 @@ const Nav = () => {
                             ></path>
                           </svg>
                           Profile
-                        </Link>
+                        </Button>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
-                        <Link
-                          href='#'
+                        <Button
+                          variant='ghost'
+                          size='sm'
                           onClick={() =>
                             signOut({
                               callbackUrl: `${process.env.NEXT_PUBLIC_SERVER}${window.location.pathname}`,
@@ -435,12 +460,19 @@ const Nav = () => {
                             ></path>
                           </svg>
                           Sign out
-                        </Link>
+                        </Button>
                       </DropdownMenuItem>
                     </>
                   ) : (
                     <DropdownMenuItem>
-                      <Link href='/auth' className='flex gap-2 items-center'>
+                      <Button
+                        variant='ghost'
+                        size='sm'
+                        onClick={() => {
+                          router.push('/auth');
+                        }}
+                        className='flex gap-2 items-center'
+                      >
                         <svg
                           width='15'
                           height='15'
@@ -456,7 +488,7 @@ const Nav = () => {
                           ></path>
                         </svg>
                         Sign in
-                      </Link>
+                      </Button>
                     </DropdownMenuItem>
                   )}
                 </DropdownMenuContent>

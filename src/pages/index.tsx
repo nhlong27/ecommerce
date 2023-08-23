@@ -10,17 +10,12 @@ import 'swiper/css/pagination';
 
 const inter = Inter({ subsets: ['latin'] });
 import { Separator } from '@/components/ui/separator';
-import dynamic from 'next/dynamic';
-import { Skeleton } from '@/components/ui/skeleton';
-
-const ProductSwiper = dynamic(() => import('@/features/catalog/components/ProductSwiper'), {
-  loading: () => (
-    <div className='mx-auto w-3/4 lg:w-11/12 pb-8 pt-12 relative h-[20rem]'>
-      <Skeleton className='h-full w-full  rounded-e-lg' />
-    </div>
-  ),
-  ssr: false,
-});
+// import dynamic from 'next/dynamic';
+// import { Skeleton } from '@/components/ui/skeleton';
+import { GetStaticProps } from 'next';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
+import { getProductsQuery } from '@/features/catalog/queries';
+import { ProductSwiper } from '@/features/catalog';
 
 function HomePage() {
   const { data: session } = useSession();
@@ -43,4 +38,13 @@ function HomePage() {
     </main>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['products', '1coffee_tea'], getProductsQuery(1, 'coffee_tea'));
+
+  return { props: { dehydratedState: dehydrate(queryClient) } };
+};
+
 export default HomePage;
