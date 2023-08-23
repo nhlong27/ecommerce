@@ -11,6 +11,7 @@ import { getProductsQuery } from '@/features/catalog/queries';
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
+import { GetServerSidePropsContext } from 'next';
 
 const ProductSwiper = dynamic(() => import('@/features/catalog/components/ProductSwiper'), {
   loading: () => (
@@ -111,12 +112,20 @@ const CataloguePage = () => {
 
 export default CataloguePage;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { category, page, price, brand, keyword, sortBy }: Record<string, string | undefined> = {
+    ...context.query,
+    price: (context.query.price as string) ?? '10',
+    brand: (context.query.brand as string) ?? undefined,
+    keyword: (context.query.keyword as string) ?? undefined,
+    sortBy: (context.query.sortBy as string) ?? undefined,
+  };
   const queryClient = new QueryClient();
-  // '1coffee_tea10' results from pageIndex+category+brand+price+sortBy+keyword
+
   await queryClient.prefetchQuery(
-    ['products', `1coffee_tea10`],
-    getProductsQuery(1, 'coffee_tea').queryFn,
+    ['products', `${(page as string) + category + brand + price + sortBy + keyword}`],
+    getProductsQuery(Number(page), category as string, brand, Number(price), sortBy, keyword)
+      .queryFn,
   );
 
   return {

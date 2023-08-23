@@ -4,6 +4,7 @@ import connectMongo from '@/lib/mongodb';
 import { getOrSetCache } from '@/utils/getOrSetCache';
 import { ProductModel } from '../../mongoose/models/product.model';
 import { SHA256 } from 'crypto-js';
+import { SortOrder } from 'mongoose';
 
 export const resolvers = {
   Query: {
@@ -14,13 +15,18 @@ export const resolvers = {
     },
     products: async (_: any, args: any) => {
       const data = await getOrSetCache(
-        `products-${args.category}-${args.brand ?? 'all'}-${args.price ?? 'all'}-${
-          args.sortBy ?? 'none'
-        }-${args.pageIndex ?? 1}}`,
+        `${args.pageIndex ?? '1'}${args.category ?? 'coffee_tea'}${args.price ?? '10'}${
+          args.brand
+        }${args.sortBy}${args.keyword}`,
         async () => {
           await connectMongo();
-          const filterCriteria: Record<string, any> = {};
-          let sortOptions: Record<string, any> = {};
+          const filterCriteria: Record<string, string | number | Record<string, string>> = {};
+          let sortOptions:
+            | string
+            | { [key: string]: SortOrder | { $meta: 'textScore' } }
+            | [string, SortOrder][]
+            | null
+            | undefined = {};
           if (args.category) {
             filterCriteria.category = args.category;
           }
@@ -50,7 +56,7 @@ export const resolvers = {
               .limit(itemsPerPage)
               .sort(sortOptions)
               .lean();
-            console.log(skipCount, products)
+            console.log(skipCount, products);
             return { products: products, count: products.length };
           } else {
             const count = await ProductModel.countDocuments(filterCriteria);

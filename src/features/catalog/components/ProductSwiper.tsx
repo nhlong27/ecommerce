@@ -10,7 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 
 export default function ProductSwiper({ category }: { category?: string }) {
-  const { data } = useGetProductsQuery(1, category ?? 'coffee_tea');
+  const { data } = useGetProductsQuery(1, category ?? 'coffee_tea', undefined, 10);
   return (
     <div className='mx-auto w-3/4 lg:w-11/12 pb-8 pt-12 relative px-4'>
       <Link

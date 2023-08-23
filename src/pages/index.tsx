@@ -42,7 +42,10 @@ function HomePage() {
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(['products', '1coffee_tea'], getProductsQuery(1, 'coffee_tea'));
+  await queryClient.prefetchQuery(
+    ['products', '1coffee_tea10'],
+    getProductsQuery(1, 'coffee_tea', undefined, 10),
+  );
 
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };
