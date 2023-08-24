@@ -131,7 +131,7 @@ const Profile = ({ session }: { session: Session }) => {
                 onChange={(e) => setName(e.currentTarget.value)}
                 disabled={editDisabled}
               />
-              <Button variant='secondary' onClick={() => setEditDisabled(false)}>
+              <Button disabled={(data.user.email==='ecom1@mail.com' || data.user.email=== 'ecom2@mail.com')} variant='secondary' onClick={() => setEditDisabled(false)}>
                 <svg
                   width='15'
                   height='15'
@@ -193,7 +193,7 @@ const Profile = ({ session }: { session: Session }) => {
                     </svg>
                   </Button>
                 ))}
-              <Button variant='secondary' onClick={() => setEditDisabled(false)}>
+              <Button disabled={(data.user.email==='ecom1@mail.com' || data.user.email=== 'ecom2@mail.com')} variant='secondary' onClick={() => setEditDisabled(false)}>
                 <svg
                   width='15'
                   height='15'
@@ -210,6 +210,7 @@ const Profile = ({ session }: { session: Session }) => {
                 </svg>
               </Button>
             </div>
+              {(data.user.email==='ecom1@mail.com' || data.user.email=== 'ecom2@mail.com') && <Text className='max-w-sm' variant='sm/light/ghost'>You can not edit these fields as demo user ecom1@mail.com and ecom2@mail.com. Please switch account</Text>}
           </div>
         </div>
         {!editDisabled ? (

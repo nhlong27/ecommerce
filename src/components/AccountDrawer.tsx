@@ -47,15 +47,15 @@ const AccountDrawer = () => {
                 <Separator className='' />
                 <div className='grid grid-cols-2 p-4 place-items-center '>
                   <div className='font-medium text-blue-500 dark:text-blue-300'>
-                    user1@mail.com
+                    ecom1@mail.com
                   </div>
-                  <div className='font-medium text-blue-500 dark:text-blue-300'>user1</div>
+                  <div className='font-medium text-blue-500 dark:text-blue-300'>ecom1</div>
                 </div>
                 <div className='grid grid-cols-2 p-4 place-items-center'>
                   <div className='font-medium text-blue-500 dark:text-blue-300'>
-                    user2@mail.com
+                    ecom2@mail.com
                   </div>
-                  <div className='font-medium text-blue-500 dark:text-blue-300'>user2</div>
+                  <div className='font-medium text-blue-500 dark:text-blue-300'>ecom2</div>
                 </div>
 
               </div>

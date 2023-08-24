@@ -70,7 +70,7 @@ const SignIn = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder='user1@mail.com' {...field} />
+                    <Input placeholder='john_smith@mail.com' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -83,7 +83,7 @@ const SignIn = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type='password' placeholder='user1' />
+                    <Input {...field} type='password' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
